@@ -12,13 +12,13 @@
 <link rel="icon" href="/logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Heebo:wght@400;500;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Rubik:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#FBF7F1;--bg2:#F5EFE6;--surface:#FFFDF9;--line:#EDE4D8;--ink:#3A3345;--muted:#8B8296;
   --peach:#F3D3C6;--peach-ink:#B2644D;--lav:#E3DCF5;--lav-ink:#6E5FC0;--sage:#D6E9DC;--sage-ink:#3F7E5A;--butter:#F6EBC8;--butter-ink:#9A7A22;
   --accent:#8C7BD6;--accent2:#D9917A;--shadow:0 1px 2px rgba(58,51,69,.04),0 12px 32px -12px rgba(58,51,69,.14);
-  --radius:22px;--font:"Inter","Heebo",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace
+  --radius:22px;--font:"Rubik",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace
 }
 [data-theme="dark"]{
   --bg:#18161D;--bg2:#1E1B24;--surface:#232029;--line:#34303D;--ink:#EEE8F3;--muted:#A49CB0;
@@ -28,7 +28,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;transition:background .4s,color .4s;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-[dir="rtl"] body{font-family:"Heebo","Inter",system-ui,sans-serif}
+[dir="rtl"] body{font-family:"Fredoka","Rubik",system-ui,sans-serif}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;cursor:pointer;border:none;background:none}
 .wrap{width:min(1120px,100% - 40px);margin-inline:auto}
@@ -182,6 +182,7 @@ footer{padding:48px 0 40px;margin-top:40px;border-top:1px solid var(--line)}
 @media (max-width:900px){.calc,.api{grid-template-columns:1fr}.calc-out{border-inline-start:none;border-top:1px solid var(--line)}.pipe{grid-template-columns:1fr 1fr}.pipe::before{display:none}.feat{grid-template-columns:1fr}.links{display:none}}
 @media (max-width:520px){.status{display:none}.calc-in,.calc-out{padding:22px}}
 @media (prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+h1,h2,h3,.brand{font-family:"Fredoka","Rubik",system-ui,sans-serif}
 </style>
 </head>
 <body>
@@ -440,5 +441,6 @@ footer{padding:48px 0 40px;margin-top:40px;border-top:1px solid var(--line)}
   applyLang(); calc();
 })();
 </script>
+<script src="/noya-kit.js" data-theme-btn="#theme" defer></script>
 </body>
 </html>
