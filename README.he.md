@@ -1,109 +1,136 @@
-<div align="center">
-
-<a href="README.md"><img src="https://img.shields.io/badge/%F0%9F%87%BA%F0%9F%87%B8_English-Switch_language-FFD6E8?style=for-the-badge&labelColor=E4D7FF" alt="Switch to English"></a>
-
-<a href="https://splitship.onrender.com"><img src="https://capsule-render.vercel.app/api?type=waving&color=0:FFD6E8,50:E4D7FF,100:C9F0FF&height=220&section=header&text=SplitShip&fontColor=6B5B95&fontSize=70&animation=twinkling&fontAlignY=36&desc=Split%20the%20bill%20%C2%B7%20Ship%20the%20code&descAlignY=58&descSize=20" width="100%" alt="SplitShip header"></a>
-
-<a href="https://splitship.onrender.com"><img src="assets/logo.svg" width="130" alt="הלוגו של SplitShip"></a>
-
-<a href="https://github.com/NoyaAdivi/splitship/actions"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&pause=900&color=8B7BF0&center=true&vCenter=true&width=620&lines=Dockerized+Node.js+API+%F0%9F%90%B3;Tested+on+every+push+%E2%9C%85;Built+%26+shipped+by+GitHub+Actions+%E2%9A%99%EF%B8%8F;Deployed+to+the+cloud+automatically+%E2%98%81%EF%B8%8F" alt="אנימציית הקלדה"></a>
-
-<a href="https://github.com/NoyaAdivi/splitship/actions/workflows/ci.yml"><img src="https://github.com/NoyaAdivi/splitship/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-<a href="https://github.com/NoyaAdivi/splitship/actions/workflows/deploy.yml"><img src="https://github.com/NoyaAdivi/splitship/actions/workflows/deploy.yml/badge.svg" alt="Deploy"></a>
-<a href="Dockerfile"><img src="https://img.shields.io/badge/Docker-multi--stage-C9F0FF?style=flat-square&logo=docker&logoColor=2496ED" alt="Docker"></a>
-<a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node.js-20%20%7C%2022-D4F7E0?style=flat-square&logo=node.js&logoColor=339933" alt="Node"></a>
-<a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-FFD6E8?style=flat-square" alt="MIT"></a>
-
-### [🚀 דמו חי](https://splitship.onrender.com) · [❤️ בדיקת תקינות](https://splitship.onrender.com/health) · [📦 אימג' Docker](https://github.com/NoyaAdivi/splitship/pkgs/container/splitship)
-
-</div>
-
----
-
 <div dir="rtl">
 
-## 🌸 מה זה?
+<p align="center">
+  <a href="https://splitship.onrender.com"><img src="docs/readme/banner-he.svg" width="100%" alt="SplitShip: API לחלוקת חשבון עם פייפליין DevOps מלא"></a>
+</p>
 
-**SplitShip** הוא REST API קטן שמחלק חשבון מלון קבוצתי בין האורחים, מדויק עד האגורה האחרונה (בהשראת הפרויקט שלי [DiviStay](https://github.com/NoyaAdivi/DiviStay)).
+<p align="center"><a href="README.md"><img src="docs/readme/lang-en.svg" height="44" alt="Read in English"></a></p>
 
-הכוכב האמיתי הוא **פייפליין ה-DevOps** שמסביבו:
+<p align="center">
+  <a href="https://splitship.onrender.com"><img src="https://img.shields.io/badge/%D7%9C%D7%93%D7%9E%D7%95_%D7%94%D7%97%D7%99-FFD5C9?style=for-the-badge&logo=googlechrome&logoColor=A8483A" alt="לדמו החי"></a>
+  <a href="https://github.com/NoyaAdivi/splitship/actions"><img src="https://img.shields.io/badge/%D7%9C%D7%A4%D7%99%D7%99%D7%A4%D7%9C%D7%99%D7%99%D7%9F-D9F3E7?style=for-the-badge&logo=githubactions&logoColor=1F7350" alt="לפייפליין"></a>
+  <a href="https://splitship.onrender.com/health"><img src="https://img.shields.io/badge/%D7%91%D7%93%D7%99%D7%A7%D7%AA_%D7%AA%D7%A7%D7%99%D7%A0%D7%95%D7%AA-DAD5FF?style=for-the-badge&logo=statuspage&logoColor=5548C8" alt="בדיקת תקינות"></a>
+</p>
 
-| | |
-|---|---|
-| 🐳 **Docker** | בנייה רב שלבית, מבוסס Alpine, רץ כמשתמש לא root, עם `HEALTHCHECK` מובנה |
-| ✅ **בדיקות** | בדיקות יחידה ובדיקות API עם ה-test runner המובנה של Node וכיסוי קוד, על Node 20 ו-22 |
-| ⚙️ **CI** | בכל push ו-PR: בדיקת תחביר, מטריצת בדיקות, בניית Docker ובדיקת עשן מול הקונטיינר הרץ |
-| 📦 **Registry** | האימג' מתפרסם ב-GitHub Container Registry עם התגיות `latest` וה-SHA של הקומיט |
-| ☁️ **CD** | אחרי שה-CI עובר על `main`, נשלחת פריסה ל-Render, והוורקפלואו מחכה עד ש-`/health` מחזיר את הקומיט החדש |
+<p align="center">
+  <a href="https://github.com/NoyaAdivi/splitship/actions/workflows/ci.yml"><img src="https://github.com/NoyaAdivi/splitship/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/NoyaAdivi/splitship/actions/workflows/deploy.yml"><img src="https://github.com/NoyaAdivi/splitship/actions/workflows/deploy.yml/badge.svg" alt="פריסה"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/NoyaAdivi/splitship?color=DAD5FF&labelColor=5548C8" alt="רישיון"></a>
+  <a href="https://github.com/NoyaAdivi/splitship/commits/main"><img src="https://img.shields.io/github/last-commit/NoyaAdivi/splitship?color=FFD5C9&labelColor=A8483A" alt="עדכון אחרון"></a>
+</p>
 
-## 🛤️ הפייפליין
+<h3 align="center">מחלקים את החשבון. משגרים את הקוד.</h3>
+
+<p align="center">
+  SplitShip מחלק חשבון מלון קבוצתי בין האורחים, <b>מדויק עד האגורה האחרונה</b>.<br>
+  העיקר הוא מה שמסביב: כל push נבדק, נארז ב־Docker ועולה לענן לבד.
+</p>
+
+<table align="center">
+  <tr>
+    <td align="center" width="25%"><a href="Dockerfile"><b>🐳 Docker</b></a><br><sub>רב שלבי, בלי root</sub></td>
+    <td align="center" width="25%"><a href="https://github.com/NoyaAdivi/splitship/actions/workflows/ci.yml"><b>✅ 2 × Node</b></a><br><sub>בדיקות על 20 ו־22</sub></td>
+    <td align="center" width="25%"><a href="https://github.com/NoyaAdivi/splitship/pkgs/container/splitship"><b>📦 GHCR</b></a><br><sub>אימג׳ לכל קומיט</sub></td>
+    <td align="center" width="25%"><a href="https://splitship.onrender.com"><b>☁️ פריסה אוטומטית</b></a><br><sub>ל־Render אחרי ה־CI</sub></td>
+  </tr>
+</table>
+
+<p align="center">
+  <a href="https://splitship.onrender.com"><img src="docs/social/splitship-github-he.png" width="100%" alt="SplitShip: כל push עולה לענן, אוטומטית ובבטחה"></a>
+</p>
+
+<a name="what"></a>
+<p align="center"><a href="#pipeline"><img src="docs/readme/what-he.svg" width="100%" alt="מה זה SplitShip"></a></p>
+
+<table dir="rtl">
+  <tr valign="top">
+    <td valign="top" width="33%" dir="rtl">
+      <p><b>🐳 ארוז ב־Docker</b></p>
+      <ul>
+        <li><a href="Dockerfile"><b>בנייה רב שלבית</b></a> על Alpine, אימג׳ קטן</li>
+        <li><b>רץ בלי הרשאות root</b></li>
+        <li><b>HEALTHCHECK מובנה</b> על <code>/health</code></li>
+        <li><a href="docker-compose.yml"><b>docker compose up</b></a> וזה רץ</li>
+      </ul>
+    </td>
+    <td valign="top" width="33%" dir="rtl">
+      <p><b>✅ נבדק בכל push</b></p>
+      <ul>
+        <li><a href="test"><b>בדיקות יחידה ו־API</b></a> עם ה־test runner המובנה של Node</li>
+        <li><b>מטריצה</b> על Node 20 ו־22, עם כיסוי קוד</li>
+        <li><b>בדיקת עשן</b> מול הקונטיינר האמיתי כשהוא רץ</li>
+        <li>בדיקה שנכשלת <b>עוצרת את הפריסה</b></li>
+      </ul>
+    </td>
+    <td valign="top" width="33%" dir="rtl">
+      <p><b>☁️ עולה לענן לבד</b></p>
+      <ul>
+        <li><a href="https://github.com/NoyaAdivi/splitship/pkgs/container/splitship"><b>האימג׳ עולה ל־GHCR</b></a> עם התגיות <code>latest</code> וה־SHA</li>
+        <li><b>פריסה ל־Render</b> רק אחרי שה־CI עובר</li>
+        <li><b>מוודא שהגרסה עלתה:</b> מחכה ש־<code>/health</code> יציג את הקומיט החדש</li>
+        <li><a href="https://splitship.onrender.com"><b>ממשק ווב בפסטל</b></a> לנסות בדפדפן</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<a name="pipeline"></a>
+<p align="center"><a href="#tech-stack"><img src="docs/readme/pipeline-he.svg" width="100%" alt="הפייפליין"></a></p>
 
 </div>
 
 ```mermaid
 flowchart LR
-    A([💻 git push]) --> B[🧪 בדיקות<br/>Node 20 + 22]
-    B --> C[🐳 בניית Docker<br/>+ בדיקת עשן]
-    C -->|רק main| D[📦 העלאה ל-GHCR]
-    D --> E[☁️ פריסה ל-Render]
-    E --> F([❤️ /health מציג<br/>את הקומיט החדש])
-    style A fill:#FFD6E8,stroke:#B06AB3,color:#4B3F72
-    style B fill:#E4D7FF,stroke:#8B7BF0,color:#4B3F72
-    style C fill:#C9F0FF,stroke:#4FB3E8,color:#4B3F72
-    style D fill:#D4F7E0,stroke:#4CAF7A,color:#4B3F72
-    style E fill:#FFE9C9,stroke:#E8A34F,color:#4B3F72
-    style F fill:#FFD6E8,stroke:#B06AB3,color:#4B3F72
+  A([💻 git push]) --> B{🧪 בדיקות<br/>Node 20 + 22}
+  B -->|עברו| C([🐳 בניית Docker<br/>+ בדיקת עשן])
+  B -->|נכשלו| X([❌ עוצרים, שום דבר לא עולה])
+  C -->|רק main| D([📦 העלאת האימג׳ ל־GHCR])
+  D --> E([☁️ פריסה ל־Render])
+  E --> F([❤️ /health מציג<br/>את הקומיט החדש])
+  style A fill:#FFE6DE,stroke:#E36E57,color:#2C2668
+  style B fill:#E8E4FF,stroke:#6F60F0,color:#2C2668
+  style C fill:#D9F3E7,stroke:#1F7350,color:#1F4D38
+  style X fill:#FBD5E0,stroke:#A03A5C,color:#5C1F33
+  style D fill:#DAD5FF,stroke:#5548C8,color:#2C2668
+  style E fill:#FFF1C9,stroke:#B98A1E,color:#5C4410
+  style F fill:#D9F3E7,stroke:#1F7350,color:#1F4D38
 ```
 
 <div dir="rtl">
 
-## 🧰 טכנולוגיות
+<p align="center"><sub>הוורקפלואים: <a href=".github/workflows/ci.yml">ci.yml</a> · <a href=".github/workflows/deploy.yml">deploy.yml</a></sub></p>
 
-</div>
+<a name="tech-stack"></a>
+<p align="center"><a href="#api"><img src="docs/readme/stack-he.svg" width="100%" alt="טכנולוגיות"></a></p>
 
-<p align="center">
-  <a href="https://nodejs.org"><img src="https://skillicons.dev/icons?i=nodejs" alt="Node.js"></a>
-  <a href="https://expressjs.com"><img src="https://skillicons.dev/icons?i=express" alt="Express"></a>
-  <a href="https://www.docker.com"><img src="https://skillicons.dev/icons?i=docker" alt="Docker"></a>
-  <a href="https://github.com/features/actions"><img src="https://skillicons.dev/icons?i=githubactions" alt="GitHub Actions"></a>
-  <a href="https://www.linux.org"><img src="https://skillicons.dev/icons?i=linux" alt="Linux"></a>
-  <a href="https://render.com"><img src="https://img.shields.io/badge/Render-cloud-E4D7FF?style=for-the-badge&logo=render&logoColor=46E3B7" height="48" alt="Render"></a>
+<p align="center"><b>אפליקציה</b><br>
+<a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node.js_22-DAD5FF?style=for-the-badge&logo=nodedotjs&logoColor=5548C8" alt="Node.js 22"></a>
+<a href="https://expressjs.com"><img src="https://img.shields.io/badge/Express-DAD5FF?style=for-the-badge&logo=express&logoColor=5548C8" alt="Express"></a>
 </p>
 
-<div dir="rtl">
+<p align="center"><b>קונטיינר</b><br>
+<a href="https://www.docker.com"><img src="https://img.shields.io/badge/Docker-FBD5E0?style=for-the-badge&logo=docker&logoColor=A03A5C" alt="Docker"></a>
+<a href="https://alpinelinux.org"><img src="https://img.shields.io/badge/Alpine_Linux-FBD5E0?style=for-the-badge&logo=alpinelinux&logoColor=A03A5C" alt="Alpine Linux"></a>
+<a href="https://github.com/NoyaAdivi/splitship/pkgs/container/splitship"><img src="https://img.shields.io/badge/GHCR-FBD5E0?style=for-the-badge&logo=github&logoColor=A03A5C" alt="GHCR"></a>
+</p>
 
-## 🚀 הרצה
+<p align="center"><b>CI / CD</b><br>
+<a href="https://github.com/NoyaAdivi/splitship/actions"><img src="https://img.shields.io/badge/GitHub_Actions-D9F3E7?style=for-the-badge&logo=githubactions&logoColor=1F7350" alt="GitHub Actions"></a>
+<a href="https://nodejs.org/api/test.html"><img src="https://img.shields.io/badge/node:test-D9F3E7?style=for-the-badge&logo=nodedotjs&logoColor=1F7350" alt="node:test"></a>
+</p>
 
-**עם Docker** (הדרך הקלה):
+<p align="center"><b>ענן</b><br>
+<a href="https://render.com"><img src="https://img.shields.io/badge/Render-FFD5C9?style=for-the-badge&logo=render&logoColor=A8483A" alt="Render"></a>
+</p>
 
-</div>
-
-```bash
-docker compose up --build
-# open http://localhost:3000
-```
-
-<div dir="rtl">
-
-**עם Node:**
-
-</div>
-
-```bash
-npm install
-npm test
-npm start
-```
-
-<div dir="rtl">
-
-## 🔌 ה-API
+<a name="api"></a>
+<p align="center"><a href="#run-locally"><img src="docs/readme/api-he.svg" width="100%" alt="ה־API"></a></p>
 
 | שיטה | נתיב | מה זה עושה |
 |---|---|---|
-| `GET` | `/` | ממשק ווב בצבעי פסטל למחשבון |
-| `GET` | `/health` | סטטוס, גרסה, SHA של הקומיט, זמן ריצה |
-| `POST` | `/api/split` | חלוקת חשבון |
+| `GET` | [`/`](https://splitship.onrender.com) | ממשק ווב בפסטל למחשבון |
+| `GET` | [`/health`](https://splitship.onrender.com/health) | סטטוס, גרסה, SHA של הקומיט, זמן ריצה |
+| `POST` | `/api/split` | חלוקת חשבון, שווה (`equal`) או לפי לילות (`nights`) |
 
 </div>
 
@@ -119,40 +146,75 @@ curl -X POST https://splitship.onrender.com/api/split \
 
 <div dir="rtl">
 
-## 📁 מבנה הפרויקט
+<a name="run-locally"></a>
+<p align="center"><a href="#deploy-setup"><img src="docs/readme/run-he.svg" width="100%" alt="הרצה מקומית"></a></p>
+
+**עם Docker:**
 
 </div>
 
-```
-splitship/
-├── .github/workflows/
-│   ├── ci.yml          # tests + docker build + smoke test
-│   └── deploy.yml      # GHCR push + Render deploy
-├── src/                # Express app + split logic
-├── public/             # web UI
-├── test/               # unit + API tests
-├── Dockerfile          # multi-stage, non-root
-├── docker-compose.yml
-└── render.yaml         # Render blueprint
+```bash
+docker compose up --build
+# open http://localhost:3000
 ```
 
 <div dir="rtl">
 
-## 🔐 הגדרת פריסה (פעם אחת)
-
-1. ב-[Render](https://dashboard.render.com) יוצרים **Web Service** מהריפו הזה (runtime: Docker) ומכבים **Auto-Deploy**.
-2. מעתיקים את ה-**Deploy Hook URL** (בהגדרות).
-3. בריפו נכנסים ל-[Settings → Secrets → Actions](https://github.com/NoyaAdivi/splitship/settings/secrets/actions) ומוסיפים `RENDER_DEPLOY_HOOK_URL`.
-4. ב-[Settings → Variables](https://github.com/NoyaAdivi/splitship/settings/variables/actions) מוסיפים `APP_URL` = כתובת ה-Render שלך.
+**עם Node 20 ומעלה:**
 
 </div>
 
----
+```bash
+npm install
+npm test
+npm start
+```
 
-<div align="center">
+<div dir="rtl">
 
-נבנה באהבה 💜 על ידי [נויה עדיבי](https://github.com/NoyaAdivi)
+<a name="deploy-setup"></a>
+<p align="center"><a href="#contact"><img src="docs/readme/deploy-he.svg" width="100%" alt="הגדרת פריסה"></a></p>
 
-<a href="https://github.com/NoyaAdivi"><img src="https://capsule-render.vercel.app/api?type=waving&color=0:C9F0FF,50:E4D7FF,100:FFD6E8&height=120&section=footer" width="100%" alt="footer"></a>
+1. ב־[Render](https://dashboard.render.com) יוצרים **Web Service** מהריפו הזה, בשפה **Docker**, ומכבים את **Auto-Deploy**.
+2. מעתיקים את כתובת ה־**Deploy Hook** מההגדרות של השירות.
+3. מוסיפים אותה כ־Secret בשם `RENDER_DEPLOY_HOOK_URL` ב־[Settings → Secrets → Actions](https://github.com/NoyaAdivi/splitship/settings/secrets/actions).
+4. מוסיפים את כתובת ה־Render כ־Variable בשם `APP_URL` ב־[Settings → Variables → Actions](https://github.com/NoyaAdivi/splitship/settings/variables/actions).
+
+> [!IMPORTANT]
+> כתובת ה־Deploy Hook היא סוד. שומרים אותה רק ב־GitHub Secrets, אף פעם לא בקוד.
+
+<details>
+<summary><b>📂 מבנה הפרויקט</b></summary>
+
+</div>
+
+```
+├── .github/workflows/
+│   ├── ci.yml          בדיקות על Node 20 ו־22, בניית Docker, בדיקת עשן
+│   └── deploy.yml      העלאה ל־GHCR, פריסה ל־Render, המתנה ל־/health
+├── src/
+│   ├── split.js        לוגיקת החלוקה (מדויק עד האגורה)
+│   ├── app.js          אפליקציית Express והנתיבים
+│   └── server.js       נקודת הכניסה עם כיבוי מסודר
+├── public/             ממשק ווב בפסטל
+├── test/               בדיקות יחידה ו־API
+├── docs/               עיצובי README ותמונות שיתוף
+├── Dockerfile          רב שלבי, בלי root, עם HEALTHCHECK
+├── docker-compose.yml
+└── render.yaml         הגדרות Render
+```
+
+<div dir="rtl">
+</details>
+
+<a name="contact"></a>
+<p align="center"><a href="https://www.linkedin.com/in/noya-adivi/"><img src="docs/readme/footer-he.svg" width="100%" alt="נבנה על ידי נויה עדיבי"></a></p>
+
+<p align="center">
+  <a href="https://splitship.onrender.com"><img src="https://img.shields.io/badge/%D7%9C%D7%A4%D7%AA%D7%95%D7%97_%D7%90%D7%AA_SplitShip-FFD5C9?style=for-the-badge&logo=googlechrome&logoColor=A8483A" alt="demo"></a>
+  <a href="https://www.linkedin.com/in/noya-adivi/"><img src="https://img.shields.io/badge/LinkedIn-DAD5FF?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzU1NDhDOCIgZD0iTTIwLjQ1IDIwLjQ1aC0zLjU2di01LjU3YzAtMS4zMy0uMDMtMy4wNC0xLjg1LTMuMDQtMS44NiAwLTIuMTQgMS40NS0yLjE0IDIuOTR2NS42N0g5LjM1VjloMy40MXYxLjU2aC4wNWMuNDgtLjkgMS42NC0xLjg1IDMuMzctMS44NSAzLjYgMCA0LjI3IDIuMzcgNC4yNyA1LjQ2djYuMjh6TTUuMzQgNy40M2EyLjA2IDIuMDYgMCAxIDEgMC00LjEzIDIuMDYgMi4wNiAwIDAgMSAwIDQuMTN6TTcuMTIgMjAuNDVIMy41NlY5aDMuNTZ2MTEuNDV6TTIyLjIyIDBIMS43N0MuNzkgMCAwIC43NyAwIDEuNzN2MjAuNTRDMCAyMy4yMy43OSAyNCAxLjc3IDI0aDIwLjQ1Yy45OCAwIDEuNzgtLjc3IDEuNzgtMS43M1YxLjczQzI0IC43NyAyMy4yIDAgMjIuMjIgMHoiLz48L3N2Zz4=" alt="LinkedIn"></a>
+  <a href="https://noyaadivi.github.io/noya-website"><img src="https://img.shields.io/badge/%D7%AA%D7%99%D7%A7_%D7%A2%D7%91%D7%95%D7%93%D7%95%D7%AA-D9F3E7?style=for-the-badge&logo=githubpages&logoColor=1F7350" alt="Portfolio"></a>
+  <a href="https://github.com/NoyaAdivi"><img src="https://img.shields.io/badge/%D7%A2%D7%95%D7%93_%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98%D7%99%D7%9D-FBD5E0?style=for-the-badge&logo=github&logoColor=A03A5C" alt="More projects"></a>
+</p>
 
 </div>
