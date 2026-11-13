@@ -1,0 +1,12 @@
+services:
+  splitship:
+    build:
+      context: .
+      args:
+        GIT_SHA: local
+    image: splitship:local
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+    restart: unless-stopped

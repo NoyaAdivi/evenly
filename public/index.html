@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SplitShip · split the bill, ship the code</title>
+<link rel="icon" href="/logo.svg">
+<style>
+  :root{--pink:#FFD6E8;--lav:#E4D7FF;--sky:#C9F0FF;--mint:#D4F7E0;--ink:#4B3F72;--accent:#8B7BF0}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;font-family:"Segoe UI",system-ui,sans-serif;color:var(--ink);
+    background:linear-gradient(120deg,var(--pink),var(--lav),var(--sky),var(--mint));background-size:300% 300%;
+    animation:bg 14s ease infinite;display:flex;align-items:center;justify-content:center;padding:24px;overflow-x:hidden}
+  @keyframes bg{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
+  .blob{position:fixed;border-radius:50%;filter:blur(40px);opacity:.55;z-index:0;animation:drift 12s ease-in-out infinite}
+  .b1{width:260px;height:260px;background:#FFB5D2;top:-60px;left:-60px}
+  .b2{width:320px;height:320px;background:#B5E8FF;bottom:-80px;right:-80px;animation-delay:-4s}
+  .b3{width:200px;height:200px;background:#C8F5D2;top:40%;left:70%;animation-delay:-8s}
+  @keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-20px) scale(1.1)}}
+  .card{position:relative;z-index:1;width:min(520px,100%);background:rgba(255,255,255,.65);backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,.8);border-radius:28px;padding:32px;box-shadow:0 20px 60px rgba(139,123,240,.25);
+    animation:rise .8s cubic-bezier(.2,.9,.3,1.2)}
+  @keyframes rise{from{opacity:0;transform:translateY(30px) scale(.97)}}
+  header{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+  header img{width:64px;height:64px;animation:bob 3s ease-in-out infinite}
+  @keyframes bob{50%{transform:translateY(-6px)}}
+  h1{margin:0;font-size:2rem;background:linear-gradient(90deg,#B06AB3,#8B7BF0,#4FB3E8);-webkit-background-clip:text;background-clip:text;color:transparent}
+  p.sub{margin:0 0 22px;opacity:.8}
+  label{font-size:.85rem;font-weight:600;display:block;margin:12px 0 6px}
+  input,select{width:100%;padding:12px 14px;border-radius:14px;border:2px solid transparent;background:#fff;font:inherit;color:inherit;transition:.2s}
+  input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px rgba(139,123,240,.15)}
+  .row{display:flex;gap:8px;margin-bottom:8px;animation:rise .4s ease}
+  .row input.n{flex:2}.row input.k{flex:1}
+  .row button{flex:0 0 44px;border:none;border-radius:12px;background:var(--pink);cursor:pointer;font-size:1.1rem}
+  button.main,button.ghost{margin-top:16px;width:100%;padding:14px;border:none;border-radius:16px;font:inherit;font-weight:700;cursor:pointer;transition:.2s}
+  button.main{background:linear-gradient(90deg,#B06AB3,#8B7BF0);color:#fff;box-shadow:0 8px 20px rgba(139,123,240,.4)}
+  button.main:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(139,123,240,.5)}
+  button.ghost{background:rgba(255,255,255,.8);color:var(--ink)}
+  #out{margin-top:20px}
+  .share{display:flex;justify-content:space-between;padding:12px 16px;margin-bottom:8px;border-radius:14px;background:#fff;animation:rise .4s ease backwards}
+  .share b{color:var(--accent)}
+  .err{color:#C2185B;font-weight:600}
+  footer{margin-top:22px;font-size:.8rem;text-align:center;opacity:.75}
+  footer a{color:var(--accent)}
+  .hide{display:none}
+</style>
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+<main class="card">
+  <header><img src="/logo.svg" alt="SplitShip logo"><div><h1>SplitShip</h1></div></header>
+  <p class="sub">Split a group hotel bill to the last agora. Containerized with Docker, tested and deployed by GitHub Actions.</p>
+
+  <label for="total">Total (₪)</label>
+  <input id="total" type="number" min="1" step="0.01" value="1200">
+
+  <label for="mode">Split mode</label>
+  <select id="mode"><option value="equal">Equal</option><option value="nights">By nights</option></select>
+
+  <label>Guests</label>
+  <div id="guests"></div>
+  <button class="ghost" id="add" type="button">+ Add guest</button>
+  <button class="main" id="go" type="button">Split it ✨</button>
+  <div id="out"></div>
+
+  <footer>v<span id="ver">…</span> · <a href="/health">/health</a> · <a href="https://github.com/NoyaAdivi/splitship">GitHub</a></footer>
+</main>
+<script>
+  const $ = (s) => document.querySelector(s);
+  const guests = $('#guests');
+  function addGuest(name = '', nights = 1) {
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = '<input class="n" placeholder="Name"><input class="k" type="number" min="1" step="1" title="Nights"><button type="button" aria-label="Remove">✕</button>';
+    row.querySelector('.n').value = name;
+    row.querySelector('.k').value = nights;
+    row.querySelector('button').onclick = () => row.remove();
+    guests.appendChild(row);
+    syncMode();
+  }
+  function syncMode() {
+    const nights = $('#mode').value === 'nights';
+    guests.querySelectorAll('.k').forEach((el) => el.classList.toggle('hide', !nights));
+  }
+  $('#mode').onchange = syncMode;
+  $('#add').onclick = () => addGuest();
+  $('#go').onclick = async () => {
+    const out = $('#out');
+    const body = {
+      total: Number($('#total').value),
+      mode: $('#mode').value,
+      guests: [...guests.children].map((r) => ({ name: r.querySelector('.n').value, nights: Number(r.querySelector('.k').value) }))
+    };
+    try {
+      const res = await fetch('/api/split', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      out.innerHTML = '';
+      data.shares.forEach((s, i) => {
+        const d = document.createElement('div');
+        d.className = 'share';
+        d.style.animationDelay = i * 80 + 'ms';
+        d.innerHTML = '<span></span><b></b>';
+        d.querySelector('span').textContent = s.name;
+        d.querySelector('b').textContent = '₪' + s.amount.toFixed(2);
+        out.appendChild(d);
+      });
+    } catch (e) {
+      out.innerHTML = '<p class="err"></p>';
+      out.firstChild.textContent = e.message;
+    }
+  };
+  ['Noya', 'Dana', 'Lior'].forEach((n, i) => addGuest(n, i + 1));
+  fetch('/health').then((r) => r.json()).then((h) => { $('#ver').textContent = h.version; }).catch(() => {});
+</script>
+</body>
+</html>
