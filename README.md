@@ -1,13 +1,13 @@
 <p align="center">
-  <a href="https://splitship-70dx.onrender.com"><img src="docs/readme/banner-en.svg" width="100%" alt="SplitShip: a bill splitting API with a full DevOps pipeline"></a>
+  <a href="https://splitship-1.onrender.com"><img src="docs/readme/banner-en.svg" width="100%" alt="SplitShip: a bill splitting API with a full DevOps pipeline"></a>
 </p>
 
 <p align="center"><a href="README.he.md"><img src="docs/readme/lang-he.svg" height="44" alt="לגרסה בעברית"></a></p>
 
 <p align="center">
-  <a href="https://splitship-70dx.onrender.com"><img src="https://img.shields.io/badge/Open_live_demo-FFD5C9?style=for-the-badge&logo=googlechrome&logoColor=A8483A" alt="Open live demo"></a>
+  <a href="https://splitship-1.onrender.com"><img src="https://img.shields.io/badge/Open_live_demo-FFD5C9?style=for-the-badge&logo=googlechrome&logoColor=A8483A" alt="Open live demo"></a>
   <a href="https://github.com/NoyaAdivi/splitship/actions"><img src="https://img.shields.io/badge/See_the_pipeline-D9F3E7?style=for-the-badge&logo=githubactions&logoColor=1F7350" alt="See the pipeline"></a>
-  <a href="https://splitship-70dx.onrender.com/health"><img src="https://img.shields.io/badge/Health_check-DAD5FF?style=for-the-badge&logo=statuspage&logoColor=5548C8" alt="Health check"></a>
+  <a href="https://splitship-1.onrender.com/health"><img src="https://img.shields.io/badge/Health_check-DAD5FF?style=for-the-badge&logo=statuspage&logoColor=5548C8" alt="Health check"></a>
 </p>
 
 <p align="center">
@@ -29,12 +29,12 @@
     <td align="center" width="25%"><a href="Dockerfile"><b>🐳 Docker</b></a><br><sub>multi-stage, non-root</sub></td>
     <td align="center" width="25%"><a href="https://github.com/NoyaAdivi/splitship/actions/workflows/ci.yml"><b>✅ 2 × Node</b></a><br><sub>tests on 20 and 22</sub></td>
     <td align="center" width="25%"><a href="https://github.com/NoyaAdivi/splitship/pkgs/container/splitship"><b>📦 GHCR</b></a><br><sub>image tagged per commit</sub></td>
-    <td align="center" width="25%"><a href="https://splitship-70dx.onrender.com"><b>☁️ Auto deploy</b></a><br><sub>to Render after CI</sub></td>
+    <td align="center" width="25%"><a href="https://splitship-1.onrender.com"><b>☁️ Auto deploy</b></a><br><sub>to Render after CI</sub></td>
   </tr>
 </table>
 
 <p align="center">
-  <a href="https://splitship-70dx.onrender.com"><img src="docs/social/splitship-github-en.png" width="100%" alt="SplitShip: from git push to the cloud, fully automated"></a>
+  <a href="https://splitship-1.onrender.com"><img src="docs/social/splitship-github-en.png" width="100%" alt="SplitShip: from git push to the cloud, fully automated"></a>
 </p>
 
 <a name="what"></a>
@@ -66,7 +66,7 @@
         <li><a href="https://github.com/NoyaAdivi/splitship/pkgs/container/splitship"><b>Image pushed to GHCR</b></a>, tagged <code>latest</code> and per commit</li>
         <li><b>Render deploy</b> triggered only after CI passes</li>
         <li><b>Verifies the release</b>: waits until <code>/health</code> shows the new commit</li>
-        <li><a href="https://splitship-70dx.onrender.com"><b>Pastel web UI</b></a> to try it in the browser</li>
+        <li><a href="https://splitship-1.onrender.com"><b>Pastel web UI</b></a> to try it in the browser</li>
       </ul>
     </td>
   </tr>
@@ -122,12 +122,12 @@ flowchart LR
 
 | Method | Path | What it does |
 |---|---|---|
-| `GET` | [`/`](https://splitship-70dx.onrender.com) | Pastel web UI for the calculator |
-| `GET` | [`/health`](https://splitship-70dx.onrender.com/health) | Status, version, commit SHA, uptime |
+| `GET` | [`/`](https://splitship-1.onrender.com) | Pastel web UI for the calculator |
+| `GET` | [`/health`](https://splitship-1.onrender.com/health) | Status, version, commit SHA, uptime |
 | `POST` | `/api/split` | Split a bill, `equal` or by `nights` |
 
 ```bash
-curl -X POST https://splitship-70dx.onrender.com/api/split \
+curl -X POST https://splitship-1.onrender.com/api/split \
   -H "content-type: application/json" \
   -d '{"total":1200,"mode":"nights","guests":[{"name":"Noya","nights":3},{"name":"Dana","nights":1}]}'
 ```
@@ -187,7 +187,7 @@ npm start
 <p align="center"><a href="https://www.linkedin.com/in/noya-adivi/"><img src="docs/readme/footer-en.svg" width="100%" alt="Built by Noya Adivi"></a></p>
 
 <p align="center">
-  <a href="https://splitship-70dx.onrender.com"><img src="https://img.shields.io/badge/Open_SplitShip-FFD5C9?style=for-the-badge&logo=googlechrome&logoColor=A8483A" alt="demo"></a>
+  <a href="https://splitship-1.onrender.com"><img src="https://img.shields.io/badge/Open_SplitShip-FFD5C9?style=for-the-badge&logo=googlechrome&logoColor=A8483A" alt="demo"></a>
   <a href="https://www.linkedin.com/in/noya-adivi/"><img src="https://img.shields.io/badge/LinkedIn-DAD5FF?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzU1NDhDOCIgZD0iTTIwLjQ1IDIwLjQ1aC0zLjU2di01LjU3YzAtMS4zMy0uMDMtMy4wNC0xLjg1LTMuMDQtMS44NiAwLTIuMTQgMS40NS0yLjE0IDIuOTR2NS42N0g5LjM1VjloMy40MXYxLjU2aC4wNWMuNDgtLjkgMS42NC0xLjg1IDMuMzctMS44NSAzLjYgMCA0LjI3IDIuMzcgNC4yNyA1LjQ2djYuMjh6TTUuMzQgNy40M2EyLjA2IDIuMDYgMCAxIDEgMC00LjEzIDIuMDYgMi4wNiAwIDAgMSAwIDQuMTN6TTcuMTIgMjAuNDVIMy41NlY5aDMuNTZ2MTEuNDV6TTIyLjIyIDBIMS43N0MuNzkgMCAwIC43NyAwIDEuNzN2MjAuNTRDMCAyMy4yMy43OSAyNCAxLjc3IDI0aDIwLjQ1Yy45OCAwIDEuNzgtLjc3IDEuNzgtMS43M1YxLjczQzI0IC43NyAyMy4yIDAgMjIuMjIgMHoiLz48L3N2Zz4=" alt="LinkedIn"></a>
   <a href="https://noyaadivi.github.io/noya-website"><img src="https://img.shields.io/badge/Portfolio-D9F3E7?style=for-the-badge&logo=githubpages&logoColor=1F7350" alt="Portfolio"></a>
   <a href="https://github.com/NoyaAdivi"><img src="https://img.shields.io/badge/More_projects-FBD5E0?style=for-the-badge&logo=github&logoColor=A03A5C" alt="More projects"></a>
