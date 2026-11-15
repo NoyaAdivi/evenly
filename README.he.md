@@ -130,7 +130,8 @@ flowchart LR
 |---|---|---|
 | `GET` | [`/`](https://splitship-1.onrender.com) | ממשק ווב בפסטל למחשבון |
 | `GET` | [`/health`](https://splitship-1.onrender.com/health) | סטטוס, גרסה, SHA של הקומיט, זמן ריצה |
-| `POST` | `/api/split` | חלוקת חשבון, שווה (`equal`) או לפי לילות (`nights`) |
+| `POST` | `/api/split` | חלוקת חשבון: שווה (`equal`), לפי לילות (`nights`, מלון) או לפי מנות (`items`, מסעדה), עם טיפ אופציונלי (`tipPercent`) |
+| `POST` | `/api/receipt/parse` | הופך טקסט של קבלה סרוקה (עברית או אנגלית) למנות, סכום ודמי שירות |
 
 </div>
 

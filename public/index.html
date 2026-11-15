@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SplitShip · Split the bill. Ship the code.</title>
-<meta name="description" content="Split a group hotel bill to the last agora. A small Node.js API with a full DevOps pipeline: Docker, GitHub Actions and cloud deploy.">
+<title>SplitShip · Scan the receipt. Split the bill.</title>
+<meta name="description" content="Scan a restaurant receipt, tap who ate what and split the bill to the last agora, with tip. Also splits hotel bills by nights. A Node.js API with a full DevOps pipeline.">
 <meta name="theme-color" content="#FBF7F1">
 <meta property="og:title" content="SplitShip">
-<meta property="og:description" content="Split the bill. Ship the code.">
+<meta property="og:description" content="Scan the receipt. Split the bill. Ship the code.">
 <meta property="og:image" content="https://raw.githubusercontent.com/NoyaAdivi/splitship/main/docs/social/splitship-github-en.png">
 <link rel="icon" href="/logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -183,6 +183,76 @@ footer{padding:48px 0 40px;margin-top:40px;border-top:1px solid var(--line)}
 @media (max-width:520px){.status{display:none}.calc-in,.calc-out{padding:22px}}
 @media (prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
 h1,h2,h3,.brand{font-family:"Fredoka","Rubik",system-ui,sans-serif}
+/* v2: restaurant mode */
+.tabs{display:flex;gap:8px;justify-content:center;margin:-12px 0 22px}
+.tab{display:flex;align-items:center;gap:8px;padding:11px 20px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:600;color:var(--muted);transition:.25s}
+.tab:hover{transform:translateY(-1px)}
+.tab.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.drop{display:block;position:relative;border:1.5px dashed var(--line);border-radius:18px;padding:22px;text-align:center;transition:.25s;background:var(--bg);overflow:hidden;cursor:pointer}
+.drop:hover,.drop.over{border-color:var(--accent);background:color-mix(in srgb,var(--lav) 35%,var(--bg))}
+.drop .big-ic{font-size:2rem;display:inline-block;animation:bob 3s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px) rotate(-4deg)}}
+.drop b{display:block;margin-top:6px}.drop small{color:var(--muted)}
+.drop input{display:none}
+.scan-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.scan-row .btn{flex:1;justify-content:center;padding:10px 14px;font-size:.9rem}
+.preview{display:none;position:relative;margin-top:12px;border-radius:14px;overflow:hidden;max-height:220px;border:1px solid var(--line)}
+.preview.show{display:block}
+.preview img{width:100%;display:block;object-fit:cover;max-height:220px}
+.preview .beam{position:absolute;inset-inline:0;top:0;height:60px;background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--accent) 45%,transparent),transparent);display:none}
+.preview.busy .beam{display:block;animation:beam 1.6s ease-in-out infinite alternate}
+@keyframes beam{to{top:calc(100% - 60px)}}
+.prog{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:10px;display:none}
+.prog.show{display:block}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .3s}
+.hint{font-size:.8rem;color:var(--muted);margin-top:8px}
+.quick{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;font-size:.85rem;color:var(--muted)}
+.items{display:flex;flex-direction:column;gap:10px}
+.item{padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--bg);animation:in .35s ease both}
+.item .top{display:flex;gap:8px;align-items:center}
+.item .top input{padding:9px 12px}
+.item .nm{flex:1;min-width:0}
+.item .pr{width:96px;font-weight:700;text-align:end}
+.item .q{width:58px;text-align:center}
+.who{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.who span.lab{font-size:.74rem;color:var(--muted);margin-inline-end:2px}
+.pchip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 4px;border-radius:999px;border:1px solid var(--line);font-size:.8rem;font-weight:600;color:var(--muted);background:var(--surface);transition:.2s}
+[dir="rtl"] .pchip{padding:4px 4px 4px 10px}
+.pchip i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:.72rem;opacity:.45;transition:.2s}
+.pchip.on{border-color:transparent;color:var(--ink);box-shadow:0 2px 8px rgba(58,51,69,.08)}
+.pchip.on i{opacity:1;transform:scale(1.08)}
+.pchip:hover{transform:translateY(-1px)}
+.tipbar{display:flex;gap:6px;flex-wrap:wrap}
+.tipbar button{padding:8px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);font-weight:600;font-size:.88rem;transition:.2s}
+.tipbar button.on{background:var(--butter);color:var(--butter-ink);border-color:transparent}
+.tipbar input{width:84px;padding:8px 10px}
+.sumline{display:flex;justify-content:space-between;font-size:.88rem;color:var(--muted);padding:2px 0}
+.warn{font-size:.82rem;color:var(--butter-ink);background:var(--butter);padding:10px 12px;border-radius:12px;margin-bottom:12px}
+.row{flex-wrap:wrap}
+.row .det{flex-basis:100%;padding-inline-start:46px;font-size:.78rem;color:var(--muted);display:none}
+.row.open .det{display:block}
+.row .owe{font-size:.74rem;color:var(--accent);font-weight:600;display:block}
+.row.click{cursor:pointer}
+select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:9px 12px;outline:none}
+.payer{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:.85rem;color:var(--muted)}
+.payer select{flex:1}
+.hide{display:none!important}
+.receipt-art{width:190px;margin:44px auto 0;position:relative;padding:18px 16px 26px;background:var(--surface);border:1px solid var(--line);border-radius:14px 14px 4px 4px;box-shadow:var(--shadow);text-align:start;animation:sway 6s ease-in-out infinite;font-family:var(--mono);font-size:.7rem;color:var(--muted)}
+.receipt-art::after{content:"";position:absolute;inset-inline:-1px;bottom:-9px;height:10px;background:radial-gradient(circle at 6px -2px,transparent 6px,var(--surface) 6.5px) -6px 0/12px 10px repeat-x}
+.receipt-art div{display:flex;justify-content:space-between;padding:3px 0}
+.receipt-art div b{color:var(--ink)}
+.receipt-art .tot{border-top:1px dashed var(--line);margin-top:6px;padding-top:8px;color:var(--ink);font-weight:700}
+.receipt-art .sbeam{position:absolute;inset-inline:6px;height:3px;border-radius:3px;background:var(--accent);box-shadow:0 0 14px var(--accent);animation:sbeam 2.6s ease-in-out infinite alternate}
+.receipt-art .tag{position:absolute;font-family:var(--font);font-size:.72rem;font-weight:700;padding:4px 9px;border-radius:99px;white-space:nowrap;animation:pop 3s ease-in-out infinite}
+.receipt-art .t1{top:22px;inset-inline-end:-74px;background:var(--peach);color:var(--peach-ink)}
+.receipt-art .t2{top:70px;inset-inline-start:-70px;background:var(--sage);color:var(--sage-ink);animation-delay:-1s}
+.receipt-art .t3{bottom:30px;inset-inline-end:-62px;background:var(--lav);color:var(--lav-ink);animation-delay:-2s}
+@keyframes sway{50%{transform:rotate(-2deg) translateY(-6px)}}
+@keyframes sbeam{from{top:14px}to{top:calc(100% - 20px)}}
+@keyframes pop{50%{transform:translateY(-5px)}}
+@media (max-width:900px){.calc,.api{grid-template-columns:1fr}.calc-out{border-inline-start:none;border-top:1px solid var(--line)}.pipe{grid-template-columns:1fr 1fr}.pipe::before{display:none}.feat{grid-template-columns:1fr}.links{display:none}}
+@media (max-width:520px){.status{display:none}.calc-in,.calc-out{padding:22px}.item .pr{width:80px}.receipt-art .tag{display:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
 </style>
 <style>.built-by{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.45em;margin:.6em 0;font-weight:600}.built-by a{display:inline-flex;align-items:center;gap:.4em;padding:.28em .8em;border-radius:999px;font-weight:800;text-decoration:none;color:inherit;background:rgba(10,102,194,.1);transition:transform .25s ease,background .25s ease,box-shadow .25s ease}.built-by a:hover,.built-by a:focus-visible{transform:translateY(-2px);background:rgba(10,102,194,.18);box-shadow:0 6px 16px rgba(10,102,194,.18)}.built-by svg{width:1.1em;height:1.1em;fill:#0A66C2;flex:none;transition:transform .35s ease}.built-by a:hover svg{transform:rotate(-8deg) scale(1.12)}html[lang="he"] .built-by .bb-en,html:not([lang="he"]) .built-by .bb-he{display:none}@media (prefers-reduced-motion:reduce){.built-by a,.built-by svg{transition:none}}</style>
 </head>
@@ -193,7 +263,7 @@ h1,h2,h3,.brand{font-family:"Fredoka","Rubik",system-ui,sans-serif}
   <div class="wrap nav">
     <a class="brand" href="#"><img src="/logo.svg" alt="SplitShip logo">SplitShip</a>
     <nav class="links">
-      <a href="#calc" data-i="nav1">Calculator</a>
+      <a href="#calc" data-i="nav1">Split a bill</a>
       <a href="#how" data-i="nav2">How it ships</a>
       <a href="#api" data-i="nav3">API</a>
     </nav>
@@ -209,76 +279,138 @@ h1,h2,h3,.brand{font-family:"Fredoka","Rubik",system-ui,sans-serif}
 
 <main>
   <section class="hero wrap">
-    <span class="pill rv">✦ <span data-i="pill">Node.js API · Docker · CI/CD</span></span>
-    <h1 class="rv"><span data-i="h1a">Split the bill.</span><br><em data-i="h1b">Ship the code.</em></h1>
-    <p class="lead rv" data-i="lead">Split a group hotel bill between friends, exact to the last agora. Every change is tested, packed into Docker and deployed to the cloud automatically.</p>
+    <span class="pill rv">✦ <span data-i="pill">New: scan restaurant receipts</span></span>
+    <h1 class="rv"><span data-i="h1a">Scan the receipt.</span><br><em data-i="h1b">Split the bill.</em></h1>
+    <p class="lead rv" data-i="lead">Snap a photo of the restaurant bill, tap who ate what, add a tip and everyone knows exactly what they owe, to the last agora. Hotel stays split by nights too.</p>
     <div class="cta rv">
-      <a class="btn primary" href="#calc"><span data-i="cta1">Try the calculator</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></a>
+      <a class="btn primary" href="#calc"><span data-i="cta1">Scan a receipt</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></a>
       <a class="btn ghost" href="https://github.com/NoyaAdivi/splitship"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2 0-.3-.5-1.5.2-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg> <span data-i="cta2">View on GitHub</span></a>
     </div>
     <div class="chips rv">
-      <span class="chip c1">🐳 Docker</span><span class="chip c2">⚙️ GitHub Actions</span><span class="chip c3" data-i="chip3">✅ Tested on every push</span><span class="chip c4" data-i="chip4">☁️ Auto deploy</span>
+      <span class="chip c1" data-i="chip1">📸 Receipt OCR</span><span class="chip c2" data-i="chip2">🍽️ Split per dish</span><span class="chip c3" data-i="chip3">✅ Tested on every push</span><span class="chip c4">🐳 Docker · CI/CD</span>
+    </div>
+    <div class="receipt-art rv" aria-hidden="true">
+      <span class="sbeam"></span>
+      <div><span>Burger</span><b>62.00</b></div><div><span>Salad</span><b>48.00</b></div><div><span>2× Beer</span><b>60.00</b></div><div><span>Fries</span><b>25.00</b></div>
+      <div class="tot"><span>TOTAL</span><span>195.00</span></div>
+      <span class="tag t1">🍔 Noya</span><span class="tag t2">🥗 Dana</span><span class="tag t3">🍺 Lior</span>
     </div>
   </section>
 
   <section id="calc" class="wrap">
     <div class="head rv"><div class="eyebrow" data-i="e1">Live demo</div><h2 data-i="t1">Who owes what?</h2><p data-i="d1">Results come straight from the real API running in the cloud.</p></div>
+    <div class="tabs rv">
+      <button class="tab on" data-tab="rest">🍽️ <span data-i="tabr">Restaurant</span></button>
+      <button class="tab" data-tab="hotel">🏨 <span data-i="tabh">Hotel</span></button>
+    </div>
     <div class="card calc rv">
       <div class="calc-in">
-        <label class="lbl" for="total" data-i="total">Total bill</label>
-        <div class="money"><span>₪</span><input id="total" type="number" min="1" step="0.01" value="2450" inputmode="decimal"></div>
-        <label class="lbl" data-i="mode">Split mode</label>
-        <div class="seg" id="seg"><div class="thumb"></div><button data-m="equal" class="on" data-i="eq">Equally</button><button data-m="nights" data-i="bn">By nights</button></div>
-        <label class="lbl" data-i="guests">Guests</label>
+        <!-- restaurant -->
+        <div id="rest">
+          <label class="lbl" data-i="l_scan">1 · Scan the receipt</label>
+          <label class="drop" id="drop">
+            <input type="file" id="file" accept="image/*">
+            <span class="big-ic">🧾</span>
+            <b data-i="drop1">Drop a photo of the receipt</b>
+            <small data-i="drop2">or click to choose · Hebrew and English · read in your browser</small>
+          </label>
+          <div class="scan-row">
+            <label class="btn ghost" for="cam" data-i="camb">📷 Take a photo</label><input type="file" id="cam" accept="image/*" capture="environment" hidden>
+            <button class="btn ghost" id="sample" data-i="sampleb">✨ Try a sample</button>
+          </div>
+          <div class="preview" id="preview"><img id="pimg" alt=""><span class="beam"></span></div>
+          <div class="prog" id="prog"><i></i></div>
+          <p class="hint" id="shint" data-i="shint">The photo never leaves your device, only the text is sent.</p>
+        </div>
+
+        <!-- hotel -->
+        <div id="hotel" class="hide">
+          <label class="lbl" for="htotal" data-i="total">Total bill</label>
+          <div class="money"><span>₪</span><input id="htotal" type="number" min="1" step="0.01" value="2450" inputmode="decimal"></div>
+          <label class="lbl" data-i="mode">Split mode</label>
+          <div class="seg" id="hseg"><div class="thumb"></div><button data-m="equal" class="on" data-i="eq">Equally</button><button data-m="nights" data-i="bn">By nights</button></div>
+        </div>
+
+        <label class="lbl" data-i="l_people">2 · Who's at the table?</label>
+        <div class="quick"><span data-i="qk">Quick:</span><div class="step" style="display:flex"><button type="button" id="qminus">−</button><b id="qn">3</b><button type="button" id="qplus">+</button><small data-i="ppl">people</small></div></div>
         <div id="guests"></div>
-        <button class="add" id="add" data-i="addg">+ Add guest</button>
+        <button class="add" id="add" data-i="addg">+ Add person</button>
+
+        <div id="rest2">
+          <label class="lbl" data-i="mode">Split mode</label>
+          <div class="seg" id="rseg"><div class="thumb"></div><button data-m="items" class="on" data-i="bd">By dishes</button><button data-m="equal" data-i="eq">Equally</button></div>
+          <div id="eqbox" class="hide">
+            <label class="lbl" for="rtotal" data-i="total">Total bill</label>
+            <div class="money"><span>₪</span><input id="rtotal" type="number" min="1" step="0.01" value="195" inputmode="decimal"></div>
+          </div>
+          <div id="itbox">
+            <label class="lbl" data-i="l_items">3 · Dishes · tap who had each one</label>
+            <div class="items" id="items"></div>
+            <button class="add" id="addi" data-i="addi">+ Add dish</button>
+          </div>
+          <label class="lbl" data-i="l_tip">Tip / service</label>
+          <div class="tipbar" id="tipbar"><button data-t="0">0%</button><button data-t="10">10%</button><button data-t="12" class="on">12%</button><button data-t="15">15%</button><input id="tipc" type="number" min="0" max="100" step="0.5" placeholder="%" aria-label="custom tip"></div>
+        </div>
       </div>
+
       <div class="calc-out">
         <div class="out-h"><h3 data-i="res">Result</h3><span id="lat"></span></div>
         <div class="big" id="big">₪0</div>
+        <div id="sums"></div>
         <div class="bar" id="bar"></div>
-        <div class="rows" id="rows"><p class="empty" data-i="empty">Add guests to see the split</p></div>
+        <div id="warn"></div>
+        <div class="rows" id="rows"><p class="empty" data-i="empty">Add people to see the split</p></div>
         <div class="check" id="check" hidden>✓ <span data-i="chk">Shares add up exactly to the total</span></div>
-        <div class="out-f"><button class="btn ghost" id="copy" data-i="copyr">Copy result</button><button class="btn primary" id="share" data-i="sharer">Share</button></div>
+        <div class="payer"><span data-i="paid">Who paid?</span><select id="payer"></select></div>
+        <div class="out-f"><button class="btn ghost" id="copy" data-i="copyr">Copy</button><button class="btn ghost" id="wa" data-i="wab">WhatsApp</button><button class="btn primary" id="share" data-i="sharer">Share</button></div>
       </div>
     </div>
   </section>
 
   <section id="how" class="wrap">
-    <div class="head rv"><div class="eyebrow" data-i="e2">DevOps pipeline</div><h2 data-i="t2">From git push to the cloud</h2><p data-i="d2">No manual steps. If a test fails, nothing ships.</p></div>
+    <div class="head rv"><div class="eyebrow" data-i="e3">What's inside</div><h2 data-i="t4">Made for the end of a dinner</h2></div>
+    <div class="feat">
+      <div class="card f rv"><div class="ic c1">📸</div><h4 data-i="g1h">Reads the receipt</h4><p data-i="g1">Tesseract OCR runs in the browser, then the API finds dishes, quantities, the total and the service charge.</p></div>
+      <div class="card f rv"><div class="ic c2">🍽️</div><h4 data-i="g2h">Per dish or shared</h4><p data-i="g2">Tap faces on each dish. A shared plate is split between the people who had it, untagged dishes go to everyone.</p></div>
+      <div class="card f rv"><div class="ic c3">🤝</div><h4 data-i="g3h">Settle up</h4><p data-i="g3">Pick who paid and see who owes them, then send the summary on WhatsApp in one tap.</p></div>
+    </div>
+    <div class="head rv" style="margin-top:64px"><div class="eyebrow" data-i="e2">DevOps pipeline</div><h2 data-i="t2">From git push to the cloud</h2><p data-i="d2">No manual steps. If a test fails, nothing ships.</p></div>
     <div class="pipe">
       <div class="card st rv"><span class="n">01</span><div class="ic c1">💻</div><h4>git push</h4><p data-i="p1">A change lands on main</p></div>
-      <div class="card st rv"><span class="n">02</span><div class="ic c2">🧪</div><h4 data-i="p2h">Tests</h4><p data-i="p2">Unit + API tests on Node 20 and 22</p></div>
+      <div class="card st rv"><span class="n">02</span><div class="ic c2">🧪</div><h4 data-i="p2h">Tests</h4><p data-i="p2">Split, receipt parser and API tests on Node 20 and 22</p></div>
       <div class="card st rv"><span class="n">03</span><div class="ic c3">🐳</div><h4>Docker</h4><p data-i="p3">Build the image and smoke test it</p></div>
       <div class="card st rv"><span class="n">04</span><div class="ic c4">📦</div><h4>GHCR</h4><p data-i="p4">Image saved, tagged per commit</p></div>
       <div class="card st rv"><span class="n">05</span><div class="ic c1">☁️</div><h4>Render</h4><p data-i="p5">Deployed, then verified via /health</p></div>
     </div>
     <div class="feat" style="margin-top:16px">
       <div class="card f rv"><div class="ic c2">🔒</div><h4 data-i="f1h">Safe by default</h4><p data-i="f1">Runs as a non-root user in a small Alpine image, with a built-in health check.</p></div>
-      <div class="card f rv"><div class="ic c3">🎯</div><h4 data-i="f2h">Exact to the agora</h4><p data-i="f2">Largest remainder rounding, so the shares always add up to the total.</p></div>
+      <div class="card f rv"><div class="ic c3">🎯</div><h4 data-i="f2h">Exact to the agora</h4><p data-i="f2">Largest remainder rounding, so the shares always add up to the total, tip included.</p></div>
       <div class="card f rv"><div class="ic c4">🔁</div><h4 data-i="f3h">Every version kept</h4><p data-i="f3">Each commit becomes its own image, so rolling back is one command.</p></div>
     </div>
   </section>
 
   <section id="api" class="wrap">
-    <div class="head rv"><div class="eyebrow">REST API</div><h2 data-i="t3">Use it from anywhere</h2><p data-i="d3">Three endpoints, JSON in and JSON out.</p></div>
+    <div class="head rv"><div class="eyebrow">REST API</div><h2 data-i="t3">Use it from anywhere</h2><p data-i="d3">Four endpoints, JSON in and JSON out.</p></div>
     <div class="api">
       <div class="card eps rv">
         <a class="ep" href="/"><span class="m get">GET</span><div><code>/</code><small data-i="a1">This page</small></div></a>
         <a class="ep" href="/health"><span class="m get">GET</span><div><code>/health</code><small data-i="a2">Status, version, commit</small></div></a>
-        <a class="ep" href="#calc"><span class="m post">POST</span><div><code>/api/split</code><small data-i="a3">Split a bill</small></div></a>
+        <a class="ep" href="#calc"><span class="m post">POST</span><div><code>/api/split</code><small data-i="a3">Split equally, by nights or by dishes, with tip</small></div></a>
+        <a class="ep" href="#calc"><span class="m post">POST</span><div><code>/api/receipt/parse</code><small data-i="a4">Receipt text to dishes and total</small></div></a>
       </div>
       <div class="card code rv">
         <div class="bar2"><i style="background:#F3B7A6"></i><i style="background:#F2DC9B"></i><i style="background:#B9DEC4"></i><span>terminal</span><button class="copy" id="copycurl">Copy</button></div>
 <pre id="curl"><span class="k">curl</span> -X POST <span class="s" id="origin">https://splitship-1.onrender.com</span>/api/split \
   -H <span class="s">"content-type: application/json"</span> \
-  -d <span class="s">'{"total":1200,"mode":"nights",
-       "guests":[{"name":"Noya","nights":3},
-                 {"name":"Dana","nights":1}]}'</span>
+  -d <span class="s">'{"mode":"items","tipPercent":10,
+       "guests":[{"name":"Noya"},{"name":"Dana"}],
+       "items":[{"name":"Burger","price":62,"people":["Noya"]},
+                {"name":"Fries","price":24}]}'</span>
 
-<span class="c"># response</span>
-{ <span class="p">"shares"</span>: [ { <span class="p">"name"</span>: <span class="s">"Noya"</span>, <span class="p">"amount"</span>: 900 },
-              { <span class="p">"name"</span>: <span class="s">"Dana"</span>, <span class="p">"amount"</span>: 300 } ] }</pre>
+<span class="c"># response (fries are shared by both)</span>
+{ <span class="p">"subtotal"</span>: 86, <span class="p">"tip"</span>: 8.6, <span class="p">"total"</span>: 94.6,
+  <span class="p">"shares"</span>: [ { <span class="p">"name"</span>: <span class="s">"Noya"</span>, <span class="p">"amount"</span>: 81.4 },
+              { <span class="p">"name"</span>: <span class="s">"Dana"</span>, <span class="p">"amount"</span>: 13.2 } ] }</pre>
       </div>
     </div>
   </section>
@@ -287,7 +419,7 @@ h1,h2,h3,.brand{font-family:"Fredoka","Rubik",system-ui,sans-serif}
 <footer>
   <div class="wrap foot">
     <a class="brand" href="#"><img src="/logo.svg" alt="">SplitShip</a>
-    <p class="built-by"><span class="bb-en">Built by</span><span class="bb-he">נבנה על ידי</span> <a href="https://www.linkedin.com/in/noya-adivi/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.73V1.73C24 .77 23.21 0 22.23 0z"/></svg><span class="bb-en">Noya</span><span class="bb-he">נויה</span></a></p> <p><span id="ver">v1.0.0</span></p>
+    <p class="built-by"><span class="bb-en">Built by</span><span class="bb-he">נבנה על ידי</span> <a href="https://www.linkedin.com/in/noya-adivi/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.73V1.73C24 .77 23.21 0 22.23 0z"/></svg><span class="bb-en">Noya</span><span class="bb-he">נויה</span></a></p> <p><span id="ver">v2.0.0</span></p>
     <div class="soc">
       <a class="icon-btn" href="https://github.com/NoyaAdivi/splitship" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2 0-.3-.5-1.5.2-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg></a>
       <a class="icon-btn" href="https://noyaadivi.github.io/noya-website" aria-label="Portfolio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg></a>
@@ -301,22 +433,36 @@ h1,h2,h3,.brand{font-family:"Fredoka","Rubik",system-ui,sans-serif}
   const $ = (s) => document.querySelector(s);
   const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
   const T = {
-    he: { nav1:'מחשבון', nav2:'איך זה עולה', nav3:'API', pill:'Node.js API · Docker · CI/CD', h1a:'מחלקים את החשבון.', h1b:'משגרים את הקוד.',
-      lead:'מחלקים חשבון מלון קבוצתי בין חברים, מדויק עד האגורה האחרונה. כל שינוי נבדק, נארז ב־Docker ועולה לענן אוטומטית.',
-      cta1:'לנסות את המחשבון', cta2:'לקוד בגיטהאב', chip3:'✅ נבדק בכל push', chip4:'☁️ פריסה אוטומטית',
-      e1:'דמו חי', t1:'מי חייב כמה?', d1:'התוצאות מגיעות ישר מה־API האמיתי שרץ בענן.', total:'סכום החשבון', mode:'אופן חלוקה', eq:'שווה בשווה', bn:'לפי לילות',
-      guests:'אורחים', addg:'+ הוספת אורח', res:'תוצאה', empty:'מוסיפים אורחים כדי לראות את החלוקה', chk:'הסכומים מסתכמים בדיוק לסך הכל', copyr:'העתקה', sharer:'שיתוף',
-      e2:'פייפליין DevOps', t2:'מ־git push ועד הענן', d2:'בלי צעדים ידניים. אם בדיקה נכשלת, שום דבר לא עולה.', p1:'שינוי נכנס ל־main', p2h:'בדיקות', p2:'בדיקות יחידה ו־API על Node 20 ו־22',
+    he: { nav1:'חלוקת חשבון', nav2:'איך זה עולה', nav3:'API', pill:'חדש: סריקת קבלות ממסעדות', h1a:'סורקים את הקבלה.', h1b:'מחלקים את החשבון.',
+      lead:'מצלמים את החשבון במסעדה, מסמנים מי אכל מה, מוסיפים טיפ וכל אחד יודע בדיוק כמה הוא חייב, עד האגורה. גם חשבון מלון מתחלק לפי לילות.',
+      cta1:'לסרוק קבלה', cta2:'לקוד בגיטהאב', chip1:'📸 זיהוי קבלות', chip2:'🍽️ חלוקה לפי מנה', chip3:'✅ נבדק בכל push',
+      e1:'דמו חי', t1:'מי חייב כמה?', d1:'התוצאות מגיעות ישר מה־API האמיתי שרץ בענן.', tabr:'מסעדה', tabh:'מלון',
+      l_scan:'1 · סורקים את הקבלה', drop1:'גוררים לכאן תמונה של הקבלה', drop2:'או לוחצים לבחירה · עברית ואנגלית · נקרא בדפדפן',
+      camb:'📷 לצלם', sampleb:'✨ לנסות דוגמה', shint:'התמונה לא יוצאת מהמכשיר, רק הטקסט נשלח.',
+      total:'סכום החשבון', mode:'אופן חלוקה', eq:'שווה בשווה', bn:'לפי לילות', bd:'לפי מנות',
+      l_people:'2 · מי יושב בשולחן?', qk:'מהיר:', ppl:'אנשים', addg:'+ הוספת אדם', l_items:'3 · מנות · מסמנים מי אכל כל מנה', addi:'+ הוספת מנה', l_tip:'טיפ / שירות',
+      res:'תוצאה', empty:'מוסיפים אנשים כדי לראות את החלוקה', chk:'הסכומים מסתכמים בדיוק לסך הכל', paid:'מי שילם?', copyr:'העתקה', wab:'וואטסאפ', sharer:'שיתוף',
+      e3:'מה יש בפנים', t4:'נבנה בשביל סוף הארוחה', g1h:'קורא את הקבלה', g1:'זיהוי טקסט (Tesseract) רץ בדפדפן, ואז ה־API מוצא מנות, כמויות, סכום ודמי שירות.',
+      g2h:'לפי מנה או משותף', g2:'מסמנים פרצופים על כל מנה. מנה משותפת מתחלקת בין מי שאכל ממנה, ומנה בלי סימון מתחלקת בין כולם.',
+      g3h:'סוגרים חשבון', g3:'בוחרים מי שילם ורואים מי חייב לו, ושולחים את הסיכום בוואטסאפ בלחיצה.',
+      e2:'פייפליין DevOps', t2:'מ־git push ועד הענן', d2:'בלי צעדים ידניים. אם בדיקה נכשלת, שום דבר לא עולה.', p1:'שינוי נכנס ל־main', p2h:'בדיקות', p2:'בדיקות לחלוקה, לקריאת קבלות ול־API על Node 20 ו־22',
       p3:'בניית האימג׳ ובדיקת עשן', p4:'האימג׳ נשמר עם תגית לכל קומיט', p5:'עולה לאוויר ונבדק דרך /health',
-      f1h:'בטוח כברירת מחדל', f1:'רץ בלי הרשאות root, באימג׳ Alpine קטן, עם בדיקת תקינות מובנית.', f2h:'מדויק עד האגורה', f2:'עיגול בשיטת השארית הגדולה, כך שהסכומים תמיד מסתכמים לסך הכל.',
-      f3h:'כל גרסה נשמרת', f3:'כל קומיט הופך לאימג׳ משלו, אז חזרה לגרסה קודמת היא פקודה אחת.', t3:'אפשר להשתמש מכל מקום', d3:'שלוש נקודות קצה, JSON נכנס ו־JSON יוצא.',
-      a1:'העמוד הזה', a2:'סטטוס, גרסה, קומיט', a3:'חלוקת חשבון', by:'נבנה על ידי', name:'נויה עדיבי', guest:'אורח', nights:'לילות',
-      copied:'הועתק ✓', live:'פעיל', down:'לא זמין', ph:'שם' },
-    en: { guest:'Guest', nights:'nights', copied:'Copied ✓', live:'Live', down:'Offline', ph:'Name' }
+      f1h:'בטוח כברירת מחדל', f1:'רץ בלי הרשאות root, באימג׳ Alpine קטן, עם בדיקת תקינות מובנית.', f2h:'מדויק עד האגורה', f2:'עיגול בשיטת השארית הגדולה, כך שהסכומים תמיד מסתכמים לסך הכל, כולל הטיפ.',
+      f3h:'כל גרסה נשמרת', f3:'כל קומיט הופך לאימג׳ משלו, אז חזרה לגרסה קודמת היא פקודה אחת.', t3:'אפשר להשתמש מכל מקום', d3:'ארבע נקודות קצה, JSON נכנס ו־JSON יוצא.',
+      a1:'העמוד הזה', a2:'סטטוס, גרסה, קומיט', a3:'חלוקה שווה, לפי לילות או לפי מנות, עם טיפ', a4:'מטקסט של קבלה למנות וסכום',
+      guest:'אדם', nights:'לילות', copied:'הועתק ✓', live:'פעיל', down:'לא זמין', ph:'שם', dish:'מנה', who:'מי?', all:'כולם',
+      sub:'לפני טיפ', tip:'טיפ', owes:'חייב/ת ל־', nobody:'בלי, כל אחד משלם לבד', loading:'טוען את מנוע הזיהוי…', reading:'קורא את הקבלה…',
+      found:'נמצאו {n} מנות ✓', none:'לא מצאתי מנות, אפשר להוסיף ידנית', diff:'בקבלה כתוב {a}, המנות מסתכמות ל־{b}. כדאי לבדוק מנה חסרה.', ok:'המנות תואמות לסכום בקבלה ✓',
+      needw:'מסמנים לפחות מנה אחת' },
+    en: { guest:'Person', nights:'nights', copied:'Copied ✓', live:'Live', down:'Offline', ph:'Name', dish:'Dish', who:'Who?', all:'Everyone',
+      sub:'Before tip', tip:'Tip', owes:'owes', nobody:'Nobody, everyone pays their own', loading:'Loading the OCR engine…', reading:'Reading the receipt…',
+      found:'Found {n} dishes ✓', none:'No dishes found, add them by hand', diff:'The receipt says {a}, dishes add up to {b}. Check for a missing dish.', ok:'Dishes match the receipt total ✓',
+      needw:'Add at least one dish' }
   };
   document.querySelectorAll('[data-i]').forEach((el) => { T.en[el.dataset.i] ??= el.textContent; });
   let lang = store.get('lang') || 'en';
-  const t = (k) => T[lang][k] ?? T.en[k];
+  const t = (k, v = {}) => (T[lang][k] ?? T.en[k]).replace(/\{(\w+)\}/g, (_, x) => v[x]);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
   /* theme */
   const root = document.documentElement;
@@ -329,9 +475,7 @@ h1,h2,h3,.brand{font-family:"Fredoka","Rubik",system-ui,sans-serif}
     root.lang = lang; root.dir = lang === 'he' ? 'rtl' : 'ltr';
     document.querySelectorAll('[data-i]').forEach((el) => { el.textContent = t(el.dataset.i); });
     $('#lang').textContent = lang === 'he' ? 'EN' : 'עב';
-    document.querySelectorAll('.guest .n').forEach((i) => { i.placeholder = t('ph'); });
-    document.querySelectorAll('.step small').forEach((s) => { s.textContent = t('nights'); });
-    moveThumb(); render(last); health();
+    renderGuests(); renderItems(); moveThumbs(); render(last); health();
   }
   $('#lang').onclick = () => { lang = lang === 'he' ? 'en' : 'he'; store.set('lang', lang); applyLang(); };
 
@@ -341,63 +485,196 @@ h1,h2,h3,.brand{font-family:"Fredoka","Rubik",system-ui,sans-serif}
   document.querySelectorAll('.rv').forEach((el, i) => { el.style.transitionDelay = (i % 5) * 70 + 'ms'; io.observe(el); });
 
   /* health */
-  let ver = '';
   async function health() {
     const st = $('#status');
     try {
       const h = await (await fetch('/health')).json();
-      ver = `v${h.version} · ${String(h.commit).slice(0, 7)}`;
+      const ver = `v${h.version} · ${String(h.commit).slice(0, 7)}`;
       st.classList.add('ok'); $('#st-txt').textContent = `${t('live')} · ${ver}`; $('#ver').textContent = ver;
     } catch { st.classList.remove('ok'); $('#st-txt').textContent = t('down'); }
   }
   $('#origin').textContent = location.origin.startsWith('http') && !location.hostname.match(/localhost|127\./) ? location.origin : 'https://splitship-1.onrender.com';
 
-  /* calculator */
+  /* state */
   const PAL = [['--peach', '--peach-ink'], ['--lav', '--lav-ink'], ['--sage', '--sage-ink'], ['--butter', '--butter-ink']];
   const col = (i, k) => `var(${PAL[i % 4][k]})`;
-  let mode = 'equal', last = null, timer;
-  const guests = $('#guests');
+  let uid = 0;
+  const S = { tab: 'rest', rmode: 'items', hmode: 'equal', tip: 12, payer: '', receiptTotal: null, guests: [], items: [] };
+  let last = null, timer;
+  const gi = (id) => S.guests.findIndex((g) => g.id === id);
+  const initial = (n) => (n.trim()[0] || '?').toUpperCase();
 
-  function moveThumb() {
-    const on = $('#seg .on'), th = $('#seg .thumb');
-    th.style.width = on.offsetWidth + 'px';
-    th.style.transform = `translateX(${on.offsetLeft - 4}px)`;
-    th.style.left = '4px';
-  }
-  $('#seg').addEventListener('click', (e) => {
-    const b = e.target.closest('button'); if (!b) return;
-    $('#seg .on').classList.remove('on'); b.classList.add('on'); mode = b.dataset.m;
-    guests.classList.toggle('nights-off', mode !== 'nights'); moveThumb(); calc();
-  });
-
-  function paint() {
-    [...guests.children].forEach((g, i) => {
-      const av = g.querySelector('.av'), name = g.querySelector('.n').value.trim();
-      av.textContent = (name[0] || '?').toUpperCase(); av.style.background = col(i, 0); av.style.color = col(i, 1);
+  /* segments + tabs */
+  function moveThumbs() {
+    document.querySelectorAll('.seg').forEach((seg) => {
+      const on = seg.querySelector('.on'), th = seg.querySelector('.thumb');
+      if (!on || !on.offsetWidth) return;
+      th.style.width = on.offsetWidth + 'px'; th.style.left = '4px';
+      th.style.transform = `translateX(${on.offsetLeft - 4}px)`;
     });
   }
-  function addGuest(name = '', nights = 1) {
-    const g = document.createElement('div');
-    g.className = 'guest';
-    g.innerHTML = `<span class="av"></span><input class="n" maxlength="30"><div class="step"><button type="button" aria-label="-">−</button><b>${nights}</b><button type="button" aria-label="+">+</button><small></small></div><button class="rm" type="button" aria-label="remove">✕</button>`;
-    const inp = g.querySelector('.n'); inp.value = name; inp.placeholder = t('ph');
-    g.querySelector('small').textContent = t('nights');
-    const [minus, plus] = g.querySelectorAll('.step button'), b = g.querySelector('.step b');
-    minus.onclick = () => { b.textContent = Math.max(1, +b.textContent - 1); calc(); };
-    plus.onclick = () => { b.textContent = Math.min(60, +b.textContent + 1); calc(); };
-    g.querySelector('.rm').onclick = () => { g.remove(); paint(); calc(); };
-    inp.oninput = () => { paint(); calc(); };
-    guests.appendChild(g); paint();
+  function bindSeg(sel, key) {
+    $(sel).addEventListener('click', (e) => {
+      const b = e.target.closest('button'); if (!b) return;
+      $(sel + ' .on').classList.remove('on'); b.classList.add('on'); S[key] = b.dataset.m;
+      layout(); calc();
+    });
   }
-  $('#add').onclick = () => { addGuest(`${t('guest')} ${guests.children.length + 1}`); calc(); guests.lastChild.querySelector('.n').select(); };
-  $('#total').oninput = calc;
+  bindSeg('#hseg', 'hmode'); bindSeg('#rseg', 'rmode');
+  document.querySelectorAll('.tab').forEach((b) => b.onclick = () => {
+    document.querySelector('.tab.on').classList.remove('on'); b.classList.add('on'); S.tab = b.dataset.tab; layout(); calc();
+  });
+  function layout() {
+    const rest = S.tab === 'rest';
+    $('#rest').classList.toggle('hide', !rest); $('#rest2').classList.toggle('hide', !rest); $('#hotel').classList.toggle('hide', rest);
+    $('#eqbox').classList.toggle('hide', S.rmode !== 'equal'); $('#itbox').classList.toggle('hide', S.rmode !== 'items');
+    $('#guests').classList.toggle('nights-off', rest || S.hmode !== 'nights');
+    requestAnimationFrame(moveThumbs);
+  }
 
+  /* people */
+  function addGuest(name, nights = 1) { S.guests.push({ id: ++uid, name, nights }); }
+  function renderGuests() {
+    const box = $('#guests'); box.innerHTML = '';
+    S.guests.forEach((g, i) => {
+      const el = document.createElement('div'); el.className = 'guest';
+      el.innerHTML = `<span class="av" style="background:${col(i, 0)};color:${col(i, 1)}">${esc(initial(g.name))}</span><input class="n" maxlength="30"><div class="step"><button type="button" aria-label="-">−</button><b>${g.nights}</b><button type="button" aria-label="+">+</button><small>${t('nights')}</small></div><button class="rm" type="button" aria-label="remove">✕</button>`;
+      const inp = el.querySelector('.n'); inp.value = g.name; inp.placeholder = t('ph');
+      inp.oninput = () => { g.name = inp.value; el.querySelector('.av').textContent = initial(g.name); renderItems(); calc(); };
+      const [mi, pl] = el.querySelectorAll('.step button'), b = el.querySelector('.step b');
+      mi.onclick = () => { g.nights = Math.max(1, g.nights - 1); b.textContent = g.nights; calc(); };
+      pl.onclick = () => { g.nights = Math.min(60, g.nights + 1); b.textContent = g.nights; calc(); };
+      el.querySelector('.rm').onclick = () => { S.guests.splice(gi(g.id), 1); S.items.forEach((it) => it.people.delete(g.id)); sync(); };
+      box.appendChild(el);
+    });
+    $('#qn').textContent = S.guests.length;
+    const sel = $('#payer'), keep = S.payer;
+    sel.innerHTML = `<option value="">${esc(t('nobody'))}</option>` + S.guests.map((g) => `<option value="${g.id}">${esc(g.name || '?')}</option>`).join('');
+    sel.value = S.guests.some((g) => String(g.id) === keep) ? keep : '';
+    S.payer = sel.value;
+  }
+  $('#payer').onchange = (e) => { S.payer = e.target.value; render(last); };
+  const sync = () => { renderGuests(); renderItems(); calc(); };
+  $('#add').onclick = () => { addGuest(`${t('guest')} ${S.guests.length + 1}`); sync(); $('#guests').lastChild.querySelector('.n').select(); };
+  $('#qplus').onclick = () => { if (S.guests.length < 30) { addGuest(`${t('guest')} ${S.guests.length + 1}`); sync(); } };
+  $('#qminus').onclick = () => { if (S.guests.length > 1) { const g = S.guests.pop(); S.items.forEach((it) => it.people.delete(g.id)); sync(); } };
+
+  /* dishes */
+  function addItem(name = '', price = '', qty = 1) { S.items.push({ id: ++uid, name, price, qty, people: new Set() }); }
+  function renderItems() {
+    const box = $('#items'); box.innerHTML = '';
+    S.items.forEach((it) => {
+      const el = document.createElement('div'); el.className = 'item';
+      el.innerHTML = `<div class="top"><input class="nm" maxlength="60"><input class="q" type="number" min="1" step="1" aria-label="qty"><input class="pr" type="number" min="0" step="0.01" inputmode="decimal" placeholder="₪"><button class="rm" type="button" aria-label="remove">✕</button></div><div class="who"><span class="lab">${esc(t('who'))}</span></div>`;
+      const [nm, q, pr] = el.querySelectorAll('input');
+      nm.value = it.name; nm.placeholder = t('dish'); q.value = it.qty; pr.value = it.price;
+      nm.oninput = () => { it.name = nm.value; calc(); };
+      q.oninput = () => { it.qty = Math.max(1, parseInt(q.value, 10) || 1); calc(); };
+      pr.oninput = () => { it.price = pr.value; calc(); };
+      el.querySelector('.rm').onclick = () => { S.items.splice(S.items.indexOf(it), 1); renderItems(); calc(); };
+      const who = el.querySelector('.who');
+      S.guests.forEach((g, i) => {
+        const c = document.createElement('button'); c.type = 'button';
+        c.className = 'pchip' + (it.people.has(g.id) ? ' on' : '');
+        c.innerHTML = `<i style="background:${col(i, 0)};color:${col(i, 1)}">${esc(initial(g.name))}</i>${esc(g.name || '?')}`;
+        if (it.people.has(g.id)) c.style.background = `color-mix(in srgb, ${col(i, 0)} 55%, var(--surface))`;
+        c.onclick = () => { it.people.has(g.id) ? it.people.delete(g.id) : it.people.add(g.id); renderItems(); calc(); };
+        who.appendChild(c);
+      });
+      if (!it.people.size) { const s = document.createElement('span'); s.className = 'lab'; s.textContent = '· ' + t('all'); who.appendChild(s); }
+      box.appendChild(el);
+    });
+  }
+  $('#addi').onclick = () => { addItem(); renderItems(); $('#items').lastChild.querySelector('.nm').focus(); };
+
+  /* tip */
+  $('#tipbar').addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    setTip(+b.dataset.t); calc();
+  });
+  function setTip(v) {
+    S.tip = v; let hit = false;
+    document.querySelectorAll('#tipbar button').forEach((b) => { const on = +b.dataset.t === v; b.classList.toggle('on', on); hit ||= on; });
+    $('#tipc').value = hit ? '' : v;
+  }
+  $('#tipc').oninput = (e) => { const v = Math.min(100, Math.max(0, +e.target.value || 0)); S.tip = v; document.querySelectorAll('#tipbar button').forEach((b) => b.classList.remove('on')); calc(); };
+  $('#htotal').oninput = calc; $('#rtotal').oninput = calc;
+
+  /* receipt scanning */
+  const prog = (p) => { $('#prog').classList.add('show'); $('#prog i').style.width = Math.round(p * 100) + '%'; };
+  const hint = (k, v) => { $('#shint').textContent = t(k, v); };
+  let ocr;
+  const loadOCR = () => ocr ??= new Promise((ok, no) => {
+    const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+    s.onload = ok; s.onerror = () => { ocr = null; no(new Error('OCR load failed')); }; document.head.appendChild(s);
+  });
+  function shrink(file) {
+    return new Promise((ok) => {
+      const img = new Image(); img.onload = () => {
+        const k = Math.min(1, 1800 / Math.max(img.width, img.height)), c = document.createElement('canvas');
+        c.width = img.width * k; c.height = img.height * k;
+        const x = c.getContext('2d'); x.filter = 'grayscale(1) contrast(1.3)'; x.drawImage(img, 0, 0, c.width, c.height); ok(c);
+      }; img.src = URL.createObjectURL(file);
+    });
+  }
+  async function scan(file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    const pv = $('#preview'); $('#pimg').src = URL.createObjectURL(file); pv.classList.add('show', 'busy');
+    try {
+      hint('loading'); prog(.03); await loadOCR();
+      hint('reading');
+      const { data } = await Tesseract.recognize(await shrink(file), 'heb+eng', { logger: (m) => m.status === 'recognizing text' && prog(.1 + m.progress * .9) });
+      await useText(data.text);
+    } catch (e) { $('#shint').textContent = e.message; }
+    finally { pv.classList.remove('busy'); setTimeout(() => $('#prog').classList.remove('show'), 800); }
+  }
+  async function useText(text) {
+    const res = await fetch('/api/receipt/parse', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ text }) });
+    const r = await res.json();
+    if (!res.ok) throw new Error(r.error);
+    if (r.items.length) { S.items = []; r.items.forEach((it) => addItem(it.name, it.price, it.qty)); }
+    S.receiptTotal = r.detectedTotal;
+    if (r.servicePercent != null) setTip(r.servicePercent);
+    if (S.rmode !== 'items') $('#rseg [data-m=items]').click();
+    $('#rtotal').value = r.detectedTotal ?? r.itemsTotal;
+    hint(r.items.length ? 'found' : 'none', { n: r.items.length });
+    renderItems(); calc();
+    $('#items').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  const drop = $('#drop');
+  $('#file').onchange = (e) => scan(e.target.files[0]);
+  $('#cam').onchange = (e) => scan(e.target.files[0]);
+  ['dragenter', 'dragover'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', (e) => scan(e.dataTransfer.files[0]));
+  $('#sample').onclick = async () => {
+    const he = lang === 'he';
+    const txt = he
+      ? 'מסעדת הים\nטל: 03-5551234\n15/11/2026 20:41\nהמבורגר 62.00\nסלט יווני 48.00\n2 x בירה 60.00\nצ׳יפס 25.00\nסה"כ 195.00\nשירות 12%'
+      : 'THE HARBOR\nTel 03-5551234\n15/11/2026 20:41\nBurger 62.00\nGreek salad 48.00\n2 x Beer 60.00\nFries 25.00\nTOTAL 195.00\nService 12%';
+    try {
+      await useText(txt);
+      const [a, b, c] = S.guests.map((g) => g.id);
+      if (a) S.items[0]?.people.add(a); if (b) S.items[1]?.people.add(b); if (c) S.items[2]?.people.add(c);
+      renderItems(); calc();
+    } catch (e) { $('#shint').textContent = e.message; }
+  };
+
+  /* calculate via API */
+  function payload() {
+    const guests = S.guests.map((g) => ({ name: g.name.trim() || '?', nights: g.nights }));
+    if (S.tab === 'hotel') return { total: Number($('#htotal').value), mode: S.hmode, guests };
+    if (S.rmode === 'equal') return { total: Number($('#rtotal').value), mode: 'equal', guests, tipPercent: S.tip };
+    const items = S.items.filter((it) => it.price !== '' && !isNaN(+it.price))
+      .map((it) => ({ name: it.name || t('dish'), price: +it.price, qty: it.qty, people: [...it.people].map(gi).filter((i) => i >= 0) }));
+    return { mode: 'items', guests, items, tipPercent: S.tip };
+  }
   function calc() {
     clearTimeout(timer);
     timer = setTimeout(async () => {
-      const body = { total: Number($('#total').value), mode,
-        guests: [...guests.children].map((g) => ({ name: g.querySelector('.n').value || '?', nights: +g.querySelector('.step b').textContent })) };
+      const body = payload();
       if (!body.guests.length) return render(null);
+      if (body.mode === 'items' && !body.items.length) return render({ error: t('needw') });
       const t0 = performance.now();
       try {
         const res = await fetch('/api/split', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
@@ -411,16 +688,24 @@ h1,h2,h3,.brand{font-family:"Fredoka","Rubik",system-ui,sans-serif}
   function render(d) {
     last = d;
     const rows = $('#rows'), bar = $('#bar');
-    $('#check').hidden = true;
-    if (!d) { rows.innerHTML = `<p class="empty">${t('empty')}</p>`; bar.innerHTML = ''; $('#big').textContent = fmt(0); return; }
-    if (d.error) { rows.innerHTML = '<p class="err"></p>'; rows.firstChild.textContent = d.error; return; }
+    $('#check').hidden = true; $('#warn').innerHTML = ''; $('#sums').innerHTML = '';
+    if (!d) { rows.innerHTML = `<p class="empty">${esc(t('empty'))}</p>`; bar.innerHTML = ''; $('#big').textContent = fmt(0); return; }
+    if (d.error) { rows.innerHTML = `<p class="err">${esc(d.error)}</p>`; bar.innerHTML = ''; return; }
     $('#big').textContent = fmt(d.total);
+    if (d.tip) $('#sums').innerHTML = `<div class="sumline"><span>${esc(t('sub'))}</span><span>${fmt(d.subtotal)}</span></div><div class="sumline" style="margin-bottom:12px"><span>${esc(t('tip'))} ${d.tipPercent}%</span><span>${fmt(d.tip)}</span></div>`;
+    if (d.mode === 'items' && S.receiptTotal != null) {
+      const same = Math.abs(S.receiptTotal - d.subtotal) < .05;
+      $('#warn').innerHTML = `<p class="${same ? 'check' : 'warn'}" style="margin:0 0 12px">${esc(same ? t('ok') : t('diff', { a: fmt(S.receiptTotal), b: fmt(d.subtotal) }))}</p>`;
+    }
     bar.innerHTML = d.shares.map((s, i) => `<i style="width:${(s.amount / d.total) * 100}%;background:${col(i, 0)}"></i>`).join('');
+    const payer = S.guests[gi(+S.payer)];
     rows.innerHTML = '';
     d.shares.forEach((s, i) => {
-      const r = document.createElement('div'); r.className = 'row'; r.style.animationDelay = i * 50 + 'ms';
-      r.innerHTML = `<span class="av" style="background:${col(i, 0)};color:${col(i, 1)}"></span><span class="nm"></span><span class="pc">${Math.round((s.amount / d.total) * 100)}%</span><span class="am">${fmt(s.amount)}</span>`;
-      r.querySelector('.av').textContent = (s.name[0] || '?').toUpperCase(); r.querySelector('.nm').textContent = s.name;
+      const r = document.createElement('div'); r.className = 'row' + (s.items?.length ? ' click' : ''); r.style.animationDelay = i * 50 + 'ms';
+      const owe = payer && i !== gi(payer.id) ? `<span class="owe">${esc(t('owes'))}${lang === 'he' ? '' : ' '}${esc(payer.name)}</span>` : '';
+      const det = s.items?.length ? `<div class="det">${s.items.map((x) => `${esc(x.name)}${x.sharedWith > 1 ? ` (÷${x.sharedWith})` : ''} ${fmt(x.amount)}`).join(' · ')}${s.tip ? ` · ${esc(t('tip'))} ${fmt(s.tip)}` : ''}</div>` : '';
+      r.innerHTML = `<span class="av" style="background:${col(i, 0)};color:${col(i, 1)}">${esc(initial(s.name))}</span><span class="nm">${esc(s.name)}${owe}</span><span class="pc">${Math.round((s.amount / d.total) * 100)}%</span><span class="am">${fmt(s.amount)}</span>${det}`;
+      if (det) r.onclick = () => r.classList.toggle('open');
       rows.appendChild(r);
     });
     const sum = Math.round(d.shares.reduce((a, s) => a + s.amount * 100, 0));
@@ -428,17 +713,25 @@ h1,h2,h3,.brand{font-family:"Fredoka","Rubik",system-ui,sans-serif}
   }
 
   const toast = (m) => { const el = $('#toast'); el.textContent = m; el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 1600); };
-  const text = () => last && !last.error ? last.shares.map((s) => `${s.name}: ${fmt(s.amount)}`).join('\n') + `\n= ${fmt(last.total)} · SplitShip` : '';
+  const text = () => {
+    if (!last || last.error) return '';
+    const payer = S.guests[gi(+S.payer)];
+    return last.shares.map((s) => `${s.name}: ${fmt(s.amount)}${payer && s.name !== payer.name.trim() ? ` → ${payer.name}` : ''}`).join('\n')
+      + (last.tip ? `\n${t('tip')} ${last.tipPercent}%: ${fmt(last.tip)}` : '') + `\n= ${fmt(last.total)} · SplitShip ${location.origin}`;
+  };
   const copy = async (s) => { try { await navigator.clipboard.writeText(s); toast(t('copied')); } catch {} };
   $('#copy').onclick = () => copy(text());
+  $('#wa').onclick = () => { if (text()) open('https://wa.me/?text=' + encodeURIComponent(text()), '_blank', 'noopener'); };
   $('#share').onclick = async () => { if (navigator.share && text()) { try { await navigator.share({ title: 'SplitShip', text: text() }); } catch {} } else copy(text()); };
   $('#copycurl').onclick = () => copy($('#curl').innerText.split('\n\n')[0]);
 
+  /* start */
   [['Noya', 3], ['Dana', 2], ['Lior', 2]].forEach(([n, k]) => addGuest(n, k));
-  guests.classList.add('nights-off');
-  addEventListener('resize', moveThumb);
-  document.fonts?.ready.then(moveThumb);
-  applyLang(); calc();
+  [['Burger', 62], ['Greek salad', 48], ['Beer', 30, 2], ['Fries', 25]].forEach(([n, p, q]) => addItem(n, p, q));
+  S.items[0].people.add(1); S.items[1].people.add(2); S.items[2].people.add(3);
+  addEventListener('resize', moveThumbs);
+  document.fonts?.ready.then(moveThumbs);
+  layout(); applyLang(); calc();
 })();
 </script>
 <script src="/noya-kit.js" data-theme-btn="#theme" defer></script>

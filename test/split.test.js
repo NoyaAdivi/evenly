@@ -34,3 +34,40 @@ test('rejects bad input', () => {
   assert.throws(() => splitBill({ total: 10, mode: 'nights', guests: [{ name: 'x', nights: 0 }] }), ValidationError);
   assert.throws(() => splitBill({ total: 10, mode: 'magic', guests: [{ name: 'x' }] }), ValidationError);
 });
+
+test('split by dishes, shared dish and tip', () => {
+  const r = splitBill({
+    mode: 'items', tipPercent: 10,
+    guests: [{ name: 'Noya' }, { name: 'Dana' }, { name: 'Lior' }],
+    items: [
+      { name: 'Burger', price: 62, people: ['Noya'] },
+      { name: 'Salad', price: 48, people: ['Dana'] },
+      { name: 'Fries', price: 25, people: ['Noya', 'Dana', 'Lior'] },
+      { name: 'Beer', price: 30, qty: 2, people: [2] }
+    ]
+  });
+  assert.equal(r.subtotal, 195);
+  assert.equal(r.tip, 19.5);
+  assert.equal(r.total, 214.5);
+  assert.equal(sum(r), 21450);
+  assert.deepEqual(r.shares.map((s) => s.amount), [77.38, 61.96, 75.16]);
+});
+
+test('dish with no people is shared by everyone', () => {
+  const r = splitBill({ mode: 'items', guests: [{ name: 'A' }, { name: 'B' }], items: [{ name: 'Pizza', price: 99.99 }] });
+  assert.deepEqual(r.shares.map((s) => s.amount), [50, 49.99]);
+});
+
+test('tip on equal split adds up', () => {
+  const r = splitBill({ total: 100, tipPercent: 12, guests: [{ name: 'A' }, { name: 'B' }, { name: 'C' }] });
+  assert.equal(r.total, 112);
+  assert.equal(sum(r), 11200);
+});
+
+test('rejects bad items', () => {
+  const g = [{ name: 'A' }];
+  assert.throws(() => splitBill({ mode: 'items', guests: g, items: [] }), ValidationError);
+  assert.throws(() => splitBill({ mode: 'items', guests: g, items: [{ name: 'x', price: -1 }] }), ValidationError);
+  assert.throws(() => splitBill({ mode: 'items', guests: g, items: [{ name: 'x', price: 5, people: ['Z'] }] }), ValidationError);
+  assert.throws(() => splitBill({ total: 10, tipPercent: 300, guests: g }), ValidationError);
+});

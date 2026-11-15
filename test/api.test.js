@@ -54,3 +54,12 @@ test('landing page is served', async () => {
 test('unknown route is 404', async () => {
   assert.equal((await fetch(`${base}/nope`)).status, 404);
 });
+
+test('POST /api/receipt/parse returns items', async () => {
+  const res = await fetch(`${base}/api/receipt/parse`, {
+    method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ text: 'Burger 62.00\nTOTAL 62.00' })
+  });
+  assert.equal(res.status, 200);
+  assert.equal((await res.json()).items[0].price, 62);
+});

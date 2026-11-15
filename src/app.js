@@ -2,7 +2,8 @@
 const path = require('node:path');
 const express = require('express');
 const { splitBill, ValidationError } = require('./split');
-const pkg = require('../package.json');
+const { parseReceipt } = require('./receipt');
+const pkg =require('../package.json');
 
 function currentCommit() {
   const sha = process.env.GIT_SHA;
@@ -15,7 +16,7 @@ function createApp() {
   const startedAt = Date.now();
 
   app.disable('x-powered-by');
-  app.use(express.json({ limit: '20kb' }));
+  app.use(express.json({ limit: '100kb' }));
   app.use(express.static(path.join(__dirname, '..', 'public')));
 
   app.get('/health', (_req, res) => {
@@ -32,6 +33,15 @@ function createApp() {
       res.json(splitBill(req.body));
     } catch (err) {
       if (err instanceof ValidationError) return res.status(400).json({ error: err.message });
+      throw err;
+    }
+  });
+
+  app.post('/api/receipt/parse', (req, res) => {
+    try {
+      res.json(parseReceipt(req.body?.text));
+    } catch (err) {
+      if (err instanceof TypeError) return res.status(400).json({ error: err.message });
       throw err;
     }
   });

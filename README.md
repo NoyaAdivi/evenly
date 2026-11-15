@@ -122,9 +122,10 @@ flowchart LR
 
 | Method | Path | What it does |
 |---|---|---|
-| `GET` | [`/`](https://splitship-1.onrender.com) | Pastel web UI for the calculator |
+| `GET` | [`/`](https://splitship-1.onrender.com) | Pastel web UI: scan a restaurant receipt (in-browser OCR) or split a hotel bill |
 | `GET` | [`/health`](https://splitship-1.onrender.com/health) | Status, version, commit SHA, uptime |
-| `POST` | `/api/split` | Split a bill, `equal` or by `nights` |
+| `POST` | `/api/split` | Split a bill: `equal`, by `nights` (hotel) or by `items` (restaurant dishes), with optional `tipPercent` |
+| `POST` | `/api/receipt/parse` | Turn scanned receipt text (Hebrew or English) into dishes, total and service charge |
 
 ```bash
 curl -X POST https://splitship-1.onrender.com/api/split \
