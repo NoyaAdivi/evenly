@@ -27,3 +27,8 @@ test('reads an English receipt', () => {
 test('rejects empty text', () => {
   assert.throws(() => parseReceipt(''), TypeError);
 });
+
+test('Hebrew OCR reading "x" as "א" still gives the quantity', () => {
+  const r = parseReceipt('2 א בירה 60.00\nצ\'יפס 25.00');
+  assert.deepEqual(r.items.map((i) => [i.name, i.qty, i.price]), [['בירה', 2, 30], ["צ'יפס", 1, 25]]);
+});

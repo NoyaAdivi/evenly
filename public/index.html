@@ -251,7 +251,13 @@ select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--li
 @keyframes sbeam{from{top:14px}to{top:calc(100% - 20px)}}
 @keyframes pop{50%{transform:translateY(-5px)}}
 @media (max-width:900px){.calc,.api{grid-template-columns:1fr}.calc-out{border-inline-start:none;border-top:1px solid var(--line)}.pipe{grid-template-columns:1fr 1fr}.pipe::before{display:none}.feat{grid-template-columns:1fr}.links{display:none}}
-@media (max-width:520px){.status{display:none}.calc-in,.calc-out{padding:22px}.item .pr{width:80px}.receipt-art .tag{display:none}}
+.warn button{margin-inline-start:8px;font-weight:700;text-decoration:underline;color:inherit}
+.fab{position:fixed;bottom:18px;left:84px;right:18px;z-index:30;display:none;align-items:center;justify-content:space-between;gap:10px;padding:12px 18px;border-radius:16px;background:var(--ink);color:var(--bg);font-weight:700;box-shadow:var(--shadow);transform:translateY(120px);transition:transform .35s cubic-bezier(.3,.9,.3,1)}
+.fab.show{transform:none}
+.fab small{font-weight:600;opacity:.75}
+.big{transition:transform .25s}.big.bump{transform:scale(1.04)}
+@media (max-width:900px){.fab{display:flex}.out-f{flex-wrap:wrap}}
+@media (max-width:520px){.status{display:none}.calc-in,.calc-out{padding:22px}.item .top{flex-wrap:wrap}.item .nm{flex-basis:100%}.item .pr{flex:1}.receipt-art .tag{display:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
 </style>
 <style>.built-by{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.45em;margin:.6em 0;font-weight:600}.built-by a{display:inline-flex;align-items:center;gap:.4em;padding:.28em .8em;border-radius:999px;font-weight:800;text-decoration:none;color:inherit;background:rgba(10,102,194,.1);transition:transform .25s ease,background .25s ease,box-shadow .25s ease}.built-by a:hover,.built-by a:focus-visible{transform:translateY(-2px);background:rgba(10,102,194,.18);box-shadow:0 6px 16px rgba(10,102,194,.18)}.built-by svg{width:1.1em;height:1.1em;fill:#0A66C2;flex:none;transition:transform .35s ease}.built-by a:hover svg{transform:rotate(-8deg) scale(1.12)}html[lang="he"] .built-by .bb-en,html:not([lang="he"]) .built-by .bb-he{display:none}@media (prefers-reduced-motion:reduce){.built-by a,.built-by svg{transition:none}}</style>
@@ -362,7 +368,7 @@ select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--li
         <div class="rows" id="rows"><p class="empty" data-i="empty">Add people to see the split</p></div>
         <div class="check" id="check" hidden>✓ <span data-i="chk">Shares add up exactly to the total</span></div>
         <div class="payer"><span data-i="paid">Who paid?</span><select id="payer"></select></div>
-        <div class="out-f"><button class="btn ghost" id="copy" data-i="copyr">Copy</button><button class="btn ghost" id="wa" data-i="wab">WhatsApp</button><button class="btn primary" id="share" data-i="sharer">Share</button></div>
+        <div class="out-f"><button class="btn ghost" id="copy" data-i="copyr">Copy</button><button class="btn ghost" id="wa" data-i="wab">WhatsApp</button><button class="btn ghost" id="link" data-i="linkb">🔗 Link</button><button class="btn primary" id="share" data-i="sharer">Share</button></div>
       </div>
     </div>
   </section>
@@ -426,6 +432,7 @@ select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--li
     </div>
   </div>
 </footer>
+<a class="fab" id="fab" href="#rows"><span id="fabt">₪0</span><small data-i="fabs">See who owes what ↓</small></a>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -453,11 +460,11 @@ select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--li
       guest:'אדם', nights:'לילות', copied:'הועתק ✓', live:'פעיל', down:'לא זמין', ph:'שם', dish:'מנה', who:'מי?', all:'כולם',
       sub:'לפני טיפ', tip:'טיפ', owes:'חייב/ת ל־', nobody:'בלי, כל אחד משלם לבד', loading:'טוען את מנוע הזיהוי…', reading:'קורא את הקבלה…',
       found:'נמצאו {n} מנות ✓', none:'לא מצאתי מנות, אפשר להוסיף ידנית', diff:'בקבלה כתוב {a}, המנות מסתכמות ל־{b}. כדאי לבדוק מנה חסרה.', ok:'המנות תואמות לסכום בקבלה ✓',
-      needw:'מסמנים לפחות מנה אחת' },
+      needw:'מסמנים לפחות מנה אחת', linkb:'🔗 קישור', fabs:'מי חייב כמה ↓', fixd:'להוסיף את ההפרש כמנה', other:'אחר', linked:'הקישור הועתק ✓ מי שיפתח אותו יראה את אותה חלוקה' },
     en: { guest:'Person', nights:'nights', copied:'Copied ✓', live:'Live', down:'Offline', ph:'Name', dish:'Dish', who:'Who?', all:'Everyone',
       sub:'Before tip', tip:'Tip', owes:'owes', nobody:'Nobody, everyone pays their own', loading:'Loading the OCR engine…', reading:'Reading the receipt…',
       found:'Found {n} dishes ✓', none:'No dishes found, add them by hand', diff:'The receipt says {a}, dishes add up to {b}. Check for a missing dish.', ok:'Dishes match the receipt total ✓',
-      needw:'Add at least one dish' }
+      needw:'Add at least one dish', fixd:'Add the difference as a dish', other:'Other', linked:'Link copied ✓ anyone who opens it sees the same split' }
   };
   document.querySelectorAll('[data-i]').forEach((el) => { T.en[el.dataset.i] ??= el.textContent; });
   let lang = store.get('lang') || 'en';
@@ -540,7 +547,7 @@ select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--li
       const el = document.createElement('div'); el.className = 'guest';
       el.innerHTML = `<span class="av" style="background:${col(i, 0)};color:${col(i, 1)}">${esc(initial(g.name))}</span><input class="n" maxlength="30"><div class="step"><button type="button" aria-label="-">−</button><b>${g.nights}</b><button type="button" aria-label="+">+</button><small>${t('nights')}</small></div><button class="rm" type="button" aria-label="remove">✕</button>`;
       const inp = el.querySelector('.n'); inp.value = g.name; inp.placeholder = t('ph');
-      inp.oninput = () => { g.name = inp.value; el.querySelector('.av').textContent = initial(g.name); renderItems(); calc(); };
+      inp.oninput = () => { g.name = inp.value; el.querySelector('.av').textContent = initial(g.name); const o = $(`#payer option[value="${g.id}"]`); if (o) o.textContent = g.name || '?'; renderItems(); calc(); };
       const [mi, pl] = el.querySelectorAll('.step button'), b = el.querySelector('.step b');
       mi.onclick = () => { g.nights = Math.max(1, g.nights - 1); b.textContent = g.nights; calc(); };
       pl.onclick = () => { g.nights = Math.min(60, g.nights + 1); b.textContent = g.nights; calc(); };
@@ -684,6 +691,14 @@ select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--li
       } catch { render({ error: 'API unreachable' }); }
     }, 220);
   }
+  let shown = 0, raf;
+  function countTo(v) {
+    cancelAnimationFrame(raf); const from = shown, t0 = performance.now(), big = $('#big');
+    $('#fabt').textContent = fmt(v);
+    if (from !== v) { big.classList.add('bump'); setTimeout(() => big.classList.remove('bump'), 250); }
+    const step = (n) => { const k = Math.min(1, (n - t0) / 450), e = 1 - (1 - k) ** 3; shown = from + (v - from) * e; big.textContent = fmt(k < 1 ? Math.round(shown * 100) / 100 : v); if (k < 1) raf = requestAnimationFrame(step); else shown = v; };
+    raf = requestAnimationFrame(step);
+  }
   const fmt = (n) => '₪' + n.toLocaleString(lang === 'he' ? 'he-IL' : 'en-US', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
   function render(d) {
     last = d;
@@ -691,11 +706,13 @@ select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--li
     $('#check').hidden = true; $('#warn').innerHTML = ''; $('#sums').innerHTML = '';
     if (!d) { rows.innerHTML = `<p class="empty">${esc(t('empty'))}</p>`; bar.innerHTML = ''; $('#big').textContent = fmt(0); return; }
     if (d.error) { rows.innerHTML = `<p class="err">${esc(d.error)}</p>`; bar.innerHTML = ''; return; }
-    $('#big').textContent = fmt(d.total);
+    countTo(d.total);
     if (d.tip) $('#sums').innerHTML = `<div class="sumline"><span>${esc(t('sub'))}</span><span>${fmt(d.subtotal)}</span></div><div class="sumline" style="margin-bottom:12px"><span>${esc(t('tip'))} ${d.tipPercent}%</span><span>${fmt(d.tip)}</span></div>`;
     if (d.mode === 'items' && S.receiptTotal != null) {
       const same = Math.abs(S.receiptTotal - d.subtotal) < .05;
-      $('#warn').innerHTML = `<p class="${same ? 'check' : 'warn'}" style="margin:0 0 12px">${esc(same ? t('ok') : t('diff', { a: fmt(S.receiptTotal), b: fmt(d.subtotal) }))}</p>`;
+      const gap = Math.round((S.receiptTotal - d.subtotal) * 100) / 100;
+      $('#warn').innerHTML = `<p class="${same ? 'check' : 'warn'}" style="margin:0 0 12px">${esc(same ? t('ok') : t('diff', { a: fmt(S.receiptTotal), b: fmt(d.subtotal) }))}${!same && gap > 0 ? `<button type="button" id="fixd">${esc(t('fixd'))}</button>` : ''}</p>`;
+      $('#fixd')?.addEventListener('click', () => { addItem(t('other'), gap); renderItems(); calc(); });
     }
     bar.innerHTML = d.shares.map((s, i) => `<i style="width:${(s.amount / d.total) * 100}%;background:${col(i, 0)}"></i>`).join('');
     const payer = S.guests[gi(+S.payer)];
@@ -725,13 +742,43 @@ select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--li
   $('#share').onclick = async () => { if (navigator.share && text()) { try { await navigator.share({ title: 'SplitShip', text: text() }); } catch {} } else copy(text()); };
   $('#copycurl').onclick = () => copy($('#curl').innerText.split('\n\n')[0]);
 
+  /* share link: the whole split lives in the URL hash */
+  function toLink() {
+    const st = { t: S.tab, r: S.rmode, h: S.hmode, tp: S.tip, p: S.payer ? gi(+S.payer) : -1, rt: S.receiptTotal, ht: $('#htotal').value, et: $('#rtotal').value,
+      g: S.guests.map((g) => [g.name, g.nights]), i: S.items.map((it) => [it.name, it.price, it.qty, [...it.people].map(gi)]) };
+    return `${location.origin}${location.pathname}#s=${btoa(unescape(encodeURIComponent(JSON.stringify(st))))}`;
+  }
+  function fromLink() {
+    const m = location.hash.match(/#s=([\w+/=]+)/); if (!m) return false;
+    try {
+      const st = JSON.parse(decodeURIComponent(escape(atob(m[1]))));
+      S.guests = []; S.items = [];
+      st.g.slice(0, 30).forEach(([n, k]) => addGuest(String(n).slice(0, 30), Math.min(60, Math.max(1, k | 0))));
+      st.i.slice(0, 300).forEach(([n, p, q, ps]) => { addItem(String(n).slice(0, 60), p, Math.max(1, q | 0)); ps.forEach((x) => S.guests[x] && S.items.at(-1).people.add(S.guests[x].id)); });
+      S.tab = st.t === 'hotel' ? 'hotel' : 'rest'; S.receiptTotal = typeof st.rt === 'number' ? st.rt : null;
+      $('#htotal').value = st.ht; $('#rtotal').value = st.et; setTip(+st.tp || 0);
+      S.payer = S.guests[st.p] ? String(S.guests[st.p].id) : '';
+      document.querySelector(`.tab[data-tab="${S.tab}"]`).click();
+      document.querySelector(`#rseg [data-m="${st.r === 'equal' ? 'equal' : 'items'}"]`).click();
+      document.querySelector(`#hseg [data-m="${st.h === 'nights' ? 'nights' : 'equal'}"]`).click();
+      return true;
+    } catch { return false; }
+  }
+  $('#link').onclick = async () => { const u = toLink(); history.replaceState(null, '', u); try { await navigator.clipboard.writeText(u); toast(t('linked')); } catch {} };
+
+  /* mobile: floating total while the result is off screen */
+  const fabCheck = () => { const c = $('#calc').getBoundingClientRect(), o = $('.calc-out').getBoundingClientRect(); $('#fab').classList.toggle('show', c.top < innerHeight * .6 && o.top > innerHeight && !!last && !last.error); };
+  addEventListener('scroll', fabCheck, { passive: true });
+
   /* start */
   [['Noya', 3], ['Dana', 2], ['Lior', 2]].forEach(([n, k]) => addGuest(n, k));
   [['Burger', 62], ['Greek salad', 48], ['Beer', 30, 2], ['Fries', 25]].forEach(([n, p, q]) => addItem(n, p, q));
   S.items[0].people.add(1); S.items[1].people.add(2); S.items[2].people.add(3);
+  const restored = fromLink();
   addEventListener('resize', moveThumbs);
   document.fonts?.ready.then(moveThumbs);
   layout(); applyLang(); calc();
+  if (restored) setTimeout(() => $('#calc').scrollIntoView(), 300);
 })();
 </script>
 <script src="/noya-kit.js" data-theme-btn="#theme" defer></script>

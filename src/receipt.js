@@ -10,6 +10,8 @@ const SKIP = /(סה["״']?כ|סך\s*הכל|ביניים|מע["״']?מ|לתשלו
 const TOTAL = /(סה["״']?כ\s*(לתשלום)?|סך\s*הכל|לתשלום|total|amount\s*due|balance\s*due)/i;
 const SUBTOTAL = /(ביניים|subtotal|sub\s*total)/i;
 const SERVICE = /(שירות|טיפ|service|tip|gratuity)/i;
+// quantity like "2 x", "x2", "2×"; Hebrew OCR often reads a lone x as א
+const QTY = /(?<![\d.,])(\d{1,2})\s*(?:[xX×*]|א(?=\s))(?![\d.,])|[xX×*]\s*(\d{1,2})(?![\d.,])/;
 const PRICE = /(?:₪|\$|€|ILS|NIS)?\s*(\d{1,3}(?:,\d{3})+|\d+)(?:[.,](\d{1,2}))?\s*(?:₪|ש["״']?ח|ILS|NIS)?/gi;
 
 function numbersIn(line) {
@@ -24,9 +26,10 @@ function numbersIn(line) {
 
 function cleanName(line) {
   return line
-    .replace(/[xX×*]\s*\d{1,2}(?!\d)|(?<!\d)\d{1,2}\s*[xX×*]/g, ' ')
+    .replace(QTY, ' ')
     .replace(PRICE, ' ')
-    .replace(/[|_=~•·:;"'`^<>[\]{}]+/g, ' ')
+    .replace(/[|_=~•·:;"`^<>[\]{}]+/g, ' ')
+    .replace(/(^|\s)['׳]+|['׳]+(\s|$)/g, ' ')
     .replace(/\s+/g, ' ')
     .trim()
     .replace(/^[-.,\s]+|[-.,\s]+$/g, '');
@@ -56,7 +59,7 @@ function parseReceipt(text) {
     }
     if (SKIP.test(line) || /\d{2}[/.-]\d{2}[/.-]\d{2,4}|\d{1,2}:\d{2}/.test(line)) continue;
 
-    const qtyMatch = line.match(/\b(\d{1,2})\s*[xX×*]|[xX×*]\s*(\d{1,2})\b/);
+    const qtyMatch = line.match(QTY);
     const qty = qtyMatch ? Number(qtyMatch[1] || qtyMatch[2]) : 1;
     const prices = nums.filter((n) => n.dec || n.value >= 5).filter((n) => !(qtyMatch && !n.dec && n.value === qty));
     if (!prices.length) continue;
