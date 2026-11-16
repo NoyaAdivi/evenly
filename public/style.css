@@ -404,3 +404,7 @@ input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 4px color-m
 .brand img{animation:logoin .9s cubic-bezier(.3,1.5,.5,1) both;transition:transform .3s}
 .brand:hover img{transform:rotate(-8deg) scale(1.08)}
 @keyframes logoin{from{opacity:0;transform:scale(.5) rotate(-20deg)}}
+
+/* consistency fixes: one font everywhere, no sideways scroll on mobile */
+button,input,select,textarea{font-family:inherit}
+html,body{overflow-x:clip;max-width:100%}

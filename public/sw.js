@@ -1,5 +1,5 @@
 /* Service worker: makes the site an installable app that also opens offline. */
-const VERSION = 'evenly-v2';
+const VERSION = 'evenly-v3';
 const SHELL = ["/", "/style.css", "/app.js", "/noya-kit.js", "/logo.svg", "/noya-app.js", "/faq.js", "/manifest.webmanifest", "/icons/icon-192.png"];
 
 self.addEventListener('install', (e) => {
