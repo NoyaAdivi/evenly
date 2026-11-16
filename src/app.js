@@ -10,7 +10,7 @@ const pkg =require('../package.json');
 function currentCommit() {
   const sha = process.env.GIT_SHA;
   if (sha && sha !== 'local') return sha;
-  return process.env.RENDER_GIT_COMMIT || 'local';
+  return process.env.RAILWAY_GIT_COMMIT_SHA || process.env.RENDER_GIT_COMMIT || 'local';
 }
 
 function createApp() {
