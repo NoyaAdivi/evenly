@@ -14,7 +14,7 @@
 
   /* ---------- text, English | Hebrew ---------- */
   const L = {
-    nav1: ['Split a bill', 'חלוקת חשבון'], nav2: ['How it\'s built', 'איך זה עולה'], nav3: ['API', 'API'],
+    nav1: ['Split a bill', 'חלוקת חשבון'], nav2: ['How it\'s built', 'איך זה בנוי'], nav3: ['API', 'API'],
     pill: ['10 ways to split, one tap each', '10 דרכים לחלק, כל אחת בלחיצה'],
     h1a: ['Split any bill.', 'מחלקים כל חשבון.'], h1b: ['End up even.', 'יוצאים שווים.'],
     lead: ['Scan a restaurant receipt, split per dish or just the drinks, send a link where everyone taps what they had, split hotel nights or a whole trip. Exact to the last agora.', 'סורקים קבלה מהמסעדה, מחלקים לפי מנה או רק את השתייה, שולחים קישור שבו כל אחד מסמן מה הוא לקח, מחלקים לילות במלון או טיול שלם. מדויק עד האגורה.'],
@@ -31,7 +31,7 @@
     m_shares: ['By shares', 'לפי חלקים'], m_shares_d: ['A couple counts 2, a kid half', 'זוג נספר כ־2, ילד כחצי'],
     m_exact: ['Exact amounts', 'סכומים מדויקים'], m_exact_d: ['Some pay a set sum, the rest split', 'חלק משלמים סכום קבוע, השאר מתחלק'],
     m_hotel: ['Hotel nights', 'לילות במלון'], m_hotel_d: ['Pay by the nights you stayed', 'משלמים לפי מספר הלילות'],
-    m_trip: ['Trip expenses', 'הוצאות טיול'], m_trip_d: ['Many payers, fewest transfers', 'כמה משלמים, הכי מעט העברות'],
+    m_trip: ['Trip expenses', 'הוצאות טיול'], m_trip_d: ['Many payers, fewest transfers', 'כמה אנשים משלמים, הכי מעט העברות'],
     neu: ['NEW', 'חדש'], back: ['All ways', 'כל הדרכים'],
     s_people: ['Who\'s splitting?', 'מי מתחלק?'], s_total: ['Total bill', 'סכום החשבון'], s_items: ['Dishes · tap who had each one', 'מנות · מסמנים מי לקח כל מנה'],
     s_scan: ['Scan the receipt', 'סורקים את הקבלה'], s_pools: ['Categories · who\'s in each', 'קטגוריות · מי משתתף בכל אחת'],

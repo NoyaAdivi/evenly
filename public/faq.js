@@ -125,11 +125,11 @@ window.NOYA_FAQ = {
    "t": "tech",
    "he": [
     "על מה זה בנוי?",
-    "שרת Node.js ו-Express עם API ב-JSON, בדיקות על Node 20 ו-22, אימג׳ Docker בלי root ופייפליין GitHub Actions שמעלה כל שינוי ל-Render ובודק אותו דרך /health."
+    "שרת Node.js ו-Express עם API ב-JSON, בדיקות על Node 20 ו-22, אימג׳ Docker בלי root ופייפליין GitHub Actions שמעלה כל שינוי ל-Railway ובודק אותו דרך /health."
    ],
    "en": [
     "What is it built with?",
-    "A Node.js and Express server with a JSON API, tests on Node 20 and 22, a non root Docker image and a GitHub Actions pipeline that deploys every change to Render and checks it via /health."
+    "A Node.js and Express server with a JSON API, tests on Node 20 and 22, a non root Docker image and a GitHub Actions pipeline that deploys every change to Railway and checks it via /health."
    ]
   },
   {
