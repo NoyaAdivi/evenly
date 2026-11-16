@@ -14,7 +14,7 @@
 
   /* ---------- text, English | Hebrew ---------- */
   const L = {
-    nav1: ['Split a bill', 'חלוקת חשבון'], nav2: ['How it ships', 'איך זה עולה'], nav3: ['API', 'API'],
+    nav1: ['Split a bill', 'חלוקת חשבון'], nav2: ['How it\'s built', 'איך זה עולה'], nav3: ['API', 'API'],
     pill: ['10 ways to split, one tap each', '10 דרכים לחלק, כל אחת בלחיצה'],
     h1a: ['Split any bill.', 'מחלקים כל חשבון.'], h1b: ['End up even.', 'יוצאים שווים.'],
     lead: ['Scan a restaurant receipt, split per dish or just the drinks, send a link where everyone taps what they had, split hotel nights or a whole trip. Exact to the last agora.', 'סורקים קבלה מהמסעדה, מחלקים לפי מנה או רק את השתייה, שולחים קישור שבו כל אחד מסמן מה הוא לקח, מחלקים לילות במלון או טיול שלם. מדויק עד האגורה.'],
@@ -61,7 +61,7 @@
     g_you: ['You pay', 'את/ה משלם/ת'], g_inc: ['incl. {n}% tip', 'כולל {n}% טיפ'], g_me: ['Not {n}?', 'לא {n}?'], g_shared: ['split with {n}', 'מתחלק עם {n}'], g_gone: ['This link has expired. Ask for a new one 💜', 'הקישור הזה פג. מבקשים קישור חדש 💜'],
     g_everyone: ['Everyone so far', 'כולם עד עכשיו'],
     fabs: ['See the split ↓', 'לתוצאה ↓'],
-    e2: ['DevOps pipeline', 'פייפליין DevOps'], t2: ['From git push to the cloud', 'מ־git push ועד הענן'], d2: ['No manual steps. If a test fails, nothing ships.', 'בלי צעדים ידניים. אם בדיקה נכשלת, שום דבר לא עולה.'],
+    e2: ['DevOps pipeline', 'פייפליין DevOps'], t2: ['From git push to the cloud', 'מ־git push ועד הענן'], d2: ['No manual steps. If a test fails, nothing deploys.', 'בלי צעדים ידניים. אם בדיקה נכשלת, שום דבר לא עולה.'],
     p1: ['A change lands on main', 'שינוי נכנס ל־main'], p2h: ['Tests', 'בדיקות'], p2: ['Every split mode, receipts, rooms and API, on Node 20 and 22', 'כל אופני החלוקה, קבלות, קישורים ו־API על Node 20 ו־22'],
     p3: ['Build the image and smoke test it', 'בניית האימג׳ ובדיקת עשן'], p4: ['Image saved, tagged per commit', 'האימג׳ נשמר עם תגית לכל קומיט'], p5: ['Deployed, then verified via /health', 'עולה לאוויר ונבדק דרך /health'],
     f1h: ['Safe by default', 'בטוח כברירת מחדל'], f1: ['Non-root Alpine image with a health check. Photos are read in the browser, only text reaches the server.', 'אימג׳ Alpine בלי root עם בדיקת תקינות. תמונות נקראות בדפדפן, רק טקסט מגיע לשרת.'],
@@ -162,7 +162,7 @@
       $('#status').classList.add('ok'); $('#st-txt').textContent = `${t('live')} · ${v}`; $('#ver').textContent = v;
     } catch { $('#status').classList.remove('ok'); $('#st-txt').textContent = t('down'); }
   }
-  $('#origin').textContent = /localhost|127\./.test(location.hostname) ? 'https://splitship-1.onrender.com' : location.origin;
+  $('#origin').textContent = /localhost|127\./.test(location.hostname) ? 'https://evenly.onrender.com' : location.origin;
 
   /* ---------- soft sounds (off by default) ---------- */
   let snd = store.get('snd') === '1', ac;
@@ -777,7 +777,7 @@
     txt(last.transfers ? t('spent') : t('tot'), L0, y + 20, '600 34px Rubik, sans-serif', '#8B8296', A);
     const g2 = x.createLinearGradient(R0 - 300, 0, R0 + 300, 0); g2.addColorStop(0, '#D9917A'); g2.addColorStop(1, '#8C7BD6');
     txt(fmt(last.total), R0, y + 30, '700 64px Fredoka, Rubik, sans-serif', g2, B);
-    txt('splitship-1.onrender.com', W / 2, H - 28, '500 24px Rubik, sans-serif', '#8B8296', 'center');
+    txt(location.host || 'evenly.onrender.com', W / 2, H - 28, '500 24px Rubik, sans-serif', '#8B8296', 'center');
     const url = c.toDataURL('image/png');
     modal(`<h3>🖼️ ${esc(t('i_title'))}</h3><p>${esc(t('i_sub'))}</p><img src="${url}" alt="" style="width:100%;border-radius:18px;margin:14px 0;box-shadow:var(--shadow)"><div class="acts"><a class="btn ghost" id="idl" href="${url}" download="evenly.png">${esc(t('i_dl'))}</a><button class="btn primary" id="ish">${esc(t('i_share'))}</button></div>`);
     $('#ish').onclick = async () => {
