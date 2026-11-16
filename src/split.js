@@ -12,6 +12,10 @@
  * mode "exact"   -> some guests pay a fixed amount, the rest is split equally
  * mode "pools"   -> categories (food, drinks, taxi...) each split only between
  *                  the people in it, e.g. drinks only between the drinkers
+ * treat: names (or indexes) of people who are treated, e.g. a birthday; their
+ *        share is split equally between everyone else.
+ * roundTo: round every share up (0.1, 1, 5 or 10) so nobody needs coins;
+ *          the extra is added to the tip.
  * tipPercent adds a tip (or service charge), split by what each person ate.
  * Remainders are given out with the largest remainder method,
  * so the shares always add up to the total.
@@ -138,7 +142,7 @@ function weightedSubtotals(mode, totalCents, guests) {
   return allocate(totalCents, weights);
 }
 
-function splitBill({ total, guests, mode = 'equal', currency = 'ILS', items, pools, tipPercent = 0 } = {}) {
+function splitBill({ total, guests, mode = 'equal', currency = 'ILS', items, pools, tipPercent = 0, treat = [], roundTo = 0 } = {}) {
   if (!MODES.includes(mode)) throw new ValidationError(`mode must be one of: ${MODES.join(', ')}`);
   checkGuests(guests);
   if (typeof tipPercent !== 'number' || !Number.isFinite(tipPercent) || tipPercent < 0 || tipPercent > 100) {
@@ -161,17 +165,44 @@ function splitBill({ total, guests, mode = 'equal', currency = 'ILS', items, poo
   const tipCents = Math.round((subtotal * tipPercent) / 100);
   const tips = allocate(tipCents, sub);
 
+  const names = guests.map((g) => g.name.trim());
+  const pay = sub.map((c, i) => c + tips[i]);
+  const covered = names.map(() => 0);
+
+  if (!Array.isArray(treat)) throw new ValidationError('treat must be an array');
+  const treated = new Set(treat.map((p) => {
+    const i = typeof p === 'number' ? p : names.indexOf(String(p).trim());
+    if (!Number.isInteger(i) || i < 0 || i >= names.length) throw new ValidationError(`cannot treat unknown guest "${p}"`);
+    return i;
+  }));
+  if (treated.size && treated.size >= names.length) throw new ValidationError('someone has to pay, not everyone can be treated');
+  if (treated.size) {
+    const gift = [...treated].reduce((a, i) => a + pay[i], 0);
+    treated.forEach((i) => { pay[i] = 0; });
+    allocate(gift, names.map((_, i) => (treated.has(i) ? 0 : 1))).forEach((c, i) => { pay[i] += c; covered[i] = c; });
+  }
+
+  let extra = 0;
+  if (roundTo) {
+    if (![0.1, 1, 5, 10].includes(roundTo)) throw new ValidationError('roundTo must be 0.1, 1, 5 or 10');
+    const step = Math.round(roundTo * 100);
+    pay.forEach((c, i) => { if (c) { const r = Math.ceil(c / step) * step; extra += r - c; pay[i] = r; } });
+  }
+
   return {
     currency,
     mode,
     subtotal: subtotal / 100,
     tipPercent,
-    tip: tipCents / 100,
-    total: (subtotal + tipCents) / 100,
+    tip: (tipCents + extra) / 100,
+    ...(extra ? { roundingExtra: extra / 100 } : {}),
+    total: (subtotal + tipCents + extra) / 100,
     shares: guests.map((g, i) => ({
-      name: g.name.trim(),
-      amount: (sub[i] + tips[i]) / 100,
+      name: names[i],
+      amount: pay[i] / 100,
       ...(tipCents ? { tip: tips[i] / 100 } : {}),
+      ...(treated.has(i) ? { treated: true } : {}),
+      ...(covered[i] ? { covers: covered[i] / 100 } : {}),
       ...(lines ? { items: lines[i] } : {})
     }))
   };

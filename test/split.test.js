@@ -82,3 +82,18 @@ test('percent, shares, exact and pools', () => {
   assert.throws(() => splitBill({ total: 100, mode: 'percent', guests: [{ name: 'A', percent: 60 }] }), ValidationError);
   assert.throws(() => splitBill({ total: 100, mode: 'exact', guests: [{ name: 'A', amount: 150 }, { name: 'B' }] }), ValidationError);
 });
+
+test('birthday treat and rounding', () => {
+  const g = [{ name: 'Noya' }, { name: 'Dana' }, { name: 'Lior' }];
+  const r = splitBill({ total: 300, guests: g, treat: ['Noya'] });
+  assert.deepEqual(r.shares.map((s) => s.amount), [0, 150, 150]);
+  assert.equal(r.shares[0].treated, true);
+  assert.equal(r.shares[1].covers, 50);
+  const q = splitBill({ total: 100, guests: g, roundTo: 5 });
+  assert.deepEqual(q.shares.map((s) => s.amount), [35, 35, 35]);
+  assert.equal(q.total, 105);
+  assert.equal(q.roundingExtra, 5);
+  assert.equal(sum(q), 10500);
+  assert.throws(() => splitBill({ total: 10, guests: g, treat: [0, 1, 2] }), ValidationError);
+  assert.throws(() => splitBill({ total: 10, guests: g, roundTo: 3 }), ValidationError);
+});

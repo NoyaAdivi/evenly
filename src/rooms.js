@@ -26,7 +26,7 @@ function createRoom({ title, items, tipPercent = 0, people } = {}) {
   if (typeof tipPercent !== 'number' || tipPercent < 0 || tipPercent > 100) throw new ValidationError('tipPercent must be between 0 and 100');
   const room = {
     id: newId(),
-    title: text(title, 60) || 'SplitShip',
+    title: text(title, 60) || 'Evenly',
     tipPercent,
     people: [],
     items: items.map((it, n) => {

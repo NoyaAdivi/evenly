@@ -1,10 +1,10 @@
 services:
-  splitship:
+  evenly:
     build:
       context: .
       args:
         GIT_SHA: local
-    image: splitship:local
+    image: evenly:local
     ports:
       - "3000:3000"
     environment:

@@ -1,4 +1,4 @@
-/* SplitShip front end: every way to split a bill. */
+/* Evenly front end: every way to split a bill. */
 (() => {
   'use strict';
   const $ = (s, r = document) => r.querySelector(s);
@@ -16,7 +16,7 @@
   const L = {
     nav1: ['Split a bill', 'חלוקת חשבון'], nav2: ['How it ships', 'איך זה עולה'], nav3: ['API', 'API'],
     pill: ['10 ways to split, one tap each', '10 דרכים לחלק, כל אחת בלחיצה'],
-    h1a: ['Every bill.', 'כל חשבון.'], h1b: ['Every way.', 'בכל דרך.'],
+    h1a: ['Split any bill.', 'מחלקים כל חשבון.'], h1b: ['End up even.', 'יוצאים שווים.'],
     lead: ['Scan a restaurant receipt, split per dish or just the drinks, send a link where everyone taps what they had, split hotel nights or a whole trip. Exact to the last agora.', 'סורקים קבלה מהמסעדה, מחלקים לפי מנה או רק את השתייה, שולחים קישור שבו כל אחד מסמן מה הוא לקח, מחלקים לילות במלון או טיול שלם. מדויק עד האגורה.'],
     cta1: ['Start splitting', 'מתחילים לחלק'], cta2: ['View on GitHub', 'לקוד בגיטהאב'],
     chip1: ['📸 Receipt scan', '📸 סריקת קבלה'], chip2: ['🔗 Group link', '🔗 קישור קבוצתי'], chip3: ['🧳 Trips', '🧳 טיולים'], chip4: ['🐳 Docker · CI/CD', '🐳 Docker · CI/CD'],
@@ -71,11 +71,22 @@
     a2: ['Status, version, commit', 'סטטוס, גרסה, קומיט'], a3: ['equal · nights · items · percent · shares · exact · pools, with tip', 'שווה · לילות · מנות · אחוזים · חלקים · מדויק · קטגוריות, עם טיפ'],
     a4: ['Receipt text to dishes, categories and total', 'מטקסט של קבלה למנות, קטגוריות וסכום'], a5: ['Trip expenses to fewest transfers', 'הוצאות טיול להכי מעט העברות'],
     a6: ['Open a group link', 'פתיחת קישור קבוצתי'], a7: ['Live room state and totals', 'מצב הקישור והסכומים'], a8: ['Tap an item as yours', 'סימון מנה כשלך'],
-    live: ['Live', 'פעיל'], down: ['Offline', 'לא זמין']
+    live: ['Live', 'פעיל'], down: ['Offline', 'לא זמין'],
+    rot: [['🍕 Pizza night', '🏖️ Eilat weekend', '🧳 Trip to Rome', '🏠 Flatmates bills', '🎂 Birthday dinner', '🍻 Friday beers'], ['🍕 ערב פיצה', '🏖️ סופ״ש באילת', '🧳 טיול לרומא', '🏠 חשבונות שותפים', '🎂 ארוחת יום הולדת', '🍻 בירה של שישי']],
+    s_extra: ['Extras', 'תוספות'], round: ['🪙 Round up, no coins', '🪙 לעגל למעלה, בלי מטבעות'], off: ['Off', 'בלי'],
+    bday_t: ['Birthday / treated: others pay for them', 'יום הולדת / מוזמן: האחרים משלמים עליו'], bdayon: ['🎂 {n} is treated!', '🎂 {n} מוזמן/ת!'],
+    treated: ['🎁 Treated', '🎁 מוזמן/ת'], covers: ['covers {a} of the treat', 'משתתף/ת ב־{a} מההזמנה'], rext: ['🪙 Rounding added {a} to the tip', '🪙 העיגול הוסיף {a} לטיפ'],
+    img: ['🖼️ Image', '🖼️ תמונה'], wheel: ['🎡 Roulette', '🎡 רולטה'], msgto: ['Hi {n}! Your part is {a} 💜 (Evenly)', 'היי {n}! החלק שלך הוא {a} 💜 (Evenly)'],
+    w_title: ['Who pays for everyone?', 'מי משלם על כולם?'], w_sub: ['Spin it. No take-backs 😈', 'מסובבים. אין חרטות 😈'], w_spin: ['Spin!', 'לסובב!'], w_win: ['🎉 {n} pays! {a}', '🎉 {n} משלם/ת! {a}'], w_set: ['Set as payer', 'לקבוע כמשלם/ת'],
+    i_title: ['Your split as an image', 'החלוקה כתמונה'], i_sub: ['Perfect for the group chat or a story', 'מושלם לקבוצה או לסטורי'], i_dl: ['⬇️ Download', '⬇️ להורדה'], i_share: ['📤 Share', '📤 לשתף'],
+    recent: ['🕘 Recent splits', '🕘 חלוקות אחרונות'],
+    b_big: ['🍔 Big eater: {n}', '🍔 אכלן/ית: {n}'], b_drink: ['🍻 Drinks champion: {n}', '🍻 אלוף/ת השתייה: {n}'], b_light: ['🥗 Light eater: {n}', '🥗 אוכל/ת קליל: {n}'],
+    b_bday: ['🎂 Birthday: {n}', '🎂 יום הולדת: {n}'], b_top: ['💸 Biggest share: {n}', '💸 החלק הגדול: {n}'], b_hero: ['🦸 Paid the most: {n}', '🦸 שילם/ה הכי הרבה: {n}'], b_even: ['🤝 Perfectly even', '🤝 מאוזן לגמרי'],
+    snd: ['Sound', 'צלילים'], tot: ['Total', 'סה״כ']
   };
   let lang = store.get('lang') || 'en';
-  const t = (k, v = {}) => { const a = L[k] || [k, k]; return (a[lang === 'he' ? 1 : 0] ?? a[0]).replace(/\{(\w+)\}/g, (_, x) => v[x] ?? ''); };
-  const fmt = (n) => '₪' + (+n).toLocaleString(lang === 'he' ? 'he-IL' : 'en-US', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
+  const t = (k, v = {}) => { const a = L[k] || [k, k]; const x = a[lang === 'he' ? 1 : 0] ?? a[0]; return Array.isArray(x) ? x : x.replace(/\{(\w+)\}/g, (_, x) => v[x] ?? ''); };
+  const fmt = (n) => (S.cur || '₪') + (+n).toLocaleString(lang === 'he' ? 'he-IL' : 'en-US', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
 
   /* ---------- modes ---------- */
   const MODES = [
@@ -99,7 +110,7 @@
 
   /* ---------- state ---------- */
   let uid = 0;
-  const S = { mode: null, group: 'all', tip: 12, total: 450, payer: '', receiptTotal: null, guests: [], items: [], pools: [], expenses: [], room: null };
+  const S = { cur: store.get('cur') || '₪', treat: new Set(), roundTo: 0, mode: null, group: 'all', tip: 12, total: 450, payer: '', receiptTotal: null, guests: [], items: [], pools: [], expenses: [], room: null };
   const gi = (id) => S.guests.findIndex((g) => g.id === id);
   const addGuest = (name, o = {}) => S.guests.push({ id: ++uid, name, nights: 1, percent: '', shares: 1, amount: '', ...o });
   const addItem = (name = '', price = '', qty = 1, cat = 'food', people = []) => S.items.push({ id: ++uid, name, price, qty, cat, people: new Set(people) });
@@ -126,7 +137,7 @@
     S.pools.forEach((p) => { if (p.key !== 'custom') p.name = t('p_' + p.key); });
     S.expenses.forEach((x) => { if (x.key !== 'custom') x.title = t('x_' + x.key); });
     renderPicker(); if (S.mode) { renderStrip(); renderEditor(); calc(); }
-    if (guest.id) renderGuest(); health();
+    if (guest.id) renderGuest(); health(); setSnd(); rotate(true); renderRecent();
   }
   $('#lang').onclick = () => { lang = lang === 'he' ? 'en' : 'he'; store.set('lang', lang); applyLang(); };
   addEventListener('scroll', () => { $('#top').classList.toggle('scrolled', scrollY > 8); fabCheck(); }, { passive: true });
@@ -138,6 +149,13 @@
     s.style.cssText = `left:${(i * 10 + 3) % 96}%;animation-delay:${-i * 1.6}s;animation-duration:${12 + (i % 4) * 3}s;font-size:${1.4 + (i % 3) * 0.5}rem`;
     fl.appendChild(s);
   });
+  let ri = 0;
+  function rotate(now) {
+    const list = t('rot'), el = $('#rot'); if (!el) return;
+    if (!now) ri = (ri + 1) % list.length;
+    el.innerHTML = `<span>${esc(list[ri % list.length])}</span>`;
+  }
+  setInterval(() => rotate(), 2600);
   async function health() {
     try {
       const h = await api('/health'); const v = `v${h.version} · ${String(h.commit).slice(0, 7)}`;
@@ -145,6 +163,24 @@
     } catch { $('#status').classList.remove('ok'); $('#st-txt').textContent = t('down'); }
   }
   $('#origin').textContent = /localhost|127\./.test(location.hostname) ? 'https://splitship-1.onrender.com' : location.origin;
+
+  /* ---------- soft sounds (off by default) ---------- */
+  let snd = store.get('snd') === '1', ac;
+  function beep(kind) {
+    if (!snd) return;
+    try {
+      ac ??= new AudioContext();
+      const notes = { tap: [660], ok: [523, 659, 784], tick: [880], win: [523, 659, 784, 1046] }[kind] || [600];
+      notes.forEach((f, i) => {
+        const o = ac.createOscillator(), g = ac.createGain(), at = ac.currentTime + i * 0.09;
+        o.type = 'sine'; o.frequency.value = f; g.gain.setValueAtTime(0.0001, at); g.gain.exponentialRampToValueAtTime(kind === 'tick' ? 0.04 : 0.09, at + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, at + (kind === 'tick' ? 0.06 : 0.28));
+        o.connect(g).connect(ac.destination); o.start(at); o.stop(at + 0.3);
+      });
+    } catch {}
+  }
+  const setSnd = () => { $('#snd').textContent = snd ? '🔊' : '🔈'; $('#snd').title = t('snd'); };
+  $('#snd').onclick = () => { snd = !snd; store.set('snd', snd ? '1' : '0'); setSnd(); beep('ok'); };
+  document.addEventListener('click', (e) => { if (e.target.closest('.pchip,.tipbar button,.mode,.strip button,.gitem,.presets button,.bday')) beep('tap'); });
 
   /* ---------- toast + confetti ---------- */
   const toast = (m) => { const el = $('#toast'); el.textContent = m; el.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 1800); };
@@ -202,7 +238,7 @@
   const sec = (n, key, body, extra = '') => `<div class="sec" style="animation-delay:${n * 60}ms"><h5><i>${n}</i>${esc(t(key))}${extra}</h5>${body}</div>`;
   function renderEditor() {
     const f = F[S.mode], m = MODES.find((x) => x.k === S.mode);
-    let n = 0, h = `<div class="ed-h"><span class="em">${m.e}</span><div><h3>${esc(t('m_' + m.k))}</h3><p>${esc(t('m_' + m.k + '_d'))}</p></div></div>`;
+    let n = 0, h = `<div class="ed-h"><span class="em">${m.e}</span><div><h3>${esc(t('m_' + m.k))}</h3><p>${esc(t('m_' + m.k + '_d'))}</p></div><select class="cur" id="cur" aria-label="currency">${['₪', '$', '€', '£'].map((c) => `<option ${c === S.cur ? 'selected' : ''}>${c}</option>`).join('')}</select></div>`;
     if (f.scan && S.mode === 'scan') h += sec(++n, 's_scan', scanHTML());
     if (f.people) h += sec(++n, 's_people', peopleHTML(f), f.room ? `<small>${esc(t('s_people_opt'))}</small>` : '');
     if (f.total) h += sec(++n, 's_total', `<div class="money"><span>₪</span><input id="total" type="number" min="0" step="0.01" inputmode="decimal" value="${esc(S.total)}"></div>`);
@@ -211,6 +247,7 @@
     if (f.pools) h += sec(++n, 's_pools', `<div id="pools"></div><div class="presets" id="ppre">${['food', 'drink', 'dessert', 'taxi', 'tix', 'other'].map((k) => `<button data-k="${k}">${{ food: '🍽️', drink: '🍷', dessert: '🍰', taxi: '🚕', tix: '🎟️', other: '➕' }[k]} ${esc(t('p_' + k))}</button>`).join('')}${S.items.length ? `<button id="fromdish">${esc(t('fromdish'))}</button>` : ''}</div>`);
     if (f.expenses) h += sec(++n, 's_exp', `<div id="exps"></div><div class="presets" id="xpre">${['hotel', 'food', 'car', 'dinner', 'fun'].map((k) => `<button data-k="${k}">${{ hotel: '🏨', food: '🛒', car: '⛽', dinner: '🍽️', fun: '🎢' }[k]} ${esc(t('x_' + k))}</button>`).join('')}</div>`);
     if (f.tip) h += sec(++n, 's_tip', `<div class="tipbar" id="tipbar">${[0, 10, 12, 15].map((v) => `<button data-t="${v}" class="${S.tip === v ? 'on' : ''}">${v}%</button>`).join('')}<input id="tipc" type="number" min="0" max="100" step="0.5" placeholder="%" value="${[0, 10, 12, 15].includes(S.tip) ? '' : S.tip}" aria-label="custom tip"></div>`);
+    if (!f.expenses && !f.room) h += sec(++n, 's_extra', `<p class="hint" style="margin:0 0 8px">${esc(t('round'))}</p><div class="tipbar" id="roundbar">${[0, 1, 5, 10].map((v) => `<button data-r="${v}" class="${S.roundTo === v ? 'on' : ''}">${v ? S.cur + v : esc(t('off'))}</button>`).join('')}</div>`);
     if (f.room) h += sec(++n, 's_room', `<button class="btn primary" id="mkroom" style="width:100%;justify-content:center">${esc(t('r_make'))}</button><p class="hint">${esc(t('r_hint'))} ${esc(t('r_ttl'))}</p>`);
     $('#editor').innerHTML = h;
     bindEditor(); renderPeople(); renderItems(); renderPools(); renderExps();
@@ -238,6 +275,8 @@
     });
     on('xpre', 'onclick', (e) => { const b = e.target.closest('button'); if (b) { addExp(b.dataset.k, '', S.guests[0]?.id ?? null); renderExps(); $('#exps').lastChild?.querySelector('.pr').focus(); calc(); } });
     on('mkroom', 'onclick', makeRoom);
+    on('cur', 'onchange', (e) => { S.cur = e.target.value; store.set('cur', S.cur); renderEditor(); calc(); });
+    on('roundbar', 'onclick', (e) => { const b = e.target.closest('button'); if (!b) return; S.roundTo = +b.dataset.r; $$('#roundbar button').forEach((x) => x.classList.toggle('on', x === b)); calc(); });
     on('sample', 'onclick', sample);
     on('file', 'onchange', (e) => scan(e.target.files[0]));
     on('cam', 'onchange', (e) => scan(e.target.files[0]));
@@ -254,7 +293,7 @@
     if ($('#tipc')) $('#tipc').value = hit ? '' : v;
   }
   function removeGuest(id) {
-    S.guests.splice(gi(id), 1);
+    S.guests.splice(gi(id), 1); S.treat.delete(id);
     [...S.items, ...S.pools, ...S.expenses].forEach((x) => x.people.delete(id));
     S.expenses.forEach((x) => { if (x.payer === id) x.payer = S.guests[0]?.id ?? null; });
     peopleChanged();
@@ -271,7 +310,11 @@
       if (pf === 'shares') fld = `<div class="step"><button type="button" data-d="-0.5">−</button><b>×${g.shares}</b><button type="button" data-d="0.5">+</button></div>`;
       if (pf === 'percent') fld = `<div class="fld"><input class="pf" type="number" min="0" max="100" step="0.5" inputmode="decimal" value="${esc(g.percent)}"><em>%</em></div>`;
       if (pf === 'amount') fld = `<div class="fld"><input class="pf" type="number" min="0" step="0.01" inputmode="decimal" placeholder="${esc(t('auto'))}" value="${esc(g.amount)}"><em>₪</em></div>`;
-      el.innerHTML = `<span class="av" style="background:${col(i, 0)};color:${col(i, 1)}">${esc(initial(g.name))}</span><input class="n" maxlength="30">${fld}<button class="rm" type="button" aria-label="remove">✕</button>`;
+      const canTreat = S.mode !== 'trip' && S.mode !== 'room', tr = S.treat.has(g.id);
+      if (tr) el.classList.add('treat');
+      el.innerHTML = `<span class="av" style="background:${col(i, 0)};color:${col(i, 1)}">${tr ? '🎂' : esc(initial(g.name))}</span><input class="n" maxlength="30">${fld}${canTreat ? `<button class="bday ${tr ? 'on' : ''}" type="button" title="${esc(t('bday_t'))}" aria-label="${esc(t('bday_t'))}">🎂</button>` : ''}<button class="rm" type="button" aria-label="remove">✕</button>`;
+      const bd = el.querySelector('.bday');
+      if (bd) bd.onclick = () => { const on = !S.treat.has(g.id); on ? S.treat.add(g.id) : S.treat.delete(g.id); if (on) { burstAt(bd); toast(t('bdayon', { n: g.name })); beep('win'); } renderPeople(); calc(); };
       const n = el.querySelector('.n'); n.value = g.name; n.placeholder = t('name');
       n.oninput = () => { g.name = n.value; el.querySelector('.av').textContent = initial(g.name); renderItems(); renderPools(); renderExps(); calc(); };
       el.querySelector('.rm').onclick = () => removeGuest(g.id);
@@ -411,11 +454,12 @@
   function payload() {
     const m = S.mode, guests = S.guests.map((g) => ({ name: g.name.trim() || '?', nights: g.nights, shares: g.shares, percent: g.percent === '' ? 0 : +g.percent, amount: g.amount === '' ? null : +g.amount }));
     const idx = (set) => [...set].map(gi).filter((i) => i >= 0);
+    const ex = () => ({ treat: idx(S.treat), roundTo: S.roundTo, currency: { '₪': 'ILS', $: 'USD', '€': 'EUR', '£': 'GBP' }[S.cur] });
     if (m === 'trip') return ['/api/settle', { people: guests.map((g) => g.name), expenses: S.expenses.filter((x) => +x.amount > 0).map((x) => ({ title: x.title, amount: +x.amount, payer: Math.max(0, gi(x.payer)), people: idx(x.people) })) }];
-    if (m === 'scan' || m === 'items') return ['/api/split', { mode: 'items', guests, tipPercent: S.tip, items: S.items.filter((it) => it.price !== '' && !isNaN(+it.price)).map((it) => ({ name: it.name || t('dish'), price: +it.price, qty: it.qty, people: idx(it.people) })) }];
-    if (m === 'pools') return ['/api/split', { mode: 'pools', guests, tipPercent: S.tip, pools: S.pools.filter((p) => p.amount !== '' && !isNaN(+p.amount)).map((p) => ({ name: p.name || '?', amount: +p.amount, people: idx(p.people) })) }];
-    if (m === 'hotel') return ['/api/split', { mode: 'nights', total: +S.total, guests }];
-    return ['/api/split', { mode: m, total: +S.total, guests, tipPercent: S.tip }];
+    if (m === 'scan' || m === 'items') return ['/api/split', { mode: 'items', guests, tipPercent: S.tip, items: S.items.filter((it) => it.price !== '' && !isNaN(+it.price)).map((it) => ({ name: it.name || t('dish'), price: +it.price, qty: it.qty, people: idx(it.people) })), ...ex() }];
+    if (m === 'pools') return ['/api/split', { mode: 'pools', guests, tipPercent: S.tip, pools: S.pools.filter((p) => p.amount !== '' && !isNaN(+p.amount)).map((p) => ({ name: p.name || '?', amount: +p.amount, people: idx(p.people) })), ...ex() }];
+    if (m === 'hotel') return ['/api/split', { mode: 'nights', total: +S.total, guests, ...ex() }];
+    return ['/api/split', { mode: m, total: +S.total, guests, tipPercent: S.tip, ...ex() }];
   }
   function calc() {
     clearTimeout(timer);
@@ -437,7 +481,7 @@
     raf = requestAnimationFrame(step);
   }
   const resHead = () => `<div class="out-h"><h3>${esc(t('res'))}</h3><span>${t0 ? Math.round(performance.now() - t0) + ' ms' : ''}</span></div><div class="big" id="big">${fmt(shown)}</div>`;
-  const shareBar = () => `<div class="out-f"><button class="btn ghost" data-a="copy">${esc(t('copy'))}</button><button class="btn ghost" data-a="wa">${esc(t('wa'))}</button><button class="btn ghost" data-a="link">${esc(t('link'))}</button><button class="btn primary" data-a="share">${esc(t('share'))}</button></div>`;
+  const shareBar = (room) => `<div class="out-f"><button class="btn ghost" data-a="copy">${esc(t('copy'))}</button><button class="btn ghost" data-a="wa">${esc(t('wa'))}</button><button class="btn ghost" data-a="link">${esc(t('link'))}</button>${room ? '' : `<button class="btn ghost" data-a="img">${esc(t('img'))}</button><button class="btn ghost" data-a="wheel">${esc(t('wheel'))}</button>`}<button class="btn primary" data-a="share">${esc(t('share'))}</button></div>`;
 
   function render(d, url) {
     last = d; const box = $('#result');
@@ -455,14 +499,17 @@
     h += '<div id="rows">' + d.shares.map((s, i) => {
       const owe = payer && i !== gi(payer.id) ? `<span class="owe">${esc(t('owes', { n: payer.name }))}</span>` : '';
       const det = s.items?.length ? `<div class="det">${s.items.map((x) => `${esc(x.name)}${x.sharedWith > 1 ? ` (÷${x.sharedWith})` : ''} ${fmt(x.amount)}`).join(' · ')}${s.tip ? ` · ${esc(t('tip'))} ${fmt(s.tip)}` : ''}</div>` : '';
-      return `<div class="row ${det ? 'click' : ''}" style="animation-delay:${i * 50}ms"><span class="av" style="background:${col(i, 0)};color:${col(i, 1)}">${esc(initial(s.name))}</span><span class="nm">${esc(s.name)}${owe}</span><span class="pc">${d.total ? Math.round((s.amount / d.total) * 100) : 0}%</span><span class="am">${fmt(s.amount)}</span>${det}</div>`;
+      const cov = s.covers ? `<span class="owe" style="color:var(--accent2)">${esc(t('covers', { a: fmt(s.covers) }))}</span>` : '';
+      return `<div class="row ${det ? 'click' : ''} ${s.treated ? 'treated' : ''}" style="animation-delay:${i * 50}ms"><span class="av" style="background:${col(i, 0)};color:${col(i, 1)}">${s.treated ? '🎂' : esc(initial(s.name))}</span><span class="nm">${esc(s.name)}${s.treated ? '' : owe}${cov}</span><span class="pc">${s.treated ? '' : (d.total ? Math.round((s.amount / d.total) * 100) : 0) + '%'}</span><span class="am">${s.treated ? esc(t('treated')) : fmt(s.amount)}</span>${s.amount > 0 ? `<button class="msg" data-a="msg" data-x="${i}" title="WhatsApp" aria-label="WhatsApp">💬</button>` : ''}${det}</div>`;
     }).join('') + '</div>';
     const sum = Math.round(d.shares.reduce((a, s) => a + s.amount * 100, 0));
+    if (d.roundingExtra) h += `<p class="check" style="color:var(--butter-ink)">${esc(t('rext', { a: fmt(d.roundingExtra) }))}</p>`;
     if (sum === Math.round(d.total * 100)) h += `<p class="check">✓ ${esc(t('chk'))}</p>`;
+    h += badges(d);
     h += `<div class="payer"><span>${esc(t('paid'))}</span><select id="payer"><option value="">${esc(t('nobody'))}</option>${S.guests.map((g) => `<option value="${g.id}" ${String(g.id) === S.payer ? 'selected' : ''}>${esc(g.name || '?')}</option>`).join('')}</select></div>`;
     box.innerHTML = h + shareBar();
     countTo(d.total);
-    $$('#rows .row.click').forEach((r) => r.onclick = () => r.classList.toggle('open'));
+    $$('#rows .row.click').forEach((r) => r.onclick = (e) => { if (!e.target.closest('.msg')) r.classList.toggle('open'); });
     $('#payer').onchange = (e) => { S.payer = e.target.value; render(last, url); };
     $('#fixd')?.addEventListener('click', () => { addItem(t('p_other'), Math.round((S.receiptTotal - d.subtotal) * 100) / 100); renderItems(); calc(); });
   }
@@ -474,30 +521,60 @@
       return `<div class="xfer" style="animation-delay:${i * 80}ms"><span class="av" style="width:30px;height:30px;font-size:.8rem;background:${col(a, 0)};color:${col(a, 1)}">${esc(initial(x.from))}</span>${esc(x.from)}<span class="arrow"></span><b>${fmt(x.amount)}</b><span class="arrow"></span>${esc(x.to)}<span class="av" style="width:30px;height:30px;font-size:.8rem;background:${col(b, 0)};color:${col(b, 1)}">${esc(initial(x.to))}</span></div>`;
     }).join('') : `<p class="check">${esc(t('tr_none'))}</p>`;
     h += `<h5 style="margin:16px 0 4px;font-size:.85rem;color:var(--muted)">${esc(t('bal'))}</h5><div id="rows">` + d.balances.map((b, i) => `<div class="row" style="animation-delay:${i * 50}ms"><span class="av" style="background:${col(i, 0)};color:${col(i, 1)}">${esc(initial(b.name))}</span><span class="nm">${esc(b.name)}<span class="owe" style="color:var(--muted)">${esc(t('paidx', { a: fmt(b.paid) }))}</span></span><span class="am ${b.net > 0 ? 'pos' : b.net < 0 ? 'neg' : ''}">${b.net > 0 ? '+' : ''}${fmt(b.net)}</span></div>`).join('') + '</div>';
-    $('#result').innerHTML = h + shareBar();
+    $('#result').innerHTML = h + badges(d) + shareBar();
     countTo(d.total);
+  }
+  function badges(d) {
+    const out = [], pal = ['c1', 'c2', 'c3', 'c4'];
+    if (d.transfers) {
+      const top = [...d.balances].sort((a, b) => b.paid - a.paid)[0];
+      if (top?.paid) out.push(t('b_hero', { n: top.name }));
+      if (!d.transfers.length) out.push(t('b_even'));
+    } else {
+      d.shares.filter((s) => s.treated).forEach((s) => out.push(t('b_bday', { n: s.name })));
+      const pay = d.shares.filter((s) => !s.treated && s.amount > 0);
+      if (d.mode === 'items' && pay.length > 1) {
+        const cat = Object.fromEntries(S.items.map((it) => [it.name || t('dish'), it.cat]));
+        const food = (s) => (s.items || []).filter((x) => cat[x.name] !== 'drink').reduce((a, x) => a + x.amount, 0);
+        const drink = (s) => (s.items || []).filter((x) => cat[x.name] === 'drink').reduce((a, x) => a + x.amount, 0);
+        const byF = [...pay].sort((a, b) => food(b) - food(a));
+        out.push(t('b_big', { n: byF[0].name }));
+        const dk = [...pay].sort((a, b) => drink(b) - drink(a))[0];
+        if (drink(dk) > 0) out.push(t('b_drink', { n: dk.name }));
+        if (food(byF.at(-1)) < food(byF[0])) out.push(t('b_light', { n: byF.at(-1).name }));
+      } else if (pay.length > 1) {
+        const top = [...pay].sort((a, b) => b.amount - a.amount);
+        out.push(top[0].amount === top.at(-1).amount ? t('b_even') : t('b_top', { n: top[0].name }));
+      }
+    }
+    return out.length ? `<div class="badges">${out.map((x, i) => `<span class="${pal[i % 4]}" style="animation-delay:${300 + i * 120}ms">${esc(x)}</span>`).join('')}</div>` : '';
   }
 
   /* ---------- share ---------- */
   function summary() {
     if (S.mode === 'room' && S.room) return `${t('r_msg')}\n${roomLink()}`;
     if (!last || last.error) return '';
-    if (last.transfers) return (last.transfers.length ? last.transfers.map((x) => `${x.from} → ${x.to}: ${fmt(x.amount)}`).join('\n') : t('tr_none')) + `\n${t('spent')}: ${fmt(last.total)} · SplitShip`;
+    if (last.transfers) return (last.transfers.length ? last.transfers.map((x) => `${x.from} → ${x.to}: ${fmt(x.amount)}`).join('\n') : t('tr_none')) + `\n${t('spent')}: ${fmt(last.total)} · Evenly`;
     const payer = S.guests[gi(+S.payer)];
-    return last.shares.map((s) => `${s.name}: ${fmt(s.amount)}${payer && s.name !== (payer.name.trim() || '?') ? ` → ${payer.name}` : ''}`).join('\n') + (last.tip ? `\n${t('tip')} ${last.tipPercent}%: ${fmt(last.tip)}` : '') + `\n= ${fmt(last.total)} · SplitShip`;
+    return last.shares.map((s) => `${s.name}: ${fmt(s.amount)}${payer && s.name !== (payer.name.trim() || '?') ? ` → ${payer.name}` : ''}`).join('\n') + (last.tip ? `\n${t('tip')} ${last.tipPercent}%: ${fmt(last.tip)}` : '') + `\n= ${fmt(last.total)} · Evenly`;
   }
   const copy = async (s, msg = t('copied')) => { try { await navigator.clipboard.writeText(s); toast(msg); } catch { toast(s); } };
   $('#result').addEventListener('click', async (e) => {
     const b = e.target.closest('[data-a]'); if (!b) return;
     const a = b.dataset.a, txt = summary(); if (!txt && a !== 'link') return;
+    if (a === 'msg') { const s = last.shares[+b.dataset.x]; open('https://wa.me/?text=' + encodeURIComponent(t('msgto', { n: s.name, a: fmt(s.amount) })), '_blank', 'noopener'); return; }
+    if (a === 'img') return imageModal();
+    if (a === 'wheel') return wheelModal();
+    if (S.mode !== 'room') saveRecent();
+    beep('ok');
     if (a === 'copy') { await copy(txt); burstAt(b); }
     if (a === 'wa') { open('https://wa.me/?text=' + encodeURIComponent(txt), '_blank', 'noopener'); burstAt(b); }
     if (a === 'link') { const u = S.mode === 'room' && S.room ? roomLink() : toLink(); if (S.mode !== 'room') history.replaceState(null, '', u); copy(u, t('linked')); }
-    if (a === 'share') { if (navigator.share) { try { await navigator.share({ title: 'SplitShip', text: txt }); burstAt(b); } catch {} } else copy(txt); }
+    if (a === 'share') { if (navigator.share) { try { await navigator.share({ title: 'Evenly', text: txt }); burstAt(b); } catch {} } else copy(txt); }
   });
   function toLink() {
     const ix = (set) => [...set].map(gi);
-    const st = { m: S.mode, tp: S.tip, tt: S.total, rt: S.receiptTotal, py: S.payer ? gi(+S.payer) : -1,
+    const st = { tr: [...S.treat].map(gi), rd: S.roundTo, m: S.mode, tp: S.tip, tt: S.total, rt: S.receiptTotal, py: S.payer ? gi(+S.payer) : -1,
       g: S.guests.map((g) => [g.name, g.nights, g.percent, g.shares, g.amount]),
       i: S.items.map((x) => [x.name, x.price, x.qty, x.cat, ix(x.people)]),
       p: S.pools.map((x) => [x.key, x.name, x.amount, ix(x.people)]),
@@ -517,6 +594,7 @@
       (st.x || []).slice(0, 300).forEach(([k, n, a, py, ps]) => { addExp(k, a, S.guests[py]?.id ?? null, ids(ps)); S.expenses.at(-1).title = String(n).slice(0, 40); });
       S.tip = +st.tp || 0; S.total = st.tt; S.receiptTotal = typeof st.rt === 'number' ? st.rt : null;
       S.payer = S.guests[st.py] ? String(S.guests[st.py].id) : '';
+      S.treat = new Set(ids(st.tr)); S.roundTo = [0, 1, 5, 10].includes(st.rd) ? st.rd : 0;
       return st.m;
     } catch { return false; }
   }
@@ -554,7 +632,7 @@
     }).join('') : `<p class="empty">⏳ ${esc(t('r_wait'))}</p>`) + '</div>';
     const left = v.items.filter((it) => !it.claims.length);
     if (left.length && tot.length) h += `<p class="warn" style="margin-top:12px">${esc(t('r_left'))}: ${left.map((it) => esc(it.name)).join(' · ')}</p>`;
-    h += shareBar() + `<div style="display:flex;justify-content:space-between;margin-top:12px;font-size:.84rem"><a href="${esc(roomLink())}" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">${esc(t('r_open'))}</a><button id="newroom" style="color:var(--muted);font-weight:600">↻ ${esc(t('r_new'))}</button></div>`;
+    h += shareBar(true) + `<div style="display:flex;justify-content:space-between;margin-top:12px;font-size:.84rem"><a href="${esc(roomLink())}" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">${esc(t('r_open'))}</a><button id="newroom" style="color:var(--muted);font-weight:600">↻ ${esc(t('r_new'))}</button></div>`;
     $('#result').innerHTML = h;
     countTo(v.total);
     $$('#rows .row.click').forEach((r) => r.onclick = () => r.classList.toggle('open'));
@@ -573,7 +651,7 @@
   }
   async function loadGuest() {
     try { const v = await api(`/api/rooms/${guest.id}`); if (!guest.room || v.version !== guest.room.version) { guest.room = v; renderGuest(); } }
-    catch { guest.room = null; clearInterval(guest.timer); $('#guest').innerHTML = `<div class="g-title"><span class="em">⌛</span><h2>${esc(t('g_gone'))}</h2><p><a class="btn primary" href="/" style="margin-top:18px">SplitShip</a></p></div>`; }
+    catch { guest.room = null; clearInterval(guest.timer); $('#guest').innerHTML = `<div class="g-title"><span class="em">⌛</span><h2>${esc(t('g_gone'))}</h2><p><a class="btn primary" href="/" style="margin-top:18px">Evenly</a></p></div>`; }
   }
   function renderGuest() {
     const v = guest.room, box = $('#guest'); if (!v) return;
@@ -595,13 +673,117 @@
         return `<button class="gitem ${on ? 'on' : ''}" data-id="${it.id}" style="animation-delay:${i * 40}ms"><span class="ck">✓</span><span class="gn">${it.qty > 1 ? it.qty + '× ' : ''}${esc(it.name)}<small>${others.length ? esc(others.join(', ')) + ' · ' + esc(t('g_shared', { n: n })) : ''}</small></span><span class="gp">${fmt(it.price * it.qty)}</span></button>`;
       }).join('')}</div>
       <details style="margin-top:18px"><summary style="cursor:pointer;font-weight:600;color:var(--muted)">${esc(t('g_everyone'))}</summary>${v.totals.map((x, i) => `<div class="row"><span class="av" style="background:${col(i, 0)};color:${col(i, 1)}">${esc(initial(x.name))}</span><span class="nm">${esc(x.name)}</span><span class="am">${fmt(x.amount)}</span></div>`).join('')}</details>
-      <div class="gbar"><div><small>${esc(t('g_you'))}</small><b>${fmt(me)}</b><small>${v.tipPercent ? esc(t('g_inc', { n: v.tipPercent })) : ''}</small></div><a class="btn" href="/">SplitShip</a></div>`;
+      <div class="gbar"><div><small>${esc(t('g_you'))}</small><b>${fmt(me)}</b><small>${v.tipPercent ? esc(t('g_inc', { n: v.tipPercent })) : ''}</small></div><a class="btn" href="/">Evenly</a></div>`;
     $('#gme').onclick = () => { guest.name = null; store.set('room:' + guest.id, ''); renderGuest(); };
     $$('.gitem', box).forEach((b) => b.onclick = async () => {
       const on = !b.classList.contains('on'); b.classList.toggle('on', on);
       if (on) burstAt(b.querySelector('.ck'));
       try { guest.room = await api(`/api/rooms/${guest.id}/claim`, { name: guest.name, itemId: +b.dataset.id, on }); renderGuest(); } catch (e) { toast(e.message); }
     });
+  }
+
+  /* ---------- recent splits (this browser only) ---------- */
+  const recentList = () => { try { return JSON.parse(store.get('recent') || '[]'); } catch { return []; } };
+  function saveRecent() {
+    if (!last || last.error) return;
+    const list = recentList().filter((r) => r.m !== S.mode || Math.abs(r.tot - last.total) > 0.001);
+    list.unshift({ m: S.mode, tot: last.total, cur: S.cur, at: Date.now(), u: toLink() });
+    store.set('recent', JSON.stringify(list.slice(0, 6))); renderRecent();
+  }
+  function renderRecent() {
+    const list = recentList(), box = $('#recent'); if (!box) return;
+    box.innerHTML = list.length ? `<h5>${esc(t('recent'))}</h5>` + list.map((r) => `<a class="rc" href="${esc(r.u)}">${MODES.find((m) => m.k === r.m)?.e || '🧾'} ${esc(t('m_' + r.m))} · ${esc(r.cur)}${(+r.tot).toLocaleString()} <small>${new Date(r.at).toLocaleDateString(lang === 'he' ? 'he-IL' : 'en-GB', { day: 'numeric', month: 'short' })}</small></a>`).join('') : '';
+  }
+
+  /* ---------- modals: roulette wheel + receipt image ---------- */
+  const modal = (html) => { $('#mbox').innerHTML = `<button class="x" aria-label="close">✕</button>` + html; $('#modal').hidden = false; $('#mbox .x').onclick = closeModal; };
+  const closeModal = () => { $('#modal').hidden = true; };
+  $('#modal').onclick = (e) => { if (e.target.id === 'modal') closeModal(); };
+  addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+  const css = (v) => getComputedStyle(root).getPropertyValue(v).trim();
+
+  function wheelModal() {
+    const ppl = S.guests.filter((g) => g.name.trim()); if (ppl.length < 2) return;
+    modal(`<h3>🎡 ${esc(t('w_title'))}</h3><p>${esc(t('w_sub'))}</p><div class="wheelw"><canvas id="wc" width="680" height="680"></canvas></div><div class="winner" id="win"></div><div class="acts"><button class="btn primary" id="spin">${esc(t('w_spin'))}</button></div>`);
+    const c = $('#wc'), x = c.getContext('2d'), n = ppl.length, seg = (Math.PI * 2) / n;
+    const draw = (rot) => {
+      x.clearRect(0, 0, 680, 680);
+      ppl.forEach((g, i) => {
+        const a = rot + i * seg - Math.PI / 2;
+        x.beginPath(); x.moveTo(340, 340); x.arc(340, 340, 330, a, a + seg); x.closePath();
+        x.fillStyle = css(PAL[gi(g.id) % 4][0]); x.fill(); x.strokeStyle = css('--surface'); x.lineWidth = 6; x.stroke();
+        x.save(); x.translate(340, 340); x.rotate(a + seg / 2); x.fillStyle = css(PAL[gi(g.id) % 4][1]);
+        x.font = '700 34px Fredoka, Rubik, sans-serif'; x.textAlign = 'right'; x.fillText(g.name.slice(0, 12), 300, 12); x.restore();
+      });
+      x.beginPath(); x.arc(340, 340, 46, 0, Math.PI * 2); x.fillStyle = css('--surface'); x.fill(); x.font = '44px sans-serif'; x.textAlign = 'center'; x.fillText('💸', 340, 356);
+    };
+    let rot = 0; draw(0);
+    $('#spin').onclick = () => {
+      const pick = Math.floor(Math.random() * n), turns = 5 + Math.floor(Math.random() * 3), TAU = Math.PI * 2;
+      const from = rot % TAU, jitter = (Math.random() - 0.5) * seg * 0.6, target = turns * TAU + ((TAU - (pick * seg + seg / 2) + jitter) % TAU + TAU) % TAU, st = performance.now(), dur = 4200;
+      let lastSeg = -1; $('#spin').disabled = true; $('#win').textContent = '';
+      const step = (now) => {
+        const k = Math.min(1, (now - st) / dur), e = 1 - (1 - k) ** 4; rot = from + (target - from) * e; draw(rot);
+        const sIdx = Math.floor(((rot % (Math.PI * 2)) / seg)); if (sIdx !== lastSeg) { lastSeg = sIdx; beep('tick'); }
+        if (k < 1) return requestAnimationFrame(step);
+        const g = ppl[pick], w = $('#win');
+        w.textContent = t('w_win', { n: g.name, a: last && !last.error && last.total ? fmt(last.total) : '' }); w.classList.remove('show'); void w.offsetWidth; w.classList.add('show');
+        beep('win'); burstAt(w); $('#spin').disabled = false;
+        if (!last?.transfers && !$('#setp')) $('.acts', $('#mbox')).insertAdjacentHTML('beforeend', `<button class="btn ghost" id="setp">${esc(t('w_set'))}</button>`);
+        if ($('#setp')) $('#setp').onclick = () => { S.payer = String(g.id); closeModal(); render(last, '/api/split'); };
+      };
+      requestAnimationFrame(step);
+    };
+  }
+
+  async function imageModal() {
+    if (!last || last.error) return;
+    await document.fonts?.ready;
+    const W = 1080, rows = last.transfers ? last.transfers.length || 1 : last.shares.length, H = 560 + rows * 120 + (last.tip && !last.transfers ? 90 : 0);
+    const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d');
+    const bg = x.createLinearGradient(0, 0, W, H); bg.addColorStop(0, '#FBE3DA'); bg.addColorStop(0.5, '#ECE6FA'); bg.addColorStop(1, '#DDF0E3');
+    x.fillStyle = bg; x.fillRect(0, 0, W, H);
+    [['#F3D3C6', 120, 140, 220], ['#E3DCF5', 960, 300, 260], ['#D6E9DC', 200, H - 120, 240]].forEach(([cl, cx2, cy, r]) => { x.globalAlpha = 0.7; x.fillStyle = cl; x.beginPath(); x.arc(cx2, cy, r, 0, 7); x.fill(); });
+    x.globalAlpha = 1;
+    const P = 90, top = 90, bot = H - 70; x.fillStyle = '#FFFDF9'; x.shadowColor = 'rgba(58,51,69,.18)'; x.shadowBlur = 40; x.shadowOffsetY = 14;
+    x.beginPath(); x.roundRect(P, top, W - 2 * P, bot - top, 36); x.fill(); x.shadowColor = 'transparent';
+    const rtl = lang === 'he', L0 = rtl ? W - P - 60 : P + 60, R0 = rtl ? P + 60 : W - P - 60;
+    const txt = (s, X, Y, font, color, align) => { x.font = font; x.fillStyle = color; x.textAlign = align; x.direction = rtl ? 'rtl' : 'ltr'; x.fillText(s, X, Y); };
+    const A = rtl ? 'right' : 'left', B = rtl ? 'left' : 'right';
+    const m = MODES.find((q) => q.k === S.mode);
+    txt('Evenly', L0, top + 90, '700 56px Fredoka, Rubik, sans-serif', '#3A3345', A);
+    txt(`${m.e} ${t('m_' + m.k)}`, L0, top + 140, '600 32px Rubik, sans-serif', '#8C7BD6', A);
+    txt(new Date().toLocaleDateString(rtl ? 'he-IL' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' }), R0, top + 90, '500 28px Rubik, sans-serif', '#8B8296', B);
+    const dash = (y) => { x.setLineDash([14, 12]); x.strokeStyle = '#E2D8CB'; x.lineWidth = 3; x.beginPath(); x.moveTo(P + 50, y); x.lineTo(W - P - 50, y); x.stroke(); x.setLineDash([]); };
+    dash(top + 180);
+    let y = top + 270;
+    const pal = [['#F3D3C6', '#B2644D'], ['#E3DCF5', '#6E5FC0'], ['#D6E9DC', '#3F7E5A'], ['#F6EBC8', '#9A7A22']];
+    const avatar = (i, s, X, Y) => { const [b2, f] = pal[i % 4]; x.fillStyle = b2; x.beginPath(); x.roundRect(X - 36, Y - 52, 72, 72, 22); x.fill(); txt(s, X, Y - 2, '700 34px Fredoka, Rubik, sans-serif', f, 'center'); };
+    if (last.transfers) {
+      (last.transfers.length ? last.transfers : [{ from: t('b_even'), to: '', amount: 0 }]).forEach((tr, i) => {
+        avatar(i, initial(tr.from), L0 + (rtl ? -36 : 36), y);
+        txt(tr.to ? `${tr.from}  →  ${tr.to}` : tr.from, L0 + (rtl ? -100 : 100), y, '600 36px Rubik, sans-serif', '#3A3345', A);
+        if (tr.amount) txt(fmt(tr.amount), R0, y, '800 40px Rubik, sans-serif', '#3A3345', B); y += 120;
+      });
+    } else {
+      last.shares.forEach((s, i) => {
+        avatar(i, s.treated ? '🎂' : initial(s.name), L0 + (rtl ? -36 : 36), y);
+        txt(s.name, L0 + (rtl ? -100 : 100), y, '600 38px Rubik, sans-serif', '#3A3345', A);
+        txt(s.treated ? t('treated') : fmt(s.amount), R0, y, '800 42px Rubik, sans-serif', s.treated ? '#D9917A' : '#3A3345', B); y += 120;
+      });
+      if (last.tip) { txt(`${t('tip')} ${last.tipPercent}%`, L0, y - 20, '500 30px Rubik, sans-serif', '#8B8296', A); txt(fmt(last.tip), R0, y - 20, '600 30px Rubik, sans-serif', '#8B8296', B); y += 90; }
+    }
+    dash(y - 60);
+    txt(last.transfers ? t('spent') : t('tot'), L0, y + 20, '600 34px Rubik, sans-serif', '#8B8296', A);
+    const g2 = x.createLinearGradient(R0 - 300, 0, R0 + 300, 0); g2.addColorStop(0, '#D9917A'); g2.addColorStop(1, '#8C7BD6');
+    txt(fmt(last.total), R0, y + 30, '700 64px Fredoka, Rubik, sans-serif', g2, B);
+    txt('splitship-1.onrender.com', W / 2, H - 28, '500 24px Rubik, sans-serif', '#8B8296', 'center');
+    const url = c.toDataURL('image/png');
+    modal(`<h3>🖼️ ${esc(t('i_title'))}</h3><p>${esc(t('i_sub'))}</p><img src="${url}" alt="" style="width:100%;border-radius:18px;margin:14px 0;box-shadow:var(--shadow)"><div class="acts"><a class="btn ghost" id="idl" href="${url}" download="evenly.png">${esc(t('i_dl'))}</a><button class="btn primary" id="ish">${esc(t('i_share'))}</button></div>`);
+    $('#ish').onclick = async () => {
+      try { const blob = await (await fetch(url)).blob(), file = new File([blob], 'evenly.png', { type: 'image/png' }); if (navigator.canShare?.({ files: [file] })) await navigator.share({ files: [file], title: 'Evenly' }); else $('#idl').click(); } catch {}
+    };
+    saveRecent(); beep('ok');
   }
 
   /* ---------- misc ---------- */

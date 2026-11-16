@@ -1,6 +1,6 @@
 {
-  "name": "splitship",
-  "version": "3.0.0",
+  "name": "evenly",
+  "version": "4.0.0",
   "description": "Split any bill every way: receipt scanning, per dish, food & drinks, group links, hotel nights, trip expenses. Node.js API with Docker and GitHub Actions CI/CD",
   "main": "src/server.js",
   "type": "commonjs",
@@ -13,6 +13,6 @@
   "engines": { "node": ">=20" },
   "author": "Noya Adivi",
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/NoyaAdivi/splitship.git" },
+  "repository": { "type": "git", "url": "https://github.com/NoyaAdivi/evenly.git" },
   "dependencies": { "express": "^4.21.2" }
 }

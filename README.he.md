@@ -1,46 +1,46 @@
 <div dir="rtl">
 
 <p align="center">
-  <a href="https://splitship-1.onrender.com"><img src="docs/readme/banner-he.svg" width="100%" alt="SplitShip: API לחלוקת חשבון עם פייפליין DevOps מלא"></a>
+  <a href="https://splitship-1.onrender.com"><img src="docs/readme/banner-he.svg" width="100%" alt="Evenly: מחלקים כל חשבון, יוצאים שווים"></a>
 </p>
 
 <p align="center"><a href="README.md"><img src="docs/readme/lang-en.svg" height="44" alt="Read in English"></a></p>
 
 <p align="center">
   <a href="https://splitship-1.onrender.com"><img src="https://img.shields.io/badge/%D7%9C%D7%93%D7%9E%D7%95_%D7%94%D7%97%D7%99-FFD5C9?style=for-the-badge&logo=googlechrome&logoColor=A8483A" alt="לדמו החי"></a>
-  <a href="https://github.com/NoyaAdivi/splitship/actions"><img src="https://img.shields.io/badge/%D7%9C%D7%A4%D7%99%D7%99%D7%A4%D7%9C%D7%99%D7%99%D7%9F-D9F3E7?style=for-the-badge&logo=githubactions&logoColor=1F7350" alt="לפייפליין"></a>
+  <a href="https://github.com/NoyaAdivi/evenly/actions"><img src="https://img.shields.io/badge/%D7%9C%D7%A4%D7%99%D7%99%D7%A4%D7%9C%D7%99%D7%99%D7%9F-D9F3E7?style=for-the-badge&logo=githubactions&logoColor=1F7350" alt="לפייפליין"></a>
   <a href="https://splitship-1.onrender.com/health"><img src="https://img.shields.io/badge/%D7%91%D7%93%D7%99%D7%A7%D7%AA_%D7%AA%D7%A7%D7%99%D7%A0%D7%95%D7%AA-DAD5FF?style=for-the-badge&logo=statuspage&logoColor=5548C8" alt="בדיקת תקינות"></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/NoyaAdivi/splitship/actions/workflows/ci.yml"><img src="https://github.com/NoyaAdivi/splitship/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <a href="https://github.com/NoyaAdivi/splitship/actions/workflows/deploy.yml"><img src="https://github.com/NoyaAdivi/splitship/actions/workflows/deploy.yml/badge.svg" alt="פריסה"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/NoyaAdivi/splitship?color=DAD5FF&labelColor=5548C8" alt="רישיון"></a>
-  <a href="https://github.com/NoyaAdivi/splitship/commits/main"><img src="https://img.shields.io/github/last-commit/NoyaAdivi/splitship?color=FFD5C9&labelColor=A8483A" alt="עדכון אחרון"></a>
+  <a href="https://github.com/NoyaAdivi/evenly/actions/workflows/ci.yml"><img src="https://github.com/NoyaAdivi/evenly/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/NoyaAdivi/evenly/actions/workflows/deploy.yml"><img src="https://github.com/NoyaAdivi/evenly/actions/workflows/deploy.yml/badge.svg" alt="פריסה"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/NoyaAdivi/evenly?color=DAD5FF&labelColor=5548C8" alt="רישיון"></a>
+  <a href="https://github.com/NoyaAdivi/evenly/commits/main"><img src="https://img.shields.io/github/last-commit/NoyaAdivi/evenly?color=FFD5C9&labelColor=A8483A" alt="עדכון אחרון"></a>
 </p>
 
-<h3 align="center">מחלקים את החשבון. משגרים את הקוד.</h3>
+<h3 align="center">מחלקים כל חשבון. יוצאים שווים.</h3>
 
 <p align="center">
-  SplitShip מחלק חשבון מלון קבוצתי בין האורחים, <b>מדויק עד האגורה האחרונה</b>.<br>
-  העיקר הוא מה שמסביב: כל push נבדק, נארז ב־Docker ועולה לענן לבד.
+  Evenly מחלק כל חשבון בין חברים, <b>מדויק עד האגורה האחרונה</b>: סורקים קבלה ממסעדה, מחלקים לפי מנה או רק את השתייה,<br>שולחים קישור שבו כל אחד מסמן את שלו, מחלקים לילות במלון או טיול שלם.<br>
+  מאחורי הקלעים, כל push נבדק, נארז ב־Docker ועולה לענן לבד.
 </p>
 
 <table align="center">
   <tr>
     <td align="center" width="25%"><a href="Dockerfile"><b>🐳 Docker</b></a><br><sub>רב שלבי, בלי root</sub></td>
-    <td align="center" width="25%"><a href="https://github.com/NoyaAdivi/splitship/actions/workflows/ci.yml"><b>✅ 2 × Node</b></a><br><sub>בדיקות על 20 ו־22</sub></td>
-    <td align="center" width="25%"><a href="https://github.com/NoyaAdivi/splitship/pkgs/container/splitship"><b>📦 GHCR</b></a><br><sub>אימג׳ לכל קומיט</sub></td>
+    <td align="center" width="25%"><a href="https://github.com/NoyaAdivi/evenly/actions/workflows/ci.yml"><b>✅ 2 × Node</b></a><br><sub>בדיקות על 20 ו־22</sub></td>
+    <td align="center" width="25%"><a href="https://github.com/NoyaAdivi/evenly/pkgs/container/evenly"><b>📦 GHCR</b></a><br><sub>אימג׳ לכל קומיט</sub></td>
     <td align="center" width="25%"><a href="https://splitship-1.onrender.com"><b>☁️ פריסה אוטומטית</b></a><br><sub>ל־Render אחרי ה־CI</sub></td>
   </tr>
 </table>
 
 <p align="center">
-  <a href="https://splitship-1.onrender.com"><img src="docs/social/splitship-github-he.png" width="100%" alt="SplitShip: כל push עולה לענן, אוטומטית ובבטחה"></a>
+  <a href="https://splitship-1.onrender.com"><img src="docs/social/evenly-github-he.png" width="100%" alt="Evenly: מחלקים כל חשבון, יוצאים שווים"></a>
 </p>
 
 <a name="what"></a>
-<p align="center"><a href="#pipeline"><img src="docs/readme/what-he.svg" width="100%" alt="מה זה SplitShip"></a></p>
+<p align="center"><a href="#pipeline"><img src="docs/readme/what-he.svg" width="100%" alt="מה זה Evenly"></a></p>
 
 <table dir="rtl">
   <tr valign="top">
@@ -65,7 +65,7 @@
     <td valign="top" width="33%" dir="rtl">
       <p><b>☁️ עולה לענן לבד</b></p>
       <ul>
-        <li><a href="https://github.com/NoyaAdivi/splitship/pkgs/container/splitship"><b>האימג׳ עולה ל־GHCR</b></a> עם התגיות <code>latest</code> וה־SHA</li>
+        <li><a href="https://github.com/NoyaAdivi/evenly/pkgs/container/evenly"><b>האימג׳ עולה ל־GHCR</b></a> עם התגיות <code>latest</code> וה־SHA</li>
         <li><b>פריסה ל־Render</b> רק אחרי שה־CI עובר</li>
         <li><b>מוודא שהגרסה עלתה:</b> מחכה ש־<code>/health</code> יציג את הקומיט החדש</li>
         <li><a href="https://splitship-1.onrender.com"><b>ממשק ווב בפסטל</b></a> לנסות בדפדפן</li>
@@ -111,11 +111,11 @@ flowchart LR
 <p align="center"><b>קונטיינר</b><br>
 <a href="https://www.docker.com"><img src="https://img.shields.io/badge/Docker-FBD5E0?style=for-the-badge&logo=docker&logoColor=A03A5C" alt="Docker"></a>
 <a href="https://alpinelinux.org"><img src="https://img.shields.io/badge/Alpine_Linux-FBD5E0?style=for-the-badge&logo=alpinelinux&logoColor=A03A5C" alt="Alpine Linux"></a>
-<a href="https://github.com/NoyaAdivi/splitship/pkgs/container/splitship"><img src="https://img.shields.io/badge/GHCR-FBD5E0?style=for-the-badge&logo=github&logoColor=A03A5C" alt="GHCR"></a>
+<a href="https://github.com/NoyaAdivi/evenly/pkgs/container/evenly"><img src="https://img.shields.io/badge/GHCR-FBD5E0?style=for-the-badge&logo=github&logoColor=A03A5C" alt="GHCR"></a>
 </p>
 
 <p align="center"><b>CI / CD</b><br>
-<a href="https://github.com/NoyaAdivi/splitship/actions"><img src="https://img.shields.io/badge/GitHub_Actions-D9F3E7?style=for-the-badge&logo=githubactions&logoColor=1F7350" alt="GitHub Actions"></a>
+<a href="https://github.com/NoyaAdivi/evenly/actions"><img src="https://img.shields.io/badge/GitHub_Actions-D9F3E7?style=for-the-badge&logo=githubactions&logoColor=1F7350" alt="GitHub Actions"></a>
 <a href="https://nodejs.org/api/test.html"><img src="https://img.shields.io/badge/node:test-D9F3E7?style=for-the-badge&logo=nodedotjs&logoColor=1F7350" alt="node:test"></a>
 </p>
 
@@ -130,7 +130,7 @@ flowchart LR
 |---|---|---|
 | `GET` | [`/`](https://splitship-1.onrender.com) | ממשק ווב פסטלי עם 10 דרכים לחלק: סריקת קבלה, לפי מנה, אוכל ושתייה, קישור קבוצתי, שווה, אחוזים, חלקים, סכומים מדויקים, לילות במלון והוצאות טיול |
 | `GET` | [`/health`](https://splitship-1.onrender.com/health) | סטטוס, גרסה, SHA של הקומיט, זמן ריצה |
-| `POST` | `/api/split` | חלוקת חשבון: שווה (`equal`), לילות (`nights`), לפי מנות (`items`), אחוזים (`percent`), חלקים (`shares`), סכומים מדויקים (`exact`) או קטגוריות (`pools`, למשל שתייה רק בין מי ששתה), עם טיפ אופציונלי (`tipPercent`) |
+| `POST` | `/api/split` | חלוקת חשבון: שווה (`equal`), לילות (`nights`), לפי מנות (`items`), אחוזים (`percent`), חלקים (`shares`), סכומים מדויקים (`exact`) או קטגוריות (`pools`, למשל שתייה רק בין מי ששתה), עם טיפ (`tipPercent`), יום הולדת (`treat`, האחרים משלמים עליו) ועיגול (`roundTo`, בלי מטבעות) |
 | `POST` | `/api/settle` | הוצאות טיול עם כמה משלמים, להכי מעט העברות (מי מעביר למי) |
 | `POST` | `/api/receipt/parse` | הופך טקסט של קבלה סרוקה (עברית או אנגלית) למנות עם קטגוריה, סכום ודמי שירות |
 | `POST` | `/api/rooms` | פתיחת קישור קבוצתי (נשמר 24 שעות בזיכרון) |
@@ -182,8 +182,8 @@ npm start
 
 1. ב־[Render](https://dashboard.render.com) יוצרים **Web Service** מהריפו הזה, בשפה **Docker**, ומכבים את **Auto-Deploy**.
 2. מעתיקים את כתובת ה־**Deploy Hook** מההגדרות של השירות.
-3. מוסיפים אותה כ־Secret בשם `RENDER_DEPLOY_HOOK_URL` ב־[Settings → Secrets → Actions](https://github.com/NoyaAdivi/splitship/settings/secrets/actions).
-4. מוסיפים את כתובת ה־Render כ־Variable בשם `APP_URL` ב־[Settings → Variables → Actions](https://github.com/NoyaAdivi/splitship/settings/variables/actions).
+3. מוסיפים אותה כ־Secret בשם `RENDER_DEPLOY_HOOK_URL` ב־[Settings → Secrets → Actions](https://github.com/NoyaAdivi/evenly/settings/secrets/actions).
+4. מוסיפים את כתובת ה־Render כ־Variable בשם `APP_URL` ב־[Settings → Variables → Actions](https://github.com/NoyaAdivi/evenly/settings/variables/actions).
 
 > [!IMPORTANT]
 > כתובת ה־Deploy Hook היא סוד. שומרים אותה רק ב־GitHub Secrets, אף פעם לא בקוד.
@@ -216,7 +216,7 @@ npm start
 <p align="center"><a href="https://www.linkedin.com/in/noya-adivi/"><img src="docs/readme/footer-he.svg" width="100%" alt="נבנה על ידי נויה עדיבי"></a></p>
 
 <p align="center">
-  <a href="https://splitship-1.onrender.com"><img src="https://img.shields.io/badge/%D7%9C%D7%A4%D7%AA%D7%95%D7%97_%D7%90%D7%AA_SplitShip-FFD5C9?style=for-the-badge&logo=googlechrome&logoColor=A8483A" alt="demo"></a>
+  <a href="https://splitship-1.onrender.com"><img src="https://img.shields.io/badge/%D7%9C%D7%A4%D7%AA%D7%95%D7%97_%D7%90%D7%AA_Evenly-FFD5C9?style=for-the-badge&logo=googlechrome&logoColor=A8483A" alt="demo"></a>
   <a href="https://www.linkedin.com/in/noya-adivi/"><img src="https://img.shields.io/badge/LinkedIn-DAD5FF?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzU1NDhDOCIgZD0iTTIwLjQ1IDIwLjQ1aC0zLjU2di01LjU3YzAtMS4zMy0uMDMtMy4wNC0xLjg1LTMuMDQtMS44NiAwLTIuMTQgMS40NS0yLjE0IDIuOTR2NS42N0g5LjM1VjloMy40MXYxLjU2aC4wNWMuNDgtLjkgMS42NC0xLjg1IDMuMzctMS44NSAzLjYgMCA0LjI3IDIuMzcgNC4yNyA1LjQ2djYuMjh6TTUuMzQgNy40M2EyLjA2IDIuMDYgMCAxIDEgMC00LjEzIDIuMDYgMi4wNiAwIDAgMSAwIDQuMTN6TTcuMTIgMjAuNDVIMy41NlY5aDMuNTZ2MTEuNDV6TTIyLjIyIDBIMS43N0MuNzkgMCAwIC43NyAwIDEuNzN2MjAuNTRDMCAyMy4yMy43OSAyNCAxLjc3IDI0aDIwLjQ1Yy45OCAwIDEuNzgtLjc3IDEuNzgtMS43M1YxLjczQzI0IC43NyAyMy4yIDAgMjIuMjIgMHoiLz48L3N2Zz4=" alt="LinkedIn"></a>
   <a href="https://noyaadivi.github.io/noya-website"><img src="https://img.shields.io/badge/%D7%AA%D7%99%D7%A7_%D7%A2%D7%91%D7%95%D7%93%D7%95%D7%AA-D9F3E7?style=for-the-badge&logo=githubpages&logoColor=1F7350" alt="Portfolio"></a>
   <a href="https://github.com/NoyaAdivi"><img src="https://img.shields.io/badge/%D7%A2%D7%95%D7%93_%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98%D7%99%D7%9D-FBD5E0?style=for-the-badge&logo=github&logoColor=A03A5C" alt="More projects"></a>

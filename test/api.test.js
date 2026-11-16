@@ -48,7 +48,7 @@ test('bad JSON gives 400', async () => {
 test('landing page is served', async () => {
   const res = await fetch(`${base}/`);
   assert.equal(res.status, 200);
-  assert.match(await res.text(), /SplitShip/);
+  assert.match(await res.text(), /Evenly/);
 });
 
 test('unknown route is 404', async () => {
