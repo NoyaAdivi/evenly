@@ -162,7 +162,7 @@
       $('#status').classList.add('ok'); $('#st-txt').textContent = `${t('live')} · ${v}`; $('#ver').textContent = v;
     } catch { $('#status').classList.remove('ok'); $('#st-txt').textContent = t('down'); }
   }
-  $('#origin').textContent = /localhost|127\./.test(location.hostname) ? 'https://evenly.onrender.com' : location.origin;
+  $('#origin').textContent = /localhost|127\./.test(location.hostname) ? 'https://evenly-app.onrender.com' : location.origin;
 
   /* ---------- soft sounds (off by default) ---------- */
   let snd = store.get('snd') === '1', ac;
@@ -777,7 +777,7 @@
     txt(last.transfers ? t('spent') : t('tot'), L0, y + 20, '600 34px Rubik, sans-serif', '#8B8296', A);
     const g2 = x.createLinearGradient(R0 - 300, 0, R0 + 300, 0); g2.addColorStop(0, '#D9917A'); g2.addColorStop(1, '#8C7BD6');
     txt(fmt(last.total), R0, y + 30, '700 64px Fredoka, Rubik, sans-serif', g2, B);
-    txt(location.host || 'evenly.onrender.com', W / 2, H - 28, '500 24px Rubik, sans-serif', '#8B8296', 'center');
+    txt(location.host || 'evenly-app.onrender.com', W / 2, H - 28, '500 24px Rubik, sans-serif', '#8B8296', 'center');
     const url = c.toDataURL('image/png');
     modal(`<h3>🖼️ ${esc(t('i_title'))}</h3><p>${esc(t('i_sub'))}</p><img src="${url}" alt="" style="width:100%;border-radius:18px;margin:14px 0;box-shadow:var(--shadow)"><div class="acts"><a class="btn ghost" id="idl" href="${url}" download="evenly.png">${esc(t('i_dl'))}</a><button class="btn primary" id="ish">${esc(t('i_share'))}</button></div>`);
     $('#ish').onclick = async () => {

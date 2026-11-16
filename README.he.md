@@ -1,15 +1,15 @@
 <div dir="rtl">
 
 <p align="center">
-  <a href="https://evenly.onrender.com"><img src="docs/readme/banner-he.svg" width="100%" alt="Evenly: מחלקים כל חשבון, יוצאים שווים"></a>
+  <a href="https://evenly-app.onrender.com"><img src="docs/readme/banner-he.svg" width="100%" alt="Evenly: מחלקים כל חשבון, יוצאים שווים"></a>
 </p>
 
 <p align="center"><a href="README.md"><img src="docs/readme/lang-en.svg" height="44" alt="Read in English"></a></p>
 
 <p align="center">
-  <a href="https://evenly.onrender.com"><img src="https://img.shields.io/badge/%D7%9C%D7%93%D7%9E%D7%95_%D7%94%D7%97%D7%99-FFD5C9?style=for-the-badge&logo=googlechrome&logoColor=A8483A" alt="לדמו החי"></a>
+  <a href="https://evenly-app.onrender.com"><img src="https://img.shields.io/badge/%D7%9C%D7%93%D7%9E%D7%95_%D7%94%D7%97%D7%99-FFD5C9?style=for-the-badge&logo=googlechrome&logoColor=A8483A" alt="לדמו החי"></a>
   <a href="https://github.com/NoyaAdivi/evenly/actions"><img src="https://img.shields.io/badge/%D7%9C%D7%A4%D7%99%D7%99%D7%A4%D7%9C%D7%99%D7%99%D7%9F-D9F3E7?style=for-the-badge&logo=githubactions&logoColor=1F7350" alt="לפייפליין"></a>
-  <a href="https://evenly.onrender.com/health"><img src="https://img.shields.io/badge/%D7%91%D7%93%D7%99%D7%A7%D7%AA_%D7%AA%D7%A7%D7%99%D7%A0%D7%95%D7%AA-DAD5FF?style=for-the-badge&logo=statuspage&logoColor=5548C8" alt="בדיקת תקינות"></a>
+  <a href="https://evenly-app.onrender.com/health"><img src="https://img.shields.io/badge/%D7%91%D7%93%D7%99%D7%A7%D7%AA_%D7%AA%D7%A7%D7%99%D7%A0%D7%95%D7%AA-DAD5FF?style=for-the-badge&logo=statuspage&logoColor=5548C8" alt="בדיקת תקינות"></a>
 </p>
 
 <p align="center">
@@ -31,12 +31,12 @@
     <td align="center" width="25%"><a href="Dockerfile"><b>🐳 Docker</b></a><br><sub>רב שלבי, בלי root</sub></td>
     <td align="center" width="25%"><a href="https://github.com/NoyaAdivi/evenly/actions/workflows/ci.yml"><b>✅ 2 × Node</b></a><br><sub>בדיקות על 20 ו־22</sub></td>
     <td align="center" width="25%"><a href="https://github.com/NoyaAdivi/evenly/pkgs/container/evenly"><b>📦 GHCR</b></a><br><sub>אימג׳ לכל קומיט</sub></td>
-    <td align="center" width="25%"><a href="https://evenly.onrender.com"><b>☁️ פריסה אוטומטית</b></a><br><sub>ל־Render אחרי ה־CI</sub></td>
+    <td align="center" width="25%"><a href="https://evenly-app.onrender.com"><b>☁️ פריסה אוטומטית</b></a><br><sub>ל־Render אחרי ה־CI</sub></td>
   </tr>
 </table>
 
 <p align="center">
-  <a href="https://evenly.onrender.com"><img src="docs/social/evenly-github-he.png" width="100%" alt="Evenly: מחלקים כל חשבון, יוצאים שווים"></a>
+  <a href="https://evenly-app.onrender.com"><img src="docs/social/evenly-github-he.png" width="100%" alt="Evenly: מחלקים כל חשבון, יוצאים שווים"></a>
 </p>
 
 <a name="what"></a>
@@ -68,7 +68,7 @@
         <li><a href="https://github.com/NoyaAdivi/evenly/pkgs/container/evenly"><b>האימג׳ עולה ל־GHCR</b></a> עם התגיות <code>latest</code> וה־SHA</li>
         <li><b>פריסה ל־Render</b> רק אחרי שה־CI עובר</li>
         <li><b>מוודא שהגרסה עלתה:</b> מחכה ש־<code>/health</code> יציג את הקומיט החדש</li>
-        <li><a href="https://evenly.onrender.com"><b>ממשק ווב בפסטל</b></a> לנסות בדפדפן</li>
+        <li><a href="https://evenly-app.onrender.com"><b>ממשק ווב בפסטל</b></a> לנסות בדפדפן</li>
       </ul>
     </td>
   </tr>
@@ -128,8 +128,8 @@ flowchart LR
 
 | שיטה | נתיב | מה זה עושה |
 |---|---|---|
-| `GET` | [`/`](https://evenly.onrender.com) | ממשק ווב פסטלי עם 10 דרכים לחלק: סריקת קבלה, לפי מנה, אוכל ושתייה, קישור קבוצתי, שווה, אחוזים, חלקים, סכומים מדויקים, לילות במלון והוצאות טיול |
-| `GET` | [`/health`](https://evenly.onrender.com/health) | סטטוס, גרסה, SHA של הקומיט, זמן ריצה |
+| `GET` | [`/`](https://evenly-app.onrender.com) | ממשק ווב פסטלי עם 10 דרכים לחלק: סריקת קבלה, לפי מנה, אוכל ושתייה, קישור קבוצתי, שווה, אחוזים, חלקים, סכומים מדויקים, לילות במלון והוצאות טיול |
+| `GET` | [`/health`](https://evenly-app.onrender.com/health) | סטטוס, גרסה, SHA של הקומיט, זמן ריצה |
 | `POST` | `/api/split` | חלוקת חשבון: שווה (`equal`), לילות (`nights`), לפי מנות (`items`), אחוזים (`percent`), חלקים (`shares`), סכומים מדויקים (`exact`) או קטגוריות (`pools`, למשל שתייה רק בין מי ששתה), עם טיפ (`tipPercent`), יום הולדת (`treat`, האחרים משלמים עליו) ועיגול (`roundTo`, בלי מטבעות) |
 | `POST` | `/api/settle` | הוצאות טיול עם כמה משלמים, להכי מעט העברות (מי מעביר למי) |
 | `POST` | `/api/receipt/parse` | הופך טקסט של קבלה סרוקה (עברית או אנגלית) למנות עם קטגוריה, סכום ודמי שירות |
@@ -140,7 +140,7 @@ flowchart LR
 </div>
 
 ```bash
-curl -X POST https://evenly.onrender.com/api/split \
+curl -X POST https://evenly-app.onrender.com/api/split \
   -H "content-type: application/json" \
   -d '{"total":1200,"mode":"nights","guests":[{"name":"Noya","nights":3},{"name":"Dana","nights":1}]}'
 ```
@@ -216,7 +216,7 @@ npm start
 <p align="center"><a href="https://www.linkedin.com/in/noya-adivi/"><img src="docs/readme/footer-he.svg" width="100%" alt="נבנה על ידי נויה עדיבי"></a></p>
 
 <p align="center">
-  <a href="https://evenly.onrender.com"><img src="https://img.shields.io/badge/%D7%9C%D7%A4%D7%AA%D7%95%D7%97_%D7%90%D7%AA_Evenly-FFD5C9?style=for-the-badge&logo=googlechrome&logoColor=A8483A" alt="demo"></a>
+  <a href="https://evenly-app.onrender.com"><img src="https://img.shields.io/badge/%D7%9C%D7%A4%D7%AA%D7%95%D7%97_%D7%90%D7%AA_Evenly-FFD5C9?style=for-the-badge&logo=googlechrome&logoColor=A8483A" alt="demo"></a>
   <a href="https://www.linkedin.com/in/noya-adivi/"><img src="https://img.shields.io/badge/LinkedIn-DAD5FF?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzU1NDhDOCIgZD0iTTIwLjQ1IDIwLjQ1aC0zLjU2di01LjU3YzAtMS4zMy0uMDMtMy4wNC0xLjg1LTMuMDQtMS44NiAwLTIuMTQgMS40NS0yLjE0IDIuOTR2NS42N0g5LjM1VjloMy40MXYxLjU2aC4wNWMuNDgtLjkgMS42NC0xLjg1IDMuMzctMS44NSAzLjYgMCA0LjI3IDIuMzcgNC4yNyA1LjQ2djYuMjh6TTUuMzQgNy40M2EyLjA2IDIuMDYgMCAxIDEgMC00LjEzIDIuMDYgMi4wNiAwIDAgMSAwIDQuMTN6TTcuMTIgMjAuNDVIMy41NlY5aDMuNTZ2MTEuNDV6TTIyLjIyIDBIMS43N0MuNzkgMCAwIC43NyAwIDEuNzN2MjAuNTRDMCAyMy4yMy43OSAyNCAxLjc3IDI0aDIwLjQ1Yy45OCAwIDEuNzgtLjc3IDEuNzgtMS43M1YxLjczQzI0IC43NyAyMy4yIDAgMjIuMjIgMHoiLz48L3N2Zz4=" alt="LinkedIn"></a>
   <a href="https://noyaadivi.github.io/noya-website"><img src="https://img.shields.io/badge/%D7%AA%D7%99%D7%A7_%D7%A2%D7%91%D7%95%D7%93%D7%95%D7%AA-D9F3E7?style=for-the-badge&logo=githubpages&logoColor=1F7350" alt="Portfolio"></a>
   <a href="https://github.com/NoyaAdivi"><img src="https://img.shields.io/badge/%D7%A2%D7%95%D7%93_%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98%D7%99%D7%9D-FBD5E0?style=for-the-badge&logo=github&logoColor=A03A5C" alt="More projects"></a>
