@@ -32,3 +32,8 @@ test('Hebrew OCR reading "x" as "א" still gives the quantity', () => {
   const r = parseReceipt('2 א בירה 60.00\nצ\'יפס 25.00');
   assert.deepEqual(r.items.map((i) => [i.name, i.qty, i.price]), [['בירה', 2, 30], ["צ'יפס", 1, 25]]);
 });
+
+test('dishes get a category', () => {
+  const r = parseReceipt('Burger 62.00\nBeer 30.00\nTiramisu 38.00\nבירה גולדסטאר 28.00');
+  assert.deepEqual(r.items.map((i) => i.category), ['food', 'drink', 'dessert', 'drink']);
+});

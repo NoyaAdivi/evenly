@@ -122,10 +122,14 @@ flowchart LR
 
 | Method | Path | What it does |
 |---|---|---|
-| `GET` | [`/`](https://splitship-1.onrender.com) | Pastel web UI: scan a restaurant receipt (in-browser OCR) or split a hotel bill |
+| `GET` | [`/`](https://splitship-1.onrender.com) | Pastel web UI with 10 ways to split: receipt scan, per dish, food & drinks, group link, equally, percent, shares, exact amounts, hotel nights, trip expenses |
 | `GET` | [`/health`](https://splitship-1.onrender.com/health) | Status, version, commit SHA, uptime |
-| `POST` | `/api/split` | Split a bill: `equal`, by `nights` (hotel) or by `items` (restaurant dishes), with optional `tipPercent` |
-| `POST` | `/api/receipt/parse` | Turn scanned receipt text (Hebrew or English) into dishes, total and service charge |
+| `POST` | `/api/split` | Split a bill: `equal`, `nights` (hotel), `items` (per dish), `percent`, `shares`, `exact` or `pools` (food, drinks, taxi... each split only between its people), with optional `tipPercent` |
+| `POST` | `/api/settle` | Trip expenses with several payers to the fewest transfers (who pays whom) |
+| `POST` | `/api/receipt/parse` | Turn scanned receipt text (Hebrew or English) into dishes with categories, total and service charge |
+| `POST` | `/api/rooms` | Open a group link (lives 24h in memory) |
+| `GET` | `/api/rooms/:id` | Live room: items, who claimed what, totals |
+| `POST` | `/api/rooms/:id/claim` | A friend taps an item as theirs (`/join` adds a name) |
 
 ```bash
 curl -X POST https://splitship-1.onrender.com/api/split \

@@ -1,7 +1,7 @@
 {
   "name": "splitship",
-  "version": "2.0.0",
-  "description": "Restaurant receipt scanning and bill splitting API, containerized with Docker and shipped with GitHub Actions CI/CD",
+  "version": "3.0.0",
+  "description": "Split any bill every way: receipt scanning, per dish, food & drinks, group links, hotel nights, trip expenses. Node.js API with Docker and GitHub Actions CI/CD",
   "main": "src/server.js",
   "type": "commonjs",
   "scripts": {

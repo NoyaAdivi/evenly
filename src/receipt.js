@@ -12,6 +12,9 @@ const SUBTOTAL = /(ביניים|subtotal|sub\s*total)/i;
 const SERVICE = /(שירות|טיפ|service|tip|gratuity)/i;
 // quantity like "2 x", "x2", "2×"; Hebrew OCR often reads a lone x as א
 const QTY = /(?<![\d.,])(\d{1,2})\s*(?:[xX×*]|א(?=\s))(?![\d.,])|[xX×*]\s*(\d{1,2})(?![\d.,])/;
+const DRINK = /(בירה|יין|קולה|ספרייט|פאנטה|מים|סודה|לימונדה|מיץ|קפה|אספרסו|הפוך|תה|קוקטייל|וויסקי|וודקה|ערק|שוט|צ'?ייסר|גולדסטאר|קרלסברג|הייניקן|beer|wine|cola|coke|sprite|water|soda|lemonade|juice|coffee|espresso|latte|cappuccino|tea|cocktail|whisk(e)?y|vodka|gin|rum|shot|drink|spritz|mojito|prosecco)/i;
+const DESSERT = /(קינוח|עוגה|עוגת|גלידה|סופלה|מלבי|טירמיסו|פאי|dessert|cake|ice cream|gelato|souffle|tiramisu|brownie|pie|sorbet)/i;
+const category = (name) => (DRINK.test(name) ? 'drink' : DESSERT.test(name) ? 'dessert' : 'food');
 const PRICE = /(?:₪|\$|€|ILS|NIS)?\s*(\d{1,3}(?:,\d{3})+|\d+)(?:[.,](\d{1,2}))?\s*(?:₪|ש["״']?ח|ILS|NIS)?/gi;
 
 function numbersIn(line) {
@@ -69,7 +72,7 @@ function parseReceipt(text) {
     const name = cleanName(line);
     if ((name.match(/[\p{L}]/gu) || []).length < 2) continue;
     const unit = qty > 1 ? Math.round((lineTotal / qty) * 100) / 100 : lineTotal;
-    items.push({ name: name.slice(0, 60), qty, price: unit });
+    items.push({ name: name.slice(0, 60), qty, price: unit, category: category(name) });
   }
 
   const itemsTotal = Math.round(items.reduce((a, it) => a + it.price * it.qty * 100, 0)) / 100;
@@ -82,4 +85,4 @@ function parseReceipt(text) {
   };
 }
 
-module.exports = { parseReceipt };
+module.exports = { parseReceipt, category };

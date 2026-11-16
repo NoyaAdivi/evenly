@@ -3,6 +3,8 @@ const path = require('node:path');
 const express = require('express');
 const { splitBill, ValidationError } = require('./split');
 const { parseReceipt } = require('./receipt');
+const { settle } = require('./settle');
+const rooms = require('./rooms');
 const pkg =require('../package.json');
 
 function currentCommit() {
@@ -45,6 +47,30 @@ function createApp() {
       throw err;
     }
   });
+
+  const handle = (fn) => (req, res) => {
+    try {
+      res.json(fn(req));
+    } catch (err) {
+      if (err instanceof ValidationError) return res.status(400).json({ error: err.message });
+      throw err;
+    }
+  };
+  const room = (req) => {
+    const r = rooms.getRoom(req.params.id);
+    if (!r) throw new ValidationError('this link has expired or does not exist');
+    return r;
+  };
+
+  app.post('/api/settle', handle((req) => settle(req.body)));
+  app.post('/api/rooms', handle((req) => rooms.createRoom(req.body)));
+  app.get('/api/rooms/:id', handle((req) => rooms.view(room(req))));
+  app.post('/api/rooms/:id/join', handle((req) => {
+    const r = room(req); rooms.join(r, req.body?.name); rooms.touch(r); return rooms.view(r);
+  }));
+  app.post('/api/rooms/:id/claim', handle((req) => {
+    const r = room(req); rooms.claim(r, req.body); return rooms.view(r);
+  }));
 
   app.use((_req, res) => res.status(404).json({ error: 'not found' }));
 

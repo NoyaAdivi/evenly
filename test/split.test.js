@@ -71,3 +71,14 @@ test('rejects bad items', () => {
   assert.throws(() => splitBill({ mode: 'items', guests: g, items: [{ name: 'x', price: 5, people: ['Z'] }] }), ValidationError);
   assert.throws(() => splitBill({ total: 10, tipPercent: 300, guests: g }), ValidationError);
 });
+
+test('percent, shares, exact and pools', () => {
+  const g = [{ name: 'A', percent: 50, shares: 2, amount: 40 }, { name: 'B', percent: 30, shares: 1 }, { name: 'C', percent: 20, shares: 1 }];
+  assert.deepEqual(splitBill({ total: 100, mode: 'percent', guests: g }).shares.map((s) => s.amount), [50, 30, 20]);
+  assert.deepEqual(splitBill({ total: 100, mode: 'shares', guests: g }).shares.map((s) => s.amount), [50, 25, 25]);
+  assert.deepEqual(splitBill({ total: 100, mode: 'exact', guests: g }).shares.map((s) => s.amount), [40, 30, 30]);
+  const r = splitBill({ mode: 'pools', guests: g, pools: [{ name: 'Food', amount: 90 }, { name: 'Drinks', amount: 40, people: ['A', 'B'] }] });
+  assert.deepEqual(r.shares.map((s) => s.amount), [50, 50, 30]);
+  assert.throws(() => splitBill({ total: 100, mode: 'percent', guests: [{ name: 'A', percent: 60 }] }), ValidationError);
+  assert.throws(() => splitBill({ total: 100, mode: 'exact', guests: [{ name: 'A', amount: 150 }, { name: 'B' }] }), ValidationError);
+});

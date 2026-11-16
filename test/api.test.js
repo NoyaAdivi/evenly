@@ -63,3 +63,19 @@ test('POST /api/receipt/parse returns items', async () => {
   assert.equal(res.status, 200);
   assert.equal((await res.json()).items[0].price, 62);
 });
+
+test('group room flow over HTTP', async () => {
+  const post = (u, b) => fetch(`${base}${u}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(b) });
+  const room = await (await post('/api/rooms', { items: [{ name: 'Pizza', price: 50 }] })).json();
+  const after = await (await post(`/api/rooms/${room.id}/claim`, { name: 'Noya', itemId: 1 })).json();
+  assert.equal(after.totals[0].amount, 50);
+  assert.equal((await fetch(`${base}/api/rooms/zzzzzzz`)).status, 400);
+});
+
+test('POST /api/settle', async () => {
+  const res = await fetch(`${base}/api/settle`, {
+    method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ people: ['A', 'B'], expenses: [{ amount: 100, payer: 'A' }] })
+  });
+  assert.deepEqual((await res.json()).transfers, [{ from: 'B', to: 'A', amount: 50 }]);
+});
