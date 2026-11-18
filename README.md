@@ -38,7 +38,7 @@
 </p>
 
 <p align="center">
-  <a href="https://evenly-app.up.railway.app"><img src="docs/social/screenshot-en.png" width="100%" alt="Evenly home page on the live site"></a>
+  <a href="https://evenly-app.up.railway.app"><img src="docs/images/screenshot-en.png" width="100%" alt="Evenly home page on the live site"></a>
 </p>
 
 <a name="what"></a>

@@ -40,7 +40,7 @@
 </p>
 
 <p align="center">
-  <a href="https://evenly-app.up.railway.app"><img src="docs/social/screenshot-he.png" width="100%" alt="דף הבית של Evenly באתר החי"></a>
+  <a href="https://evenly-app.up.railway.app"><img src="docs/images/screenshot-he.png" width="100%" alt="דף הבית של Evenly באתר החי"></a>
 </p>
 
 <a name="what"></a>
