@@ -1,6 +1,6 @@
 {
   "name": "evenly",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Split any bill every way: receipt scanning, per dish, food & drinks, group links, hotel nights, trip expenses. Node.js API with Docker and GitHub Actions CI/CD",
   "main": "src/server.js",
   "type": "commonjs",

@@ -163,6 +163,7 @@ footer{padding:48px 0 40px;margin-top:40px;border-top:1px solid var(--line)}
 .rv.in{opacity:1;transform:none}
 .toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,120px);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:12px;font-weight:600;font-size:.9rem;transition:.35s cubic-bezier(.3,.9,.3,1);z-index:50;visibility:hidden}
 .toast.show{transform:translate(-50%,0);visibility:visible}
+.toast{display:flex;align-items:center;gap:12px}.toast .undo{border:0;border-radius:999px;padding:5px 12px;font:inherit;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#C9C1FF,#F6C1B4);color:#2C2668;transition:transform .2s}.toast .undo:hover{transform:scale(1.06)}
 
 @media (max-width:900px){.calc,.api{grid-template-columns:1fr}.calc-out{border-inline-start:none;border-top:1px solid var(--line)}.pipe{grid-template-columns:1fr 1fr}.pipe::before{display:none}.feat{grid-template-columns:1fr}.links{display:none}}
 @media (max-width:520px){.status{display:none}.calc-in,.calc-out{padding:22px}}
@@ -360,7 +361,7 @@ input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 4px color-m
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:60}
 
 @media (max-width:1100px){.modes{grid-template-columns:repeat(3,1fr)}}
-@media (max-width:900px){.work{grid-template-columns:1fr}.res{position:static}.fab{display:flex}.modes{grid-template-columns:1fr 1fr}.api{grid-template-columns:1fr}.pipe{grid-template-columns:1fr 1fr}.pipe::before{display:none}.feat{grid-template-columns:1fr}.links{display:none}}
+@media (max-width:900px){.fab{left:84px;right:84px}.toast{bottom:90px}.work{grid-template-columns:1fr}.res{position:static}.fab{display:flex}.modes{grid-template-columns:1fr 1fr}.api{grid-template-columns:1fr}.pipe{grid-template-columns:1fr 1fr}.pipe::before{display:none}.feat{grid-template-columns:1fr}.links{display:none}}
 @media (max-width:520px){.status{display:none}.ed,.res{padding:20px}.box .top{flex-wrap:wrap}.box .nm{flex-basis:100%}.box .pr{flex:1}.fld{width:92px}.receipt-art .tag{display:none}.out-f{grid-template-columns:1fr 1fr}.mode{padding:16px 14px}.mode p{display:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
 

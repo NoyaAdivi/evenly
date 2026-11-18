@@ -76,7 +76,7 @@
     s_extra: ['Extras', 'תוספות'], round: ['🪙 Round up, no coins', '🪙 לעגל למעלה, בלי מטבעות'], off: ['Off', 'בלי'],
     bday_t: ['Birthday / treated: others pay for them', 'יום הולדת / מוזמן: האחרים משלמים עליו'], bdayon: ['🎂 {n} is treated!', '🎂 {n} מוזמן/ת!'],
     treated: ['🎁 Treated', '🎁 מוזמן/ת'], covers: ['covers {a} of the treat', 'משתתף/ת ב־{a} מההזמנה'], rext: ['🪙 Rounding added {a} to the tip', '🪙 העיגול הוסיף {a} לטיפ'],
-    img: ['🖼️ Image', '🖼️ תמונה'], wheel: ['🎡 Roulette', '🎡 רולטה'], msgto: ['Hi {n}! Your part is {a} 💜 (Evenly)', 'היי {n}! החלק שלך הוא {a} 💜 (Evenly)'],
+    img: ['🖼️ Image', '🖼️ תמונה'], undo: ['Undo', 'ביטול'], removed: ['Removed', 'נמחק'], wheel: ['🎡 Roulette', '🎡 רולטה'], msgto: ['Hi {n}! Your part is {a} 💜 (Evenly)', 'היי {n}! החלק שלך הוא {a} 💜 (Evenly)'],
     w_title: ['Who pays for everyone?', 'מי משלם על כולם?'], w_sub: ['Spin it. No take-backs 😈', 'מסובבים. אין חרטות 😈'], w_spin: ['Spin!', 'לסובב!'], w_win: ['🎉 {n} pays! {a}', '🎉 {n} משלם/ת! {a}'], w_set: ['Set as payer', 'לקבוע כמשלם/ת'],
     i_title: ['Your split as an image', 'החלוקה כתמונה'], i_sub: ['Perfect for the group chat or a story', 'מושלם לקבוצה או לסטורי'], i_dl: ['⬇️ Download', '⬇️ להורדה'], i_share: ['📤 Share', '📤 לשתף'],
     recent: ['🕘 Recent splits', '🕘 חלוקות אחרונות'],
@@ -185,7 +185,21 @@
   document.addEventListener('click', (e) => { if (e.target.closest('.pchip,.tipbar button,.mode,.strip button,.gitem,.presets button,.bday')) beep('tap'); });
 
   /* ---------- toast + confetti ---------- */
-  const toast = (m) => { const el = $('#toast'); el.textContent = m; el.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 1800); };
+  const toast = (m, undo) => {
+    const el = $('#toast'); el.textContent = m;
+    if (undo) { const b = document.createElement('button'); b.type = 'button'; b.className = 'undo'; b.textContent = t('undo'); b.onclick = () => { el.classList.remove('show'); undo(); }; el.append(b); }
+    el.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), undo ? 5000 : 1800);
+  };
+  /* runs a removal and offers to undo it for a few seconds */
+  const withUndo = (fn) => {
+    const s = structuredClone({ g: S.guests, i: S.items, p: S.pools, e: S.expenses, t: S.treat });
+    fn();
+    toast(t('removed'), () => {
+      S.guests.splice(0, Infinity, ...s.g); S.items.splice(0, Infinity, ...s.i); S.pools.splice(0, Infinity, ...s.p); S.expenses.splice(0, Infinity, ...s.e);
+      S.treat.clear(); s.t.forEach((x) => S.treat.add(x));
+      peopleChanged(); beep('ok');
+    });
+  };
   const cv = $('#confetti'), cx = cv.getContext('2d');
   let bits = [];
   function confetti(x = innerWidth / 2, y = innerHeight / 3) {
@@ -243,7 +257,7 @@
     let n = 0, h = `<div class="ed-h"><span class="em">${m.e}</span><div><h3>${esc(t('m_' + m.k))}</h3><p>${esc(t('m_' + m.k + '_d'))}</p></div><select class="cur" id="cur" aria-label="currency">${['₪', '$', '€', '£'].map((c) => `<option ${c === S.cur ? 'selected' : ''}>${c}</option>`).join('')}</select></div>`;
     if (f.scan && S.mode === 'scan') h += sec(++n, 's_scan', scanHTML());
     if (f.people) h += sec(++n, 's_people', peopleHTML(f), f.room ? `<small>${esc(t('s_people_opt'))}</small>` : '');
-    if (f.total) h += sec(++n, 's_total', `<div class="money"><span>₪</span><input id="total" type="number" min="0" step="0.01" inputmode="decimal" value="${esc(S.total)}"></div>`);
+    if (f.total) h += sec(++n, 's_total', `<div class="money"><span>${esc(S.cur)}</span><input id="total" type="number" min="0" step="0.01" inputmode="decimal" value="${esc(S.total)}"></div>`);
     if (f.scan && S.mode !== 'scan') h += sec(++n, 's_scan', scanHTML());
     if (f.items) h += sec(++n, 's_items', `<div id="items"></div><button class="add" id="addi">${esc(t('addi'))}</button>`);
     if (f.pools) h += sec(++n, 's_pools', `<div id="pools"></div><div class="presets" id="ppre">${['food', 'drink', 'dessert', 'taxi', 'tix', 'other'].map((k) => `<button data-k="${k}">${{ food: '🍽️', drink: '🍷', dessert: '🍰', taxi: '🚕', tix: '🎟️', other: '➕' }[k]} ${esc(t('p_' + k))}</button>`).join('')}${S.items.length ? `<button id="fromdish">${esc(t('fromdish'))}</button>` : ''}</div>`);
@@ -265,7 +279,7 @@
     on('total', 'oninput', (e) => { S.total = e.target.value; calc(); });
     on('addp', 'onclick', () => { addGuest(`${t('person')} ${S.guests.length + 1}`); peopleChanged(); $('#people').lastChild?.querySelector('.n').select(); });
     on('qp', 'onclick', () => { if (S.guests.length < 30) { addGuest(`${t('person')} ${S.guests.length + 1}`); peopleChanged(); } });
-    on('qm', 'onclick', () => { if (S.guests.length > 1) { removeGuest(S.guests.at(-1).id); } });
+    on('qm', 'onclick', () => { if (S.guests.length > 1) { const id = S.guests.at(-1).id; withUndo(() => removeGuest(id)); } });
     on('even', 'onclick', () => { const n = S.guests.length, base = Math.floor(10000 / n) / 100; S.guests.forEach((g, i) => { g.percent = i === 0 ? Math.round((100 - base * (n - 1)) * 100) / 100 : base; }); renderPeople(); calc(); });
     on('addi', 'onclick', () => { addItem(); renderItems(); $('#items').lastChild?.querySelector('.nm').focus(); calc(); });
     on('tipbar', 'onclick', (e) => { const b = e.target.closest('button'); if (b) { setTip(+b.dataset.t); calc(); } });
@@ -311,7 +325,7 @@
       if (pf === 'nights') fld = `<div class="step"><button type="button" data-d="-1">−</button><b>${g.nights}</b><button type="button" data-d="1">+</button><small>${esc(t('nights'))}</small></div>`;
       if (pf === 'shares') fld = `<div class="step"><button type="button" data-d="-0.5">−</button><b>×${g.shares}</b><button type="button" data-d="0.5">+</button></div>`;
       if (pf === 'percent') fld = `<div class="fld"><input class="pf" type="number" min="0" max="100" step="0.5" inputmode="decimal" value="${esc(g.percent)}"><em>%</em></div>`;
-      if (pf === 'amount') fld = `<div class="fld"><input class="pf" type="number" min="0" step="0.01" inputmode="decimal" placeholder="${esc(t('auto'))}" value="${esc(g.amount)}"><em>₪</em></div>`;
+      if (pf === 'amount') fld = `<div class="fld"><input class="pf" type="number" min="0" step="0.01" inputmode="decimal" placeholder="${esc(t('auto'))}" value="${esc(g.amount)}"><em>${esc(S.cur)}</em></div>`;
       const canTreat = S.mode !== 'trip' && S.mode !== 'room', tr = S.treat.has(g.id);
       if (tr) el.classList.add('treat');
       el.innerHTML = `<span class="av" style="background:${col(i, 0)};color:${col(i, 1)}">${tr ? '🎂' : esc(initial(g.name))}</span><input class="n" maxlength="30">${fld}${canTreat ? `<button class="bday ${tr ? 'on' : ''}" type="button" title="${esc(t('bday_t'))}" aria-label="${esc(t('bday_t'))}">🎂</button>` : ''}<button class="rm" type="button" aria-label="remove">✕</button>`;
@@ -319,7 +333,7 @@
       if (bd) bd.onclick = () => { const on = !S.treat.has(g.id); on ? S.treat.add(g.id) : S.treat.delete(g.id); if (on) { burstAt(bd); toast(t('bdayon', { n: g.name })); beep('win'); } renderPeople(); calc(); };
       const n = el.querySelector('.n'); n.value = g.name; n.placeholder = t('name');
       n.oninput = () => { g.name = n.value; el.querySelector('.av').textContent = initial(g.name); renderItems(); renderPools(); renderExps(); calc(); };
-      el.querySelector('.rm').onclick = () => removeGuest(g.id);
+      el.querySelector('.rm').onclick = () => withUndo(() => removeGuest(g.id));
       el.querySelectorAll('.step button').forEach((b) => b.onclick = () => {
         if (pf === 'nights') { g.nights = Math.min(60, Math.max(1, g.nights + +b.dataset.d)); el.querySelector('.step b').textContent = g.nights; }
         else { g.shares = Math.min(20, Math.max(0, g.shares + +b.dataset.d)); el.querySelector('.step b').textContent = '×' + g.shares; }
@@ -356,14 +370,14 @@
     const box = $('#items'); if (!box) return; box.innerHTML = '';
     S.items.forEach((it) => {
       const el = document.createElement('div'); el.className = 'box';
-      el.innerHTML = `<div class="top"><button class="cat" type="button" title="food / drink / dessert">${CATS[it.cat]}</button><input class="nm" maxlength="60"><input class="q" type="number" min="1" step="1" aria-label="qty"><input class="pr" type="number" min="0" step="0.01" inputmode="decimal" placeholder="₪"><button class="rm" type="button" aria-label="remove">✕</button></div>${S.mode === 'room' ? '' : `<div class="who"><span class="lab">${esc(t('who'))}</span>${chips(it.people, t('all'))}</div>`}`;
+      el.innerHTML = `<div class="top"><button class="cat" type="button" title="food / drink / dessert">${CATS[it.cat]}</button><input class="nm" maxlength="60"><input class="q" type="number" min="1" step="1" aria-label="qty"><input class="pr" type="number" min="0" step="0.01" inputmode="decimal" placeholder="${esc(S.cur)}"><button class="rm" type="button" aria-label="remove">✕</button></div>${S.mode === 'room' ? '' : `<div class="who"><span class="lab">${esc(t('who'))}</span>${chips(it.people, t('all'))}</div>`}`;
       const [nm, q, pr] = el.querySelectorAll('input');
       nm.value = it.name; nm.placeholder = t('dish'); q.value = it.qty; pr.value = it.price;
       nm.oninput = () => { it.name = nm.value; calc(); };
       q.oninput = () => { it.qty = Math.max(1, parseInt(q.value, 10) || 1); calc(); };
       pr.oninput = () => { it.price = pr.value; calc(); };
       el.querySelector('.cat').onclick = (e) => { const ks = Object.keys(CATS); it.cat = ks[(ks.indexOf(it.cat) + 1) % ks.length]; e.target.textContent = CATS[it.cat]; };
-      el.querySelector('.rm').onclick = () => { S.items.splice(S.items.indexOf(it), 1); renderItems(); calc(); };
+      el.querySelector('.rm').onclick = () => withUndo(() => { S.items.splice(S.items.indexOf(it), 1); renderItems(); calc(); });
       bindChips(el, it.people, renderItems);
       box.appendChild(el);
     });
@@ -372,11 +386,11 @@
     const box = $('#pools'); if (!box) return; box.innerHTML = '';
     S.pools.forEach((p) => {
       const el = document.createElement('div'); el.className = 'box';
-      el.innerHTML = `<div class="top"><span class="cat" style="display:grid;place-items:center">${{ food: '🍽️', drink: '🍷', dessert: '🍰', taxi: '🚕', tix: '🎟️' }[p.key] || '➕'}</span><input class="nm" maxlength="40"><input class="pr" type="number" min="0" step="0.01" inputmode="decimal" placeholder="₪"><button class="rm" type="button" aria-label="remove">✕</button></div><div class="who"><span class="lab">${esc(t('who'))}</span>${chips(p.people, t('all'))}</div>`;
+      el.innerHTML = `<div class="top"><span class="cat" style="display:grid;place-items:center">${{ food: '🍽️', drink: '🍷', dessert: '🍰', taxi: '🚕', tix: '🎟️' }[p.key] || '➕'}</span><input class="nm" maxlength="40"><input class="pr" type="number" min="0" step="0.01" inputmode="decimal" placeholder="${esc(S.cur)}"><button class="rm" type="button" aria-label="remove">✕</button></div><div class="who"><span class="lab">${esc(t('who'))}</span>${chips(p.people, t('all'))}</div>`;
       const [nm, pr] = el.querySelectorAll('input'); nm.value = p.name; pr.value = p.amount;
       nm.oninput = () => { p.name = nm.value; p.key = 'custom'; calc(); };
       pr.oninput = () => { p.amount = pr.value; calc(); };
-      el.querySelector('.rm').onclick = () => { S.pools.splice(S.pools.indexOf(p), 1); renderPools(); calc(); };
+      el.querySelector('.rm').onclick = () => withUndo(() => { S.pools.splice(S.pools.indexOf(p), 1); renderPools(); calc(); });
       bindChips(el, p.people, renderPools);
       box.appendChild(el);
     });
@@ -391,7 +405,7 @@
     const box = $('#exps'); if (!box) return; box.innerHTML = '';
     S.expenses.forEach((x) => {
       const el = document.createElement('div'); el.className = 'box';
-      el.innerHTML = `<div class="top"><input class="nm" maxlength="40"><input class="pr" type="number" min="0" step="0.01" inputmode="decimal" placeholder="₪"><button class="rm" type="button" aria-label="remove">✕</button></div>
+      el.innerHTML = `<div class="top"><input class="nm" maxlength="40"><input class="pr" type="number" min="0" step="0.01" inputmode="decimal" placeholder="${esc(S.cur)}"><button class="rm" type="button" aria-label="remove">✕</button></div>
         <div class="who"><span class="lab">${esc(t('paidby'))}</span><select class="py">${S.guests.map((g) => `<option value="${g.id}" ${x.payer === g.id ? 'selected' : ''}>${esc(g.name || '?')}</option>`).join('')}</select></div>
         <div class="who"><span class="lab">${esc(t('forw'))}</span>${chips(x.people, t('all'))}</div>`;
       const [nm, pr] = el.querySelectorAll('input'); nm.value = x.title; pr.value = x.amount;
@@ -399,7 +413,7 @@
       pr.oninput = () => { x.amount = pr.value; calc(); };
       el.querySelector('.py').onchange = (e) => { x.payer = +e.target.value; calc(); };
       if (x.payer === null && S.guests[0]) x.payer = S.guests[0].id;
-      el.querySelector('.rm').onclick = () => { S.expenses.splice(S.expenses.indexOf(x), 1); renderExps(); calc(); };
+      el.querySelector('.rm').onclick = () => withUndo(() => { S.expenses.splice(S.expenses.indexOf(x), 1); renderExps(); calc(); });
       bindChips(el, x.people, renderExps);
       box.appendChild(el);
     });

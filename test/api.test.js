@@ -79,3 +79,21 @@ test('POST /api/settle', async () => {
   });
   assert.deepEqual((await res.json()).transfers, [{ from: 'B', to: 'A', amount: 50 }]);
 });
+
+test('responses carry security headers', async () => {
+  const res = await fetch(`${base}/health`);
+  assert.equal(res.headers.get('x-content-type-options'), 'nosniff');
+  assert.equal(res.headers.get('x-frame-options'), 'SAMEORIGIN');
+});
+
+test('POST /api is rate limited per IP', async () => {
+  const s = createApp({ limit: { windowMs: 60_000, max: 3 } }).listen(0);
+  await new Promise((r) => s.once('listening', r));
+  const url = `http://127.0.0.1:${s.address().port}/api/settle`;
+  const post = () => fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' });
+  for (let i = 0; i < 3; i++) assert.notEqual((await post()).status, 429);
+  const res = await post();
+  assert.equal(res.status, 429);
+  assert.ok(res.headers.get('retry-after'));
+  s.close();
+});
