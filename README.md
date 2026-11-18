@@ -74,6 +74,32 @@
       </ul>
     </td>
   </tr>
+  <tr valign="top">
+    <td valign="top" width="33%">
+      <p><b>🛡️ Protected API</b></p>
+      <ul>
+        <li><a href="src/app.js"><b>Rate limit</b></a>: 300 POST requests a minute per user, then <code>429</code> with <code>Retry-After</code></li>
+        <li><b>Security headers</b> on every response (nosniff, frame and referrer policies)</li>
+        <li><a href="test/api.test.js"><b>Tested</b></a> like everything else</li>
+      </ul>
+    </td>
+    <td valign="top" width="33%">
+      <p><b>⚡ Fast and installable</b></p>
+      <ul>
+        <li><b>Smart caching</b>: files cached for an hour, the page always fresh</li>
+        <li><a href="public/sw.js"><b>Service worker</b></a> opens offline and updates itself</li>
+        <li><b>Install it</b> on your phone like an app</li>
+      </ul>
+    </td>
+    <td valign="top" width="33%">
+      <p><b>💜 Friendly to use</b></p>
+      <ul>
+        <li><a href="public/app.js"><b>Undo</b></a> for any person, dish or expense you remove</li>
+        <li><b>₪ $ € £</b> shown everywhere you type an amount</li>
+        <li><b>Mobile first</b>, Hebrew and English, light and dark</li>
+      </ul>
+    </td>
+  </tr>
 </table>
 
 <a name="pipeline"></a>
@@ -135,6 +161,8 @@ flowchart LR
 | `GET` | `/api/rooms/:id` | Live room: items, who claimed what, totals |
 | `POST` | `/api/rooms/:id/claim` | A friend taps an item as theirs (`/join` adds a name) |
 
+> Every `POST /api/*` is limited to 300 requests a minute per user. Past that the API answers `429` with a `Retry-After` header.
+
 ```bash
 curl -X POST https://evenly-app.up.railway.app/api/split \
   -H "content-type: application/json" \
@@ -180,9 +208,12 @@ npm start
 │   └── deploy.yml      push image to GHCR, Railway deploys after CI, wait for /health
 ├── src/
 │   ├── split.js        the splitting logic (exact to the agora)
-│   ├── app.js          Express app and routes
+│   ├── receipt.js      reads scanned receipt text into dishes
+│   ├── settle.js       trip expenses in the fewest transfers
+│   ├── rooms.js        live group links (24 hours in memory)
+│   ├── app.js          Express app, routes, rate limit, security headers
 │   └── server.js       entry point with graceful shutdown
-├── public/             pastel web UI
+├── public/             pastel web UI, installable (sw.js + manifest)
 ├── test/               unit + API tests (node:test)
 ├── docs/               README art and social images
 ├── Dockerfile          multi-stage, non-root, HEALTHCHECK

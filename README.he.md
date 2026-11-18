@@ -76,6 +76,32 @@
       </ul>
     </td>
   </tr>
+  <tr valign="top">
+    <td valign="top" width="33%">
+      <p><b>🛡️ API מוגן</b></p>
+      <ul>
+        <li><a href="src/app.js"><b>הגבלת בקשות</b></a>: עד 300 בקשות POST בדקה לכל משתמש, ואז <code>429</code> עם <code>Retry-After</code></li>
+        <li><b>כותרות אבטחה</b> בכל תשובה (nosniff, frame ו־referrer)</li>
+        <li><a href="test/api.test.js"><b>נבדק בטסטים</b></a> כמו כל השאר</li>
+      </ul>
+    </td>
+    <td valign="top" width="33%">
+      <p><b>⚡ מהיר ואפשר להתקין</b></p>
+      <ul>
+        <li><b>שמירה חכמה בדפדפן</b>: הקבצים נשמרים לשעה, הדף תמיד עדכני</li>
+        <li><a href="public/sw.js"><b>Service worker</b></a> שנפתח גם בלי אינטרנט ומתעדכן לבד</li>
+        <li><b>אפשר להתקין</b> בטלפון כמו אפליקציה</li>
+      </ul>
+    </td>
+    <td valign="top" width="33%">
+      <p><b>💜 נוח לשימוש</b></p>
+      <ul>
+        <li><a href="public/app.js"><b>ביטול מחיקה</b></a> לכל אדם, מנה או הוצאה שנמחקו</li>
+        <li><b>₪ $ € £</b> מופיע בכל שדה של סכום</li>
+        <li><b>מותאם לנייד</b>, עברית ואנגלית, בהיר וכהה</li>
+      </ul>
+    </td>
+  </tr>
 </table>
 
 <a name="pipeline"></a>
@@ -141,6 +167,8 @@ flowchart LR
 | `GET` | `/api/rooms/:id` | מצב חי: מנות, מי סימן מה, וסכומים |
 | `POST` | `/api/rooms/:id/claim` | חבר מסמן מנה כשלו (`/join` מוסיף שם) |
 
+> כל `POST /api/*` מוגבל ל־300 בקשות בדקה לכל משתמש. מעבר לזה ה־API עונה `429` עם הכותרת `Retry-After`.
+
 </div>
 
 ```bash
@@ -202,9 +230,12 @@ npm start
 │   └── deploy.yml      העלאה ל־GHCR, פריסה ל־Railway, המתנה ל־/health
 ├── src/
 │   ├── split.js        לוגיקת החלוקה (מדויק עד האגורה)
-│   ├── app.js          אפליקציית Express והנתיבים
+│   ├── receipt.js      הופך טקסט של קבלה סרוקה למנות
+│   ├── settle.js       הוצאות טיול במינימום העברות
+│   ├── rooms.js        קישורים קבוצתיים חיים (24 שעות בזיכרון)
+│   ├── app.js          אפליקציית Express, נתיבים, הגבלת בקשות וכותרות אבטחה
 │   └── server.js       נקודת הכניסה עם כיבוי מסודר
-├── public/             ממשק ווב בפסטל
+├── public/             ממשק ווב בפסטל, אפשר להתקין (sw.js + manifest)
 ├── test/               בדיקות יחידה ו־API
 ├── docs/               עיצובי README ותמונות שיתוף
 ├── Dockerfile          רב שלבי, בלי root, עם HEALTHCHECK
