@@ -28,7 +28,7 @@
 
 <table align="center">
   <tr>
-    <td align="center" width="25%"><a href="Dockerfile"><b>🐳 Docker</b></a><br><sub>רב שלבי, בלי root</sub></td>
+    <td align="center" width="25%"><a href="Dockerfile"><b>🐳 Docker</b></a><br><sub>רב־שלבי, בלי root</sub></td>
     <td align="center" width="25%"><a href="https://github.com/NoyaAdivi/evenly/actions/workflows/ci.yml"><b>✅ 2 × Node</b></a><br><sub>בדיקות על 20 ו־22</sub></td>
     <td align="center" width="25%"><a href="https://github.com/NoyaAdivi/evenly/pkgs/container/evenly"><b>📦 GHCR</b></a><br><sub>אימג׳ לכל קומיט</sub></td>
     <td align="center" width="25%"><a href="https://evenly-app.up.railway.app"><b>☁️ פריסה אוטומטית</b></a><br><sub>ל־Railway אחרי ה־CI</sub></td>
@@ -51,7 +51,7 @@
     <td valign="top" width="33%" dir="rtl">
       <p><b>🐳 ארוז ב־Docker</b></p>
       <ul>
-        <li><a href="Dockerfile"><b>בנייה רב שלבית</b></a> על Alpine, אימג׳ קטן</li>
+        <li><a href="Dockerfile"><b>בנייה רב־שלבית</b></a> על Alpine, אימג׳ קטן</li>
         <li><b>רץ בלי הרשאות root</b></li>
         <li><b>HEALTHCHECK מובנה</b> על <code>/health</code></li>
         <li><a href="docker-compose.yml"><b>docker compose up</b></a> וזה רץ</li>
@@ -72,7 +72,7 @@
         <li><a href="https://github.com/NoyaAdivi/evenly/pkgs/container/evenly"><b>האימג׳ עולה ל־GHCR</b></a> עם התגיות <code>latest</code> וה־SHA</li>
         <li><b>פריסה ל־Railway</b> רק אחרי שה־CI עובר</li>
         <li><b>מוודא שהגרסה עלתה:</b> מחכה ש־<code>/health</code> יציג את הקומיט החדש</li>
-        <li><a href="https://evenly-app.up.railway.app"><b>ממשק ווב בפסטל</b></a> לנסות בדפדפן</li>
+        <li><a href="https://evenly-app.up.railway.app"><b>ממשק ווב בפסטל</b></a> לניסיון בדפדפן</li>
       </ul>
     </td>
   </tr>

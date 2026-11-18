@@ -96,7 +96,7 @@ window.NOYA_FAQ = {
    ],
    "en": [
     "Do my friends need to install anything?",
-    "No. The link opens in any browser, with no sign up and no app."
+    "No. The link opens in any browser, with no sign-up and no app."
    ]
   },
   {
@@ -129,7 +129,7 @@ window.NOYA_FAQ = {
    ],
    "en": [
     "What is it built with?",
-    "A Node.js and Express server with a JSON API, tests on Node 20 and 22, a non root Docker image and a GitHub Actions pipeline that deploys every change to Railway and checks it via /health."
+    "A Node.js and Express server with a JSON API, tests on Node 20 and 22, a non-root Docker image and a GitHub Actions pipeline that deploys every change to Railway and checks it via /health."
    ]
   },
   {
@@ -162,7 +162,7 @@ window.NOYA_FAQ = {
    ],
    "en": [
     "Does it cost anything?",
-    "No. It is free, with no ads and no sign up, and the code is open on GitHub."
+    "No. It is free, with no ads and no sign-up, and the code is open on GitHub."
    ]
   }
  ]

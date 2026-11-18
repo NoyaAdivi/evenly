@@ -21,7 +21,7 @@
 
 <p align="center">
   Evenly splits any bill between friends, <b>exactly to the last agora</b>: scan a restaurant receipt, split per dish or just the drinks,<br>send a group link where everyone taps their own items, split hotel nights or a whole trip.<br>
-  Under the hood, every push is tested, containerized and deployed to the cloud on its own.
+  Under the hood, every push is tested, containerized and deployed to the cloud automatically.
 </p>
 
 <table align="center">
@@ -129,9 +129,9 @@ flowchart LR
 | `GET` | [`/`](https://evenly-app.up.railway.app) | Pastel web UI with 10 ways to split: receipt scan, per dish, food & drinks, group link, equally, percent, shares, exact amounts, hotel nights, trip expenses |
 | `GET` | [`/health`](https://evenly-app.up.railway.app/health) | Status, version, commit SHA, uptime |
 | `POST` | `/api/split` | Split a bill: `equal`, `nights` (hotel), `items` (per dish), `percent`, `shares`, `exact` or `pools` (food, drinks, taxi... each split only between its people), with optional `tipPercent`, `treat` (birthday: others pay for them) and `roundTo` (round shares up, no coins) |
-| `POST` | `/api/settle` | Trip expenses with several payers to the fewest transfers (who pays whom) |
+| `POST` | `/api/settle` | Settle trip expenses with several payers in the fewest transfers (who pays whom) |
 | `POST` | `/api/receipt/parse` | Turn scanned receipt text (Hebrew or English) into dishes with categories, total and service charge |
-| `POST` | `/api/rooms` | Open a group link (lives 24h in memory) |
+| `POST` | `/api/rooms` | Open a group link (kept in memory for 24 hours) |
 | `GET` | `/api/rooms/:id` | Live room: items, who claimed what, totals |
 | `POST` | `/api/rooms/:id/claim` | A friend taps an item as theirs (`/join` adds a name) |
 
