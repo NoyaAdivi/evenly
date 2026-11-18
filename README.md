@@ -37,6 +37,10 @@
   <a href="https://evenly-app.up.railway.app"><img src="docs/social/evenly-github-en.png" width="100%" alt="Evenly: split any bill, end up even"></a>
 </p>
 
+<p align="center">
+  <a href="https://evenly-app.up.railway.app"><img src="docs/social/screenshot-en.png" width="100%" alt="Evenly home page on the live site"></a>
+</p>
+
 <a name="what"></a>
 <p align="center"><a href="#pipeline"><img src="docs/readme/what-en.svg" width="100%" alt="What is Evenly"></a></p>
 

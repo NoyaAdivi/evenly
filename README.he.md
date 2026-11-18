@@ -39,6 +39,10 @@
   <a href="https://evenly-app.up.railway.app"><img src="docs/social/evenly-github-he.png" width="100%" alt="Evenly: מחלקים כל חשבון, יוצאים שווים"></a>
 </p>
 
+<p align="center">
+  <a href="https://evenly-app.up.railway.app"><img src="docs/social/screenshot-he.png" width="100%" alt="דף הבית של Evenly באתר החי"></a>
+</p>
+
 <a name="what"></a>
 <p align="center"><a href="#pipeline"><img src="docs/readme/what-he.svg" width="100%" alt="מה זה Evenly"></a></p>
 
