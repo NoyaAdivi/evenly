@@ -1,6 +1,6 @@
 /* Service worker: makes the site an installable app that also opens offline. */
-const VERSION = 'evenly-v8';
-const SHELL = ["/", "/style.css", "/app.js", "/noya-kit.js", "/logo.svg", "/noya-app.js", "/faq.js", "/fx.js", "/manifest.webmanifest", "/icons/icon-192.png"];
+const VERSION = 'evenly-v9';
+const SHELL = ["/", "/style.css", "/app.js", "/noya-kit.js", "/logo.svg", "/noya-app.js", "/faq.js", "/fx.js", "/fun.js", "/manifest.webmanifest", "/icons/icon-192.png"];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(VERSION).then((c) => Promise.all(SHELL.map((u) => c.add(u).catch(() => {})))).then(() => self.skipWaiting()));

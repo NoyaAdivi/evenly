@@ -448,3 +448,12 @@ a.st.tap{display:block;text-decoration:none;color:inherit}
 .receipt-art.tap:hover{animation-play-state:paused}
 .rot button.tap:hover{box-shadow:none}
 @media (prefers-reduced-motion:reduce){.tap{transition:none}.tap:hover{transform:none}}
+
+/* ---------- fun.js touches: underlines, shine ---------- */
+.head h2{position:relative;display:inline-block}
+.head h2::after{content:"";position:absolute;inset-inline:15%;bottom:-10px;height:4px;border-radius:99px;background:linear-gradient(90deg,#F3B7A6,#C9B8F5,#B9DEC4);transform:scaleX(0);transition:transform .9s .25s cubic-bezier(.3,1.3,.5,1)}
+.head.in h2::after{transform:scaleX(1)}
+.head.in .eyebrow{animation:pop2 .5s ease both}
+#big.shine2{background:linear-gradient(100deg,var(--ink) 40%,#C9B8F5 50%,var(--ink) 60%) 0 0/250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine3 .9s ease}
+@keyframes shine3{from{background-position:100% 0}to{background-position:0 0}}
+@media (prefers-reduced-motion:reduce){.head h2::after{transform:scaleX(1);transition:none}}

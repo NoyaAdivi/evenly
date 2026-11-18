@@ -97,7 +97,7 @@
         <li><a href="public/app.js"><b>Undo</b></a> for any person, dish or expense you remove</li>
         <li><b>₪ $ € £</b> shown everywhere you type an amount</li>
         <li><b>Mobile first</b>, Hebrew and English, light and dark</li>
-        <li><a href="public/fx.js"><b>✨ Playful motion</b></a>: sections float in as you scroll, cards tilt and glow under the mouse, buttons ripple and the main ones burst with pastel sparkles (all off with reduced motion)</li>
+        <li><a href="public/fx.js"><b>✨ Playful motion</b></a>: sections float in as you scroll, cards tilt and glow under the mouse, buttons ripple and the main ones burst with pastel sparkles . On top of that <a href="public/fun.js">fun.js</a> makes the total shine when it changes, the main buttons magnetic and the hero drift with a soft parallax (all off with reduced motion)</li>
       </ul>
     </td>
   </tr>
