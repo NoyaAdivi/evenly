@@ -429,3 +429,21 @@ pre{max-width:100%;overflow-x:auto}
   input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea{font-size:max(16px,1em)}
 }
 @media (max-width:560px){pre{white-space:pre-wrap;word-break:break-word}}
+
+/* clickable hero pill, chips, rotating line, receipt and pipeline cards */
+button.tap{font-family:inherit;border:0;cursor:pointer}
+.chip.tap{font-size:.84rem;font-weight:600}.pill.tap{font-size:.82rem;font-weight:600}
+.pill.tap{border:1px solid var(--line);color:var(--lav-ink)}
+.rot button.tap{background:none;padding:0;color:var(--accent);font-weight:700}
+.rot button.tap span{border-bottom:2px dashed transparent;transition:border-color .25s}
+.rot button.tap:hover span{border-color:currentColor}
+.receipt-art.tap{display:block;font-family:var(--mono);font-size:.7rem;color:var(--muted);text-align:start}
+a.chip.tap{text-decoration:none}
+a.st.tap{display:block;text-decoration:none;color:inherit}
+.tap{transition:transform .25s cubic-bezier(.3,1.5,.5,1),box-shadow .25s}
+.tap:hover,.tap:focus-visible{transform:translateY(-3px);box-shadow:0 10px 24px rgba(140,123,214,.22)}
+.tap:active{transform:translateY(0) scale(.97)}
+.tap:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.receipt-art.tap:hover{animation-play-state:paused}
+.rot button.tap:hover{box-shadow:none}
+@media (prefers-reduced-motion:reduce){.tap{transition:none}.tap:hover{transform:none}}

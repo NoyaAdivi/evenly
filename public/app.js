@@ -154,6 +154,8 @@
     const list = t('rot'), el = $('#rot'); if (!el) return;
     if (!now) ri = (ri + 1) % list.length;
     el.innerHTML = `<span>${esc(list[ri % list.length])}</span>`;
+    const RM = ['items', 'hotel', 'trip', 'percent', 'equal', 'pools'];
+    el.dataset.open = RM[ri % RM.length];
   }
   setInterval(() => rotate(), 2600);
   async function health() {
@@ -794,6 +796,19 @@
     fab.classList.toggle('show', w.top < innerHeight * 0.6 && r.top > innerHeight);
   }
   addEventListener('hashchange', () => { if (/^#(room|s)=/.test(location.hash)) location.reload(); });
+  /* every hero chip, card and API row opens the matching split mode */
+  document.addEventListener('click', (e) => {
+    const el = e.target.closest('[data-open]'); if (!el) return;
+    e.preventDefault(); beep('tap');
+    const k = el.dataset.open;
+    if (k === 'all' || !MODES.some((m) => m.k === k)) {
+      S.mode = null; S.group = 'all'; stopPoll();
+      $('#workspace').classList.add('hide'); $('#picker').classList.remove('hide'); renderPicker(); fabCheck();
+      $('#app').scrollIntoView({ behavior: 'smooth' }); return;
+    }
+    openMode(k, true);
+    if (el.dataset.sample) setTimeout(() => $('#sample')?.click(), 500);
+  });
   $('#copycurl').onclick = () => copy($('#curl').innerText.split('\n\n')[0]);
 
   /* ---------- start ---------- */
