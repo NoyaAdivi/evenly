@@ -40,29 +40,24 @@ jobs:
             ${{ env.IMAGE }}:${{ github.sha }}
 
   deploy:
-    name: Deploy to Render
+    name: Wait for Railway deploy
     needs: publish
     runs-on: ubuntu-latest
     environment:
       name: production
       url: ${{ vars.APP_URL }}
     steps:
-      - name: Trigger Render deploy hook
-        env:
-          HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+      - name: Wait until Railway serves the new version
         run: |
-          if [ -z "$HOOK" ]; then
-            echo "::warning::RENDER_DEPLOY_HOOK_URL secret is missing, skipping deploy"
+          if [ -z "${{ vars.APP_URL }}" ]; then
+            echo "::warning::APP_URL variable is missing, skipping the live check"
             exit 0
           fi
-          curl -fsS -X POST "$HOOK"
-      - name: Wait until the new version is healthy
-        if: ${{ vars.APP_URL != '' }}
-        run: |
+          # Railway deploys on its own after CI passes ("Wait for CI"), so here we only confirm it is live
           for i in $(seq 1 40); do
             if curl -fs "${{ vars.APP_URL }}/health" | grep -q "${{ github.sha }}"; then
               echo "Live version is ${{ github.sha }}"; exit 0
             fi
             sleep 15
           done
-          echo "::warning::Deploy started but the new version did not report healthy in time"
+          echo "::warning::The new version did not report healthy in time"
